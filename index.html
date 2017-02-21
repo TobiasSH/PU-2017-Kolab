@@ -1,0 +1,38 @@
+<!DOCTYPE>
+<html ng-app=kolabApp>
+<head>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0rc1/angular-route.min.js"></script>
+
+    <!-- Modules -->
+    <script src="/app/app.js"></script>
+
+    <!-- Controllers -->
+    <script src="/app/components/menu/menu.controller.js"></script>
+    <script src="/app/components/questions/questions.controller.js"></script>
+
+    <!-- Directives -->
+    <script src="/app/components/menu/menu.directive.js"></script>
+    <script src="/app/components/questions/questions.directive.js"></script>
+
+
+    <title>Kolab</title>
+</head>
+<body>
+<div menu-directive class="container vertical-center" ng-controller="menuCtrl"></div>
+
+<div questions-directive class="container vertical-center" ng-controller="questionsCtrl"></div>
+
+
+</body>
+</html>

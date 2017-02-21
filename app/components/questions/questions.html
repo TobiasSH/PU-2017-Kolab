@@ -1,0 +1,20 @@
+<div class="container horizontal-center">
+    <h1>Questions</h1>
+    <table class="table">
+        <tbody>
+        <tr>
+            <td><input class="form-control" ng-model="question.text"></td>
+            <td>
+                <button class="btn btn-primary btn-lg btn-block btn-send" ng-click="sendQuestion()">Send</button>
+            </td>
+        </tr>
+        <tr ng-repeat="question in kolab">
+            <!--<td>{{question.number}}</td>-->
+            <td class="td-question">{{question.text}}</td>
+            <td>
+                <button class="btn btn-danger btn-lg btn-block" ng-click="remove(question._id)">Remove</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
