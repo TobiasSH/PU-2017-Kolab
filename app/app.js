@@ -4,12 +4,22 @@ kolabApp.config(function ($routeProvider, $locationProvider) {
     $routeProvider
 
         .when('/', {
-            templateUrl: '/components/menu/menu.html',
+            templateUrl: '/app/components/front/front.html',
+            controller: 'frontCtrl'
+        })
+
+        .when('/lecturer',{
+            templateUrl: '/app/components/lecturer/lecturer.html',
+            controller: 'lecturerCtrl'
+        })
+
+        .when('/student',{
+            templateUrl: '/app/components/menu/menu.html',
             controller: 'menuCtrl'
         })
 
-        .when('/kolab',{
-            templateUrl: '/components/questions/question.html',
+        .when('/questions',{
+            templateUrl: '/app/components/questions/question.html',
             controller: 'questionsCtrl'
         })
 

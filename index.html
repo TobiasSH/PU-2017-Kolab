@@ -20,21 +20,29 @@
     <!-- Controllers -->
     <script src="/app/components/menu/menu.controller.js"></script>
     <script src="/app/components/questions/questions.controller.js"></script>
+    <script src="/app/components/lecturer/lecturer.controller.js"></script>
+    <script src="/app/components/front/front.controller.js"></script>
+
 
     <!-- Directives -->
     <script src="/app/components/menu/menu.directive.js"></script>
     <script src="/app/components/questions/questions.directive.js"></script>
+    <script src="/app/components/lecturer/lecturer.directive.js"></script>
+    <script src="/app/components/front/front.directive.js"></script>
 
 
     <title>Kolab</title>
 </head>
 <body>
+<base href="/">
+<div ng-view></div>
+<!--
+<front-directive ng-controller="frontCtrl"></front-directive>
 
 <menu-directive ng-controller="menuCtrl"></menu-directive>
 
-
 <questions-directive ng-controller="questionsCtrl"></menu-directive>
-
+-->
 
 </body>
 </html>

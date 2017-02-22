@@ -1,0 +1,17 @@
+<div class="container horizontal-center">
+    <h2>Lecturer View</h2>
+    <h1>TDT4140 Software Engineering</h1>
+    <h1>Questions</h1>
+    <table class="table">
+        <tbody>
+        <tr ng-repeat="question in kolab">
+            <!--<td>{{question.number}}</td>-->
+            <td class="td-question">{{question.text}}</td>
+            <td>
+                <button class="btn btn-danger btn-lg btn-block btn-remove" ng-click="remove(question._id)">Remove
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
