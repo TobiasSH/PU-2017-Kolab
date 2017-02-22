@@ -19,7 +19,7 @@ kolabApp.config(function ($routeProvider, $locationProvider) {
         })
 
         .when('/questions',{
-            templateUrl: '/app/components/questions/question.html',
+            templateUrl: '/app/components/questions/questions.html',
             controller: 'questionsCtrl'
         })
 
