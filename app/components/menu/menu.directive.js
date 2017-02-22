@@ -1,6 +1,6 @@
 kolabApp.directive('menuDirective', function(){
     return {
-        restrict: 'EA',
+        restrict: 'E',
         templateUrl: 'app/components/menu/menu.html',
         replace: true
     }
