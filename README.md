@@ -2,8 +2,8 @@
 The Kolab App
 
 ### Screenshots
-<img src="/assets/img/student-view-2017-02-20.png" alt="alt text" width="250">
-<img src="/assets/img/student-questions-2017-02-20.png" alt="alt text" width="250">
+<img src="/screenshots/student-view-2017-02-20.png" alt="alt text" width="250">
+<img src="/screenshots/student-questions-2017-02-20.png" alt="alt text" width="250">
 
 ### Run the server
 1. `cd` into the directory that contains the server.js file
