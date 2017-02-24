@@ -22,11 +22,4 @@ kolabApp.controller('questionsCtrl', ['$scope', '$http', function ($scope, $http
         });
     };
 
-    $scope.remove = function (id) {
-        console.log(id);
-        $http.delete('/kolab/' + id).then(function (response) {
-            refresh();
-        });
-    };
-
 }]);
