@@ -15,11 +15,16 @@ kolabApp.controller('questionsCtrl', ['$scope', '$http', function ($scope, $http
     refresh();
 
     $scope.sendQuestion = function () {
-        console.log($scope.question);
+        if ($scope.question != null && $scope.question.text.trim().length){
         $http.post('/kolab', $scope.question).then(function (response) {
             console.log(response);
             refresh();
-        });
+
+        }); } else {
+            refresh();
+        }
+
+
     };
 
 }]);
