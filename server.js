@@ -3,9 +3,23 @@ var app = express();
 var mongojs = require('mongojs');
 var db = mongojs('kolab', ['kolab']);
 var bodyParser = require('body-parser');
+var path = require('path');
 
 app.use(express.static(__dirname));
 app.use(bodyParser.json());
+
+app.get('/lecturer', function (req, res) {
+    res.sendFile(__dirname+'/index.html');
+});
+
+app.get('/student', function (req, res) {
+    res.sendFile(__dirname+'/index.html');
+});
+
+app.get('/questions', function (req, res) {
+    res.sendFile(__dirname+'/index.html');
+});
+
 
 app.get('/kolab', function (req, res) {
     console.log("I received a GET request")
