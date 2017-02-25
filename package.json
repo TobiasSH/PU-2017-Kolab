@@ -1,0 +1,28 @@
+{
+  "name": "kolab",
+  "version": "1.0.0",
+  "description": "The Kolab App",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TobiasSH/PU-2017-Kolab.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TobiasSH/PU-2017-Kolab/issues"
+  },
+  "homepage": "https://github.com/TobiasSH/PU-2017-Kolab#readme",
+  "dependencies": {
+    "angular": "^1.6.2",
+    "body-parser": "^1.16.1",
+    "express": "^4.14.1",
+    "mongodb": "^2.2.24",
+    "mongojs": "^2.4.0",
+    "nodemon": "^1.11.0"
+  }
+}
