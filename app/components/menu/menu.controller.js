@@ -16,10 +16,17 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', function ($scope, $http) {
 
     $scope.questions = function () {
         console.log("questions button was clicked");
+
     };
 
     $scope.cantKeepUp = function () {
         console.log("cantKeepUp button was clicked");
+
+        $http.get('/counter').then(function(response){
+
+            console.log(response);
+        })
+
     };
 
     $scope.decreaseVolume = function () {
