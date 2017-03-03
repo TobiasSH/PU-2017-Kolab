@@ -16,6 +16,6 @@ The Kolab App
 1. Run MongoDB: `mongod`
 2. `mongo`
 3. Show databases: `show dbs`
-4. Create or use a database: `use kolab`
-5. Show the content of the database: `db.kolab.find()`
-6. Show the content of the database pretty: `db.kolab.find().pretty()`
+4. Create or use a database: `use kolabDB`
+5. Show the content of the database: `db.questionsCollection.find()`
+6. Show the content of the database pretty: `db.questionsCollection.find().pretty()`
