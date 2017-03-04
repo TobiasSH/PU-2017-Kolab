@@ -1,13 +1,15 @@
 var express = require('express');
 var app = express();
 var mongojs = require('mongojs');
-var db = mongojs('kolab', ['kolab']);
+var db = mongojs('kolabDB', ['questionsCollection']);
 var bodyParser = require('body-parser');
 var path = require('path');
 
 app.use(express.static(__dirname));
 app.use(bodyParser.json());
 
+
+/* SERVER SIDE ROUTING */
 app.get('/lecturer', function (req, res) {
     res.sendFile(__dirname+'/index.html');
 });
@@ -21,36 +23,40 @@ app.get('/questions', function (req, res) {
 });
 
 
-app.get('/kolab', function (req, res) {
-    console.log("I received a GET request")
+/* DATABASE METHODS */
+app.get('/questionsCollection', function (req, res) {
+    console.log("I received a GET request");
 
-    db.kolab.find(function (err, docs) {
+    db.kolabDB.find(function (err, docs) {
         console.log(docs);
         res.json(docs);
     });
 
 });
 
-app.post('/kolab', function (req, res) {
+app.post('/questionsCollection', function (req, res) {
+    console.log("I received a POST request");
     console.log(req.body);
-    db.kolab.insert(req.body, function (err, doc) {
+    db.kolabDB.insert(req.body, function (err, doc) {
         res.json(doc);
     });
 });
 
-app.delete('/kolab/:id', function (req, res) {
+app.delete('/questionsCollection/:id', function (req, res) {
+    console.log("I received a DELETE request");
     var id = req.params.id;
     console.log(id);
-    db.kolab.remove({_id: mongojs.ObjectId(id)}, function (err, doc) {
+    db.kolabDB.remove({_id: mongojs.ObjectId(id)}, function (err, doc) {
         res.json(doc);
 
     });
 });
 
-app.get('/kolab/:id', function (req, res) {
+app.get('/questionsCollection/:id', function (req, res) {
+    console.log("I received a GET request");
     var id = req.params.id;
     console.log(id);
-    db.kolab.findOne({_id: mongojs.ObjectId(id)}, function (err, doc) {
+    db.kolabDB.findOne({_id: mongojs.ObjectId(id)}, function (err, doc) {
         res.json(doc);
     });
 });

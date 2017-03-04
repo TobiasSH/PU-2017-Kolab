@@ -2,9 +2,9 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', function ($scope, $http)
     console.log("Hello World from controller");
 
     var refresh = function () {
-        $http.get('/kolab').then(function (response) {
+        $http.get('/questionsCollection').then(function (response) {
                 console.log("I got the data I requested");
-                $scope.kolab = response.data;
+                $scope.kolabDBScope = response.data;
                 $scope.question = null;
             },
             function (error) {
@@ -20,7 +20,7 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', function ($scope, $http)
 
     $scope.remove = function (id) {
         console.log(id);
-        $http.delete('/kolab/' + id).then(function (response) {
+        $http.delete('/questionsCollection/' + id).then(function (response) {
             refresh();
         });
     };
