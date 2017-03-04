@@ -28,5 +28,6 @@
     "mongodb": "^2.2.24",
     "mongojs": "^2.4.0",
     "nodemon": "^1.11.0"
-  }
+  },
+  "devDependencies": {}
 }
