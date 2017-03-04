@@ -2,10 +2,14 @@ var express = require('express');
 var app = express();
 var mongojs = require('mongojs');
 var db = mongojs('kolab', ['kolab', 'counter'] );
-//var db1 = mongojs('counter', ['counter'] );
+
 var bodyParser = require('body-parser');
 var path = require('path');
-var ckuCount = 0;
+var ckuCount = -1;
+var dvCount = -1;
+var ivCount = -1;
+var dsCount = -1;
+var isCount = -1;
 
 
 app.use(express.static(__dirname));
@@ -25,14 +29,33 @@ app.get('/questions', function (req, res) {
 });
 
 app.get('/counter', function(req, res){
-    if (ckuCount % 2 == 0){
-        db.counter.update({"counter" : "cku"}, {"$inc":{"hits": 1}});
-        ckuCount+=1;
+    if (req.query.id == "cku"){
+        ckuCount+=1
+        console.log("1");
+        var count = ckuCount
+    } else if (req.query.id=="dv"){
+        dvCount+=1;
+        var count = dvCount;
+        console.log("dv")
+    }else if (req.query.id=="iv"){
+        ivCount+=1;
+        var count = ivCount;
+    }else if (req.query.id=="ds"){
+        dsCount+=1;
+        var count = dsCount;
+    }else if (req.query.id=="is"){
+        isCount+=1;
+        var count = isCount;
+    }
+    if (count % 2 == 0){
+        console.log(req.query.id);
+        db.counter.update({"counter" : req.query.id}, {"$inc":{"hits": 1}});
+
         console.log("mod 0 ")
     }
-    else if (ckuCount % 2 == 1) {
-        db.counter.update({"counter" : "cku"}, {"$inc":{"hits": -1}});
-        ckuCount+=1;
+    else if (count % 2 == 1) {
+        db.counter.update({"counter" : req.query.id}, {"$inc":{"hits": -1}});
+
         console.log("mod 1")
     }
     res.json("test yo");
