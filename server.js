@@ -1,9 +1,10 @@
 var express = require('express');
 var app = express();
 var mongojs = require('mongojs');
-var db = mongojs('kolab', ['kolab']);
+var db = mongojs('mongodb://heroku_2hcp9k8k:19uocjcgsn6ce4pp7j66fe1ras@ds119020.mlab.com:19020/heroku_2hcp9k8k', ['questionsCollection']);
 var bodyParser = require('body-parser');
 var path = require('path');
+
 
 app.use(express.static(__dirname));
 app.use(bodyParser.json());
