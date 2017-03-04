@@ -2,10 +2,10 @@
   "name": "kolab",
   "version": "1.0.0",
   "description": "The Kolab App",
-  "main": "server.js",
   "engines": {
     "node": "7.5.0"
   },
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
