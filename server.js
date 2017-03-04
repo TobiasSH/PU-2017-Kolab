@@ -5,12 +5,11 @@ var db = mongojs('kolab', ['kolab', 'counter'] );
 
 var bodyParser = require('body-parser');
 var path = require('path');
-var ckuCount = -1;
-var dvCount = -1;
-var ivCount = -1;
-var dsCount = -1;
-var isCount = -1;
+var cookie = require('cookie');
+var cookies = cookie.parse('ckuCount = -1; dvCount = -1; ivCount = -1;dsCount = -1; isCount = -1')
 
+console.log(cookies.ckuCount);
+console.log("hai")
 
 app.use(express.static(__dirname));
 app.use(bodyParser.json());
@@ -30,22 +29,22 @@ app.get('/questions', function (req, res) {
 
 app.get('/counter', function(req, res){
     if (req.query.id == "cku"){
-        ckuCount+=1
+        cookies.ckuCount=parseInt(cookies.ckuCount)+1
         console.log("1");
-        var count = ckuCount
+        var count = cookies.ckuCount
     } else if (req.query.id=="dv"){
-        dvCount+=1;
-        var count = dvCount;
+        cookies.dvCount=parseInt(cookies.dvCount)+1;
+        var count = cookies.dvCount;
         console.log("dv")
     }else if (req.query.id=="iv"){
-        ivCount+=1;
-        var count = ivCount;
+        cookies.ivCount=parseInt(cookies.ivCount)+1;
+        var count = cookies.ivCount;
     }else if (req.query.id=="ds"){
-        dsCount+=1;
-        var count = dsCount;
+        cookies.dsCount=parseInt(cookies.dsCount)+1;
+        var count = cookies.dsCount;
     }else if (req.query.id=="is"){
-        isCount+=1;
-        var count = isCount;
+        cookies.isCount = parseInt(cookies.isCount)+1;
+        var count = cookies.isCount;
     }
     if (count % 2 == 0){
         console.log(req.query.id);
