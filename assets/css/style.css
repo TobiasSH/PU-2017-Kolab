@@ -55,11 +55,16 @@ tr:hover {
 rgba(250, 50, 50, 1);
 }
 
+
+.questionRows{
+    border-bottom: 1px solid black;
+}
+
 tr {
+    color: white;
     padding: 0;
 rgba(50, 50, 50, 1);
     word-break: break-all;
-    border-bottom: 1px solid black;
     line-height: 25px;
     min-height: 25px;
     height: 50px;
