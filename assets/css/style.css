@@ -1,50 +1,144 @@
-.vertical-center {
-  min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
-  min-height: 100vh; /* These two lines are counted as one :-)       */
+/* GENERAL LAYOUT */
+/********************/
+body{
+    height: 100%;
+    width:100%;
+    max-height: 100%;
+    max-width: 100%;
+}
 
-  display: flex;
-  align-items: center;
+.background-image {
+    position: fixed;
+    left: 0;
+    right: 0;
+    z-index: -10000;
+
+    display: block;
+    background-image: url('/assets/img/triangle.svg');
+    width: 100%;
+    height: 100%;
+
 }
 
 
 
+
+.vertical-center {
+    min-height: 100%; /* Fallback for browsers do NOT support vh unit */
+    min-height: 100vh; /* These two lines are counted as one :-)       */
+
+    display: flex;
+    align-items: center;
+}
+
 .horizontal-center {
-  width: auto;
-  text-align:center;
+    max-width: 100%;
+    width: 100%;
+    text-align: center;
+}
+
+h1 {
+    color: white;
+    text-shadow: -2px 2px black;
+}
+
+
+
+/* TABLE CSS */
+/********************/
+
+.table {
+    table-layout: fixed;
+    width: 100%;
 }
 
 th {
-	font-size: 48px;
+    font-size: 48px;
+
+}
+
+tbody{
+    width: 100%;
+    display:inherit;
+}
+
+
+tr {
+    min-width: inherit;
+    color: white;
+    padding: 0;
+rgba(50, 50, 50, 1);
+    line-height: 25px;
+    min-height: 200px;
+}
+
+.questionRows{
+    border-bottom: 1px solid black;
+    word-break: break-all;
 }
 
 td {
-  font-size: 38px;
-}
 
-tr {
-  line-height: 25px;
-  min-height: 25px;
-  height: 50px;
-}
-
-.bn-square {
-	height: 25vh;
-	width: 25vh;
-	font-size: 24px;
-  border-radius: 0;
-}
-
-.form-control {
-  width: 25vh;
-  height: 12.5vh;
-  font-size: 30px;
-}
-
-.btn-send {
-  height: 12.5vh;
-  font-size: 34px;
+    border: 0px !important;
+    font-size: 38px;
+    min-height: inherit;
+    height: 100%;
+    width: 50%;
 }
 
 .td-question {
-  font-size: 30px;
+    font-size: 30px;
+    width: 100%;
 }
+
+
+/* TEXTAREA AND FORM */
+/********************/
+.form-control {
+    width: 100%;
+    height: 100%;
+    font-size: 30px;
+    min-height: 150px;
+}
+
+textarea{
+    resize: none;
+    width: 100%;
+}
+
+
+/* BUTTON */
+/********************/
+
+.btn {
+    border-radius: 0;
+}
+
+
+.btn-send {
+    height: 100%;
+    width:100%;
+    font-size: 34px;
+    min-width: 150px;
+}
+
+.btn-remove{
+    height: 100%;
+    width:100%;
+    font-size: 34px;
+    min-width: 150px;
+}
+
+
+.bn-square {
+
+    width:100%;
+    height:300px;
+    font-size: 24px;
+    min-height: 100%;
+    min-width: 100%;
+    max-width: 300px;
+    max-height: 300px;
+}
+
+
