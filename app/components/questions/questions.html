@@ -10,12 +10,12 @@
             </a>
             <tbody>
             <tr>
-                <td><input class="form-control" ng-model="question.text"></td>
+                <td><input maxlength="140" size="80" class="form-control" ng-model="question.text"></td>
                 <td>
                     <button class="btn btn-primary btn-lg btn-block btn-send" ng-click="sendQuestion()">Send</button>
                 </td>
             </tr>
-            <tr ng-repeat="question in kolabDBScope">
+            <tr ng-repeat="question in kolabDBScope" class="questionRows">
                 <!--<td>{{question.number}}</td>-->
                 <td class="td-question">{{question.text}}</td>
             </tr>
