@@ -88,6 +88,7 @@ td {
 
 .td-question {
     font-size: 30px;
+    width: 100%;
 }
 
 
@@ -115,10 +116,10 @@ textarea{
 
 
 .btn-send {
-    height: 12.5vh;
+    height: 100%;
+    width:100%;
     font-size: 34px;
-    min-height:inherit;
-
+    min-width: 150px;
 }
 
 
