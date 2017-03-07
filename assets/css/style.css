@@ -1,3 +1,10 @@
+body{
+    height: 100%;
+    width:100%;
+    max-height: 100%;
+    max-width: 100%;
+}
+
 .background-image {
     position: fixed;
     left: 0;
@@ -10,6 +17,7 @@
     height: 100%;
 
 }
+
 
 h1 {
     color: white;
@@ -26,12 +34,13 @@ h1 {
 
 .horizontal-center {
     max-width: 100%;
-    width: auto;
+    width: 100%;
     text-align: center;
 }
 
 .btn {
     border-radius: 0;
+    max-width: 50%;
 }
 
 th {
@@ -41,15 +50,15 @@ th {
 
 .table {
     table-layout: fixed;
-    display: flex;
     width: 100%;
 }
 
-td {
-    border: 0px !important;
-    font-size: 38px;
-
+tbody{
+    width: 100%;
+    display:inherit;
 }
+
+
 
 tr:hover {
 rgba(250, 50, 50, 1);
@@ -58,36 +67,56 @@ rgba(250, 50, 50, 1);
 
 .questionRows{
     border-bottom: 1px solid black;
+    word-break: break-all;
 }
 
 tr {
+    min-width: inherit;
     color: white;
     padding: 0;
 rgba(50, 50, 50, 1);
-    word-break: break-all;
     line-height: 25px;
-    min-height: 25px;
-    height: 50px;
+    min-height: 200px;
+}
+
+td {
+
+    border: 0px !important;
+    font-size: 38px;
+    min-height: inherit;
+    height: 100%;
+    width: 50%;
 }
 
 .bn-square {
-    height: 25vh;
-    width: 25vh;
+    height: 100%;
+    width: 100%;
     font-size: 24px;
+    min-height: 100%;
+    min-width: 100%;
+    height:300px;
+    max-width: 325px;
 }
 
 .form-control {
-    width: 25vh;
-    height: 12.5vh;
+    width: 100%;
+    height: 100%;
     font-size: 30px;
+    min-height: 150px;
 }
 
 .btn-send {
     height: 12.5vh;
     font-size: 34px;
+    min-height:inherit;
 
 }
 
 .td-question {
     font-size: 30px;
+}
+
+
+textarea{
+    resize: none;
 }
