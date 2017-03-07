@@ -1,3 +1,5 @@
+/* GENERAL LAYOUT */
+/********************/
 body{
     height: 100%;
     width:100%;
@@ -19,10 +21,7 @@ body{
 }
 
 
-h1 {
-    color: white;
-    text-shadow: -2px 2px black;
-}
+
 
 .vertical-center {
     min-height: 100%; /* Fallback for browsers do NOT support vh unit */
@@ -38,19 +37,24 @@ h1 {
     text-align: center;
 }
 
-.btn {
-    border-radius: 0;
-    max-width: 50%;
+h1 {
+    color: white;
+    text-shadow: -2px 2px black;
+}
+
+
+
+/* TABLE CSS */
+/********************/
+
+.table {
+    table-layout: fixed;
+    width: 100%;
 }
 
 th {
     font-size: 48px;
 
-}
-
-.table {
-    table-layout: fixed;
-    width: 100%;
 }
 
 tbody{
@@ -59,17 +63,6 @@ tbody{
 }
 
 
-
-tr:hover {
-rgba(250, 50, 50, 1);
-}
-
-
-.questionRows{
-    border-bottom: 1px solid black;
-    word-break: break-all;
-}
-
 tr {
     min-width: inherit;
     color: white;
@@ -77,6 +70,11 @@ tr {
 rgba(50, 50, 50, 1);
     line-height: 25px;
     min-height: 200px;
+}
+
+.questionRows{
+    border-bottom: 1px solid black;
+    word-break: break-all;
 }
 
 td {
@@ -88,6 +86,42 @@ td {
     width: 50%;
 }
 
+.td-question {
+    font-size: 30px;
+}
+
+
+/* TEXTAREA AND FORM */
+/********************/
+.form-control {
+    width: 100%;
+    height: 100%;
+    font-size: 30px;
+    min-height: 150px;
+}
+
+textarea{
+    resize: none;
+}
+
+
+/* BUTTON */
+/********************/
+
+.btn {
+    border-radius: 0;
+    max-width: 50%;
+}
+
+
+.btn-send {
+    height: 12.5vh;
+    font-size: 34px;
+    min-height:inherit;
+
+}
+
+
 .bn-square {
     height: 100%;
     width: 100%;
@@ -98,25 +132,4 @@ td {
     max-width: 325px;
 }
 
-.form-control {
-    width: 100%;
-    height: 100%;
-    font-size: 30px;
-    min-height: 150px;
-}
 
-.btn-send {
-    height: 12.5vh;
-    font-size: 34px;
-    min-height:inherit;
-
-}
-
-.td-question {
-    font-size: 30px;
-}
-
-
-textarea{
-    resize: none;
-}
