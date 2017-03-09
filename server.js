@@ -57,7 +57,7 @@ app.get('/questionsCollection', function (req, res) {
     });
 
 
-    var stream = db.questionsCollection.find().sort({_id :-1}).limit(10).stream();
+    var stream = db.questionsCollection.find().stream();
     stream.on('data', function (questionsStream){
         socket.emit('questionsStream', questionsStream.text);
     });

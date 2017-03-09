@@ -28,11 +28,6 @@ kolabApp.controller('questionsCtrl', ['$scope', '$http', function ($scope, $http
             $('#textareaQ').val('');
             return false;
 
-            $http.post('/questionsCollection', $scope.question).then(function (response) {
-                console.log(response);
-                refresh();
-
-            });
         } else {
             refresh();
         }
