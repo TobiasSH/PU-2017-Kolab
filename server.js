@@ -12,6 +12,28 @@ app.use(express.static(__dirname));
 app.use(bodyParser.json());
 
 
+/* SOCKET IO */
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+
+io.on('connection', function(socket){
+    console.log('a user connected');
+    socket.on('disconnect',function () {
+        console.log('a user disconnected');
+    });
+
+    console.log('When does this run');
+    socket.on('question message', function(msg){
+        console.log('message: '+ msg);
+        io.emit('question message', msg);
+        db.questionsCollection.insert({text : msg}, function(err, o){
+            if (err) { console.warn(err.message);}
+            else { console.log("question message inserted into the db: "+ msg);}
+        });
+    });
+});
+
+
 /* SERVER SIDE ROUTING */
 app.get('/lecturer', function (req, res) {
     res.sendFile(__dirname+'/index.html');
@@ -64,5 +86,5 @@ app.get('/questionsCollection/:id', function (req, res) {
     });
 });
 
-app.listen(process.env.PORT || 3000);
+http.listen(process.env.PORT || 3000);
 console.log("Server running on port 3000");

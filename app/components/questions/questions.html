@@ -9,18 +9,22 @@
                 </button>
             </a>
             <tr>
-                <td><textarea maxlength="140" size="80" class="form-control" ng-model="question.text"></textarea></td>
+                <td><textarea id="textareaQ" maxlength="140" size="80" class="form-control"
+                              ng-model="question.text"></textarea></td>
                 <td>
                     <button class="btn btn-primary btn-lg btn-block btn-send" ng-click="sendQuestion()">Send</button>
                 </td>
             </tr>
         </table>
-        <table class="table">
+        <table id="questionsTable" class="table">
 
-            <tr ng-repeat="question in kolabDBScope" class="questionRows">
-                <!--<td>{{question.number}}</td>-->
-                <td class="td-question">{{question.text}}</td>
-            </tr>
+
+            <!-- <tr ng-repeat="question in kolabDBScope | orderBy:'-'" class="questionRows">-->
+            <!--<td>{{question.number}}</td>-->
+            <!--<td class="td-question">{{question.text}}</td>
+            </tr>-->
+
+
             </tbody>
         </table>
     </div>
