@@ -52,6 +52,16 @@ app.get('/questions', function (req, res) {
 app.get('/questionsCollection', function (req, res) {
     console.log("I received a GET request");
 
+    db.questionsCollection.find(function (err, docs){
+
+    });
+
+
+    var stream = db.questionsCollection.find().sort({_id :-1}).limit(10).stream();
+    stream.on('data', function (questionsStream){
+        socket.emit('questionsStream', questionsStream.text);
+    });
+
     db.questionsCollection.find(function (err, docs) {
         console.log(docs);
         res.json(docs);
