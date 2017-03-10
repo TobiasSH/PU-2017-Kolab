@@ -3,11 +3,6 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', function ($scope, $http)
 
     var socket = io();
 
-    socket.on('question message', function(msg){
-        console.log('Trying to populate the table with questions...');
-        $('#lecturerTable' ).append($('<tr>').text(msg));
-    });
-
 
     var refresh = function () {
         $http.get('/questionsCollection').then(function (response) {
@@ -32,4 +27,17 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', function ($scope, $http)
             refresh();
         });
     };
+
+
+    socket.on('question message', function(msg){
+        console.log('Trying to populate the table with questions...');
+        $('#lecturerTable' ).find('tbody').append($('<tr class="questionRows">').prepend($('<td class="td-question">').text(msg)).append($('<td>').append($('<button class="btn btn-danger btn-lg btn-block btn-remove" ng-click="remove(question._id)">Remove</button>'))));
+
+        /*<td>
+        <button class="btn btn-danger btn-lg btn-block btn-remove" ng-click="remove(question._id)">Remove
+            </button>
+            </td>
+        */
+
+    });
 }]);

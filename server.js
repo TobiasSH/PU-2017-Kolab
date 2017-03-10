@@ -15,14 +15,15 @@ app.use(bodyParser.json());
 /* SOCKET IO */
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+var userCounter = 1;
 
 io.on('connection', function(socket){
-    console.log('a user connected');
+    console.log('User '+userCounter+ ' connected.');
+    userCounter+=1;
     socket.on('disconnect',function () {
         console.log('a user disconnected');
     });
 
-    console.log('When does this run');
     socket.on('question message', function(msg){
         console.log('message: '+ msg);
         io.emit('question message', msg);
