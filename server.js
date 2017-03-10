@@ -49,24 +49,20 @@ app.get('/questions', function (req, res) {
 
 
 /* DATABASE METHODS */
-app.get('/questionsCollection', function (req, res) {
+app.get('/questionsCollection', function (req, res, socket) {
     console.log("I received a GET request");
 
-    db.questionsCollection.find(function (err, docs){
-
-    });
-
-
-    var stream = db.questionsCollection.find().stream();
+    /*var stream = db.questionsCollection.find();
     stream.on('data', function (questionsStream){
-        socket.emit('questionsStream', questionsStream.text);
-    });
+        console.log("hello from get request to questionscollection");
+        console.log(questionsStream);
+        io.socket.emit('question message', questionsStream.text);
+    });*/
 
     db.questionsCollection.find(function (err, docs) {
-        console.log(docs);
-        res.json(docs);
-    });
-
+     console.log(docs);
+     res.json(docs);
+     });
 });
 
 app.post('/questionsCollection', function (req, res) {
