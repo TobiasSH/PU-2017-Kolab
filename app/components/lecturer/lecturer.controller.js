@@ -30,6 +30,7 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', function ($scope, $http)
 
 
     socket.on('question message', function(msg){
+        console.log(msg);
         console.log('Trying to populate the table with questions...');
         $('#lecturerTable' ).find('tbody').append($('<tr class="questionRows">').prepend($('<td class="td-question">').text(msg)).append($('<td>').append($('<button class="btn btn-danger btn-lg btn-block btn-remove" ng-click="remove(question._id)">Remove</button>'))));
 
