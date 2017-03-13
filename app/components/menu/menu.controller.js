@@ -2,7 +2,7 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', function ($scope, $http) {
     console.log("Hello World from menu-controller");
 
     var refresh = function () {
-        $http.get('/kolab').then(function (response) {
+        $http.get('/questionsCollection').then(function (response) {
                 console.log("I got the data I requested, menu-controller");
                 $scope.kolab = response.data;
                 $scope.question = null;

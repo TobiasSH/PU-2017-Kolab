@@ -1,15 +1,16 @@
 <div class="container horizontal-center">
-    <h2>Lecturer View</h2>
-    <h1>TDT4140 Software Engineering</h1>
+    <h1>TDT4140 <p> Software Engineering</h1>
     <h1>Questions</h1>
+
     <a href="/">
         <button type="button" class="btn btn-primary">
             Home
         </button>
     </a>
+    <div class="container vertical-center">
     <table class="table">
         <tbody>
-        <tr ng-repeat="question in kolab">
+        <tr ng-repeat="question in kolabDBScope" class="questionRows">
             <!--<td>{{question.number}}</td>-->
             <td class="td-question">{{question.text}}</td>
             <td>
@@ -19,4 +20,5 @@
         </tr>
         </tbody>
     </table>
+    </div>
 </div>
