@@ -22,6 +22,7 @@ io.on('connection', function (socket) {
     userCounter += 1;
     socket.on('disconnect', function () {
         console.log('a user disconnected');
+        userCounter -= 1;
     });
 
     socket.on('question message', function (msg) {
