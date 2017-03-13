@@ -2,6 +2,9 @@
   "name": "kolab",
   "version": "1.0.0",
   "description": "The Kolab App",
+  "engines": {
+    "node": "7.5.0"
+  },
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -25,5 +28,6 @@
     "mongodb": "^2.2.24",
     "mongojs": "^2.4.0",
     "nodemon": "^1.11.0"
-  }
+  },
+  "devDependencies": {}
 }

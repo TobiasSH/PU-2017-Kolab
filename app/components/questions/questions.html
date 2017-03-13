@@ -4,18 +4,20 @@
         <h1>Questions</h1>
         <table class="table">
             <a href="/student">
-                <button type="button" class="btn btn-primary">
+                <button type="button" class="btn btn-responsive">
                     Back
                 </button>
             </a>
-            <tbody>
             <tr>
-                <td><input class="form-control" ng-model="question.text"></td>
+                <td><textarea maxlength="140" size="80" class="form-control" ng-model="question.text"></textarea></td>
                 <td>
                     <button class="btn btn-primary btn-lg btn-block btn-send" ng-click="sendQuestion()">Send</button>
                 </td>
             </tr>
-            <tr ng-repeat="question in kolabDBScope">
+        </table>
+        <table class="table">
+
+            <tr ng-repeat="question in kolabDBScope" class="questionRows">
                 <!--<td>{{question.number}}</td>-->
                 <td class="td-question">{{question.text}}</td>
             </tr>
