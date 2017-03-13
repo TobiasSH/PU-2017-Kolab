@@ -17,35 +17,54 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var userCounter = 1;
 
-io.on('connection', function(socket){
-    console.log('User '+userCounter+ ' connected.');
-    userCounter+=1;
-    socket.on('disconnect',function () {
+io.on('connection', function (socket) {
+    console.log('User ' + userCounter + ' connected.');
+    userCounter += 1;
+    socket.on('disconnect', function () {
         console.log('a user disconnected');
     });
 
-    socket.on('question message', function(msg){
-        console.log('message: '+ msg);
-        io.emit('question message', msg);
-        db.questionsCollection.insert({text : msg}, function(err, o){
-            if (err) { console.warn(err.message);}
-            else { console.log("question message inserted into the db: "+ msg);}
+    socket.on('question message', function (msg) {
+        console.log('message: ' + msg);
+
+        //in stead make a function to randomly assign a DB id, 4char prefix for users, randomly assigned too, cookie
+
+
+        var rString = randomString(32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
+
+        console.log("The ID is = " + rString);
+
+        db.questionsCollection.insert({_id: rString, text: msg}, function (err, o) {
+            if (err) {
+                console.warn(err.message);
+            }
+            else {
+                console.log("question message inserted into the db: " + msg);
+            }
         });
+        io.emit('question message', {_id: rString, text: msg});
     });
 });
+
+/* ID Generator */
+function randomString(length, chars) {
+    var result = '';
+    for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
+    return result;
+}
 
 
 /* SERVER SIDE ROUTING */
 app.get('/lecturer', function (req, res) {
-    res.sendFile(__dirname+'/index.html');
+    res.sendFile(__dirname + '/index.html');
 });
 
 app.get('/student', function (req, res) {
-    res.sendFile(__dirname+'/index.html');
+    res.sendFile(__dirname + '/index.html');
 });
 
 app.get('/questions', function (req, res) {
-    res.sendFile(__dirname+'/index.html');
+    res.sendFile(__dirname + '/index.html');
 });
 
 
@@ -54,9 +73,9 @@ app.get('/questionsCollection', function (req, res, socket) {
     console.log("I received a GET request");
 
     db.questionsCollection.find(function (err, docs) {
-     console.log(docs);
-     res.json(docs);
-     });
+        console.log(docs);
+        res.json(docs);
+    });
 });
 
 app.post('/questionsCollection', function (req, res) {
