@@ -35,7 +35,7 @@ io.on('connection', function (socket) {
 
         console.log(typeof rString);
 
-        db.questionsCollection.insert({_id: rString, text: msg}, function (err, o) {
+        db.questionsCollection.insert({_id: mongojs.ObjectID(rString), text: msg}, function (err, o) {
             if (err) {
                 console.warn(err.message);
             }
@@ -43,7 +43,7 @@ io.on('connection', function (socket) {
                 console.log("question message inserted into the db: " + msg);
             }
         });
-        io.emit('question message', {_id: rString, text: msg});
+        io.emit('question message', {_id: mongojs.ObjectID(rString), text: msg});
     });
 });
 
