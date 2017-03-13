@@ -27,12 +27,12 @@ io.on('connection', function (socket) {
     socket.on('question message', function (msg) {
         console.log('message: ' + msg);
 
-        //in stead make a function to randomly assign a DB id, 4char prefix for users, randomly assigned too, cookie
+        //in stead make a function to randomly assign a DB id, 4char prefix for users maybe(?), randomly assigned too, cookie
 
 
-        var rString = randomString(32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ');
+        var rString = randomString(24, '0123456789abcdef');
 
-        console.log("The ID is = " + rString);
+        console.log(typeof rString);
 
         db.questionsCollection.insert({_id: rString, text: msg}, function (err, o) {
             if (err) {
@@ -71,10 +71,14 @@ app.get('/questions', function (req, res) {
 /* DATABASE METHODS */
 app.get('/questionsCollection', function (req, res, socket) {
     console.log("I received a GET request");
-
     db.questionsCollection.find(function (err, docs) {
+        if (err) {
+            console.warn(err.message);
+        }
+        else{
         console.log(docs);
         res.json(docs);
+        }
     });
 });
 
@@ -87,9 +91,9 @@ app.post('/questionsCollection', function (req, res) {
 });
 
 app.delete('/questionsCollection/:id', function (req, res) {
-    console.log("I received a DELETE request");
+    console.log("Server received a DELETE request for ID: "+ req.params.id);
     var id = req.params.id;
-    console.log(id);
+    console.log(typeof id);
     db.questionsCollection.remove({_id: mongojs.ObjectId(id)}, function (err, doc) {
         res.json(doc);
 
