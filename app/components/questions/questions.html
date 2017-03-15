@@ -1,6 +1,4 @@
 <div class="container vertical-center">
-    <script> require(myEnter);
-    </script>
     <div class="container horizontal-center">
         <h1>Questions</h1>
         <table class="table">
@@ -12,7 +10,8 @@
 
             <tr>
                 <td><textarea id="textareaQ" maxlength="140" size="80" class="form-control"
-                              ng-model="question.text" ng-keyup="$event.keyCode == 13 ? sendQuestion() : null" ></textarea></td>
+                              ng-model="question.text"
+                              ng-keyup="$event.keyCode == 13 ? sendQuestion() : null"></textarea></td>
                 <td>
                     <button class="btn btn-primary btn-lg btn-block btn-send" ng-click="sendQuestion()">Send</button>
                 </td>

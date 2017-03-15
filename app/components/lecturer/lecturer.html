@@ -14,7 +14,7 @@
             <!--<td>{{question.number}}</td>-->
             <td class="td-question">{{question.text}}</td>
             <td>
-                <button class="btn btn-danger btn-lg btn-block btn-remove" ng-click="remove(question._id)">Remove
+                <button class="btn btn-danger btn-lg btn-block btn-remove" ng-click="remove($index, question._id)">Remove
                 </button>
             </td>
         </tr>
