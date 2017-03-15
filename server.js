@@ -45,6 +45,12 @@ io.on('connection', function (socket) {
         });
         io.emit('question message', {_id: mongojs.ObjectID(rString), text: msg});
     });
+
+    /*socket.on('question delete', function (id) {
+        db.questionsCollection.remove({_id: mongojs.ObjectID(id)}, function(err, doc){
+            res.json(doc);
+        });
+    });*/
 });
 
 /* ID Generator */
@@ -76,9 +82,9 @@ app.get('/questionsCollection', function (req, res, socket) {
         if (err) {
             console.warn(err.message);
         }
-        else{
-        console.log(docs);
-        res.json(docs);
+        else {
+            console.log(docs);
+            res.json(docs);
         }
     });
 });
@@ -92,7 +98,7 @@ app.post('/questionsCollection', function (req, res) {
 });
 
 app.delete('/questionsCollection/:id', function (req, res) {
-    console.log("Server received a DELETE request for ID: "+ req.params.id);
+    console.log("Server received a DELETE request for ID: " + req.params.id);
     var id = req.params.id;
     console.log(typeof id);
     db.questionsCollection.remove({_id: mongojs.ObjectId(id)}, function (err, doc) {

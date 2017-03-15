@@ -32,8 +32,10 @@ kolabApp.controller('questionsCtrl', ['$scope', '$http', function ($scope, $http
 
     };
     socket.on('question message', function(msg){
-        console.log('Trying to populate the table with questions...'+msg._id);
-        $('#questionsTable' ).find('tbody').prepend($('<tr class="questionRows">').prepend($('<td class="td-question">').text(msg.text)));
+        console.log('Trying to populate the table with questions... MSG= '+msg);
+        $scope.kolabDBScope.push(msg);
+        $scope.$apply();
+        //$('#questionsTable' ).find('tbody').prepend($('<tr class="questionRows">').prepend($('<td class="td-question">').text(msg.text)));
 
     });
 
