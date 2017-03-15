@@ -7,7 +7,6 @@
   },
   "main": "server.js",
   "scripts": {
-    "test": "vows --spec",
     "start": "node server.js"
   },
   "repository": {
