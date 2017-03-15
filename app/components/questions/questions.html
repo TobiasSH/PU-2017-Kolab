@@ -8,7 +8,7 @@
                     Back
                 </button>
             </a>
-            <tr> // Push enter so send question, key code for enter is 13
+            <tr> <!-- Push enter so send question, key code for enter is 13 -->
                 <td><textarea maxlength="140" size="80" class="form-control" ng-model="question.text" ng-keyup="$event.keyCode == 13 ? sendQuestion() : null"></textarea></td>
                 <td>
                     <button class="btn btn-primary btn-lg btn-block btn-send" ng-click="sendQuestion()">Send</button>
@@ -17,7 +17,7 @@
         </table>
         <table class="table">
 
-            <tr ng-repeat="question in kolabDBScope" class="questionRows">
+            <tr ng-repeat="question in kolabDBScopge" class="questionRows">
                 <!--<td>{{question.number}}</td>-->
                 <td class="td-question">{{question.text}}</td>
             </tr>
