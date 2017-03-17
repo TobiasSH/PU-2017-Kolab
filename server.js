@@ -6,7 +6,7 @@ var db = mongojs('mongodb://heroku_2hcp9k8k:19uocjcgsn6ce4pp7j66fe1ras@ds119020.
 var bodyParser = require('body-parser');
 var path = require('path');
 var cookie = require('cookie');
-var cookies = cookie.parse('ckuCount = -1; dvCount = -1; ivCount = -1;dsCount = -1; isCount = -1')
+var cookies = cookie.parse('cantKeepUpCount = 1; decreaseVolumeCount = 1; increaseVolumeCount = 1;decreaseSpeedCount = 1; increaseSpeedCount = 1')
 
 console.log(cookies.ckuCount);
 console.log("hai")
@@ -49,6 +49,42 @@ io.on('connection', function (socket) {
         // broadcasts question message to all listening sockets with the same object we insert into the database
         io.emit('question message', {_id: mongojs.ObjectID(rString), text: msg});
     });
+    //menu buttons
+    socket.on('cantKeepUp',function(){
+        db.counter.update({"counter" : "cantKeepUp"}, {"$inc":{"hits": parseInt(cookies.cantKeepUpCount)}});
+        cookies.cantKeepUpCount=parseInt(cookies.cantKeepUpCount)*(-1);
+        console.log("cant keep up server"+ parseInt(cookies.cantKeepUpCount));
+
+        io.emit('cantKeepUp', userCounter )
+
+    });
+    socket.on('decreaseVolume', function(){
+        db.counter.update({"counter" : "decreaseVolume"}, {"$inc":{"hits": parseInt(cookies.decreaseVolumeCount)}});
+        cookies.decreaseVolumeCount=parseInt(cookies.decreaseVolumeCount)*(-1);
+        console.log("decrease volume");
+        io.emit('decreaseVolume', userCounter)
+    });
+    socket.on('increaseVolume', function(){
+        db.counter.update({"counter" : "increaseVolume"}, {"$inc":{"hits": parseInt(cookies.increaseVolumeCount)}});
+        cookies.increaseVolumeCount=parseInt(cookies.increaseVolumeCount)*(-1);
+        console.log("increaseses volumes");
+        io.emit('increaseVolume', userCounter)
+
+    });
+    socket.on('decreaseSpeed', function(){
+        db.counter.update({"counter" : "decreaseSpeed"}, {"$inc":{"hits": parseInt(cookies.decreaseSpeedCount)}});
+        cookies.decreaseSpeedCount=parseInt(cookies.decreaseSpeedCount)*(-1);
+        console.log("decerease speed");
+        io.emit('decreaseSpeed', userCounter)
+
+    });
+    socket.on('increaseSpeed', function(){
+        db.counter.update({"counter" : "increaseSpeed"}, {"$inc":{"hits": parseInt(cookies.increaseSpeedCount)}});
+        cookies.increaseSpeedCount=parseInt(cookies.increaseSpeedCount)*(-1);
+        console.log("incerease speed");
+        io.emit('increaseSpeed', userCounter)
+
+    });
 
     //servers response to emitted message to delete question from lecturer controller
     socket.on('question delete', function (index, id) {
@@ -82,39 +118,6 @@ app.get('/questions', function (req, res) {
     res.sendFile(__dirname + '/index.html');
 });
 
-app.get('/counter', function(req, res){
-    if (req.query.id == "cku"){
-        cookies.ckuCount=parseInt(cookies.ckuCount)+1
-        console.log("1");
-        var count = cookies.ckuCount
-    } else if (req.query.id=="dv"){
-        cookies.dvCount=parseInt(cookies.dvCount)+1;
-        var count = cookies.dvCount;
-        console.log("dv")
-    }else if (req.query.id=="iv"){
-        cookies.ivCount=parseInt(cookies.ivCount)+1;
-        var count = cookies.ivCount;
-    }else if (req.query.id=="ds"){
-        cookies.dsCount=parseInt(cookies.dsCount)+1;
-        var count = cookies.dsCount;
-    }else if (req.query.id=="is"){
-        cookies.isCount = parseInt(cookies.isCount)+1;
-        var count = cookies.isCount;
-    }
-    if (count % 2 == 0){
-        console.log(req.query.id);
-        db.counter.update({"counter" : req.query.id}, {"$inc":{"hits": 1}});
-
-        console.log("mod 0 ")
-    }
-    else if (count % 2 == 1) {
-        db.counter.update({"counter" : req.query.id}, {"$inc":{"hits": -1}});
-
-        console.log("mod 1")
-    }
-    res.json("test yo");
-
-});
 
 /* DATABASE METHODS */
 app.get('/questionsCollection', function (req, res, socket) {
@@ -153,6 +156,35 @@ app.get('/questionsCollection/:id', function (req, res) {
         res.json(doc);
     });
 });
+app.get('/cantKeepUp', function(req, res){
+    db.counter.findOne({"counter": "cantKeepUp"}, function(err,doc){
+        res.json(doc);
+
+    })
+})
+app.get('/decreaseVolume', function(req, res){
+    db.counter.findOne({"counter": "decreaseVolume"}, function(err,doc){
+        res.json(doc);
+
+    })
+})
+app.get('/increaseVolume', function(req, res){
+    db.counter.findOne({"counter": "increaseVolume"}, function(err,doc){
+        res.json(doc);
+
+    })
+})
+app.get('/decreaseSpeed', function(req, res){
+    db.counter.findOne({"counter": "decreaseSpeed"}, function(err,doc){
+        res.json(doc);
+
+    })
+})
+app.get('/increaseSpeed', function(req, res){
+    db.counter.findOne({"counter": "increaseSpeed"}, function(err,doc) {
+        res.json(doc);
+    })
+})
 
 http.listen(process.env.PORT || 3000);
 console.log("Server running on port 3000");

@@ -44,4 +44,90 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', function ($scope, $http)
         $scope.$apply();
 
     });
+    socket.on('cantKeepUp',function(max){
+
+        $http.get('/cantKeepUp').then(function (response){
+            hitCount = response.data.hits;
+        });
+        percent = (hitCount/(max))*100
+        console.log(percent +"%")
+        console.log(max+" users")
+        console.log(hitCount + " hits")
+        console.log("cant keeep up lecture side");
+        var elem = document.getElementById("cantKeepUpBar");
+
+
+        elem.style.width=percent+'%';
+
+    });
+    socket.on('decreaseVolume', function(max){
+        console.log("decrease volume lecture side");
+        $http.get('/decreaseVolume').then(function (response){
+            hitCount = response.data.hits;
+
+        });
+        percent = (hitCount/(max))*100
+        console.log(percent +"%")
+        console.log(max+" users")
+        console.log(hitCount + " hits")
+        console.log("cant keeep up lecture side");
+        var elem = document.getElementById("decreaseVolumeBar");
+
+
+        elem.style.width=percent+'%';
+    });
+    socket.on('increaseVolume', function(max){
+        console.log("increaseses volumes lecture side");
+        $http.get('/increaseVolume').then(function (response){
+            hitCount = response.data.hits;
+
+        });
+        percent = (hitCount/(max))*100
+        console.log(percent +"%")
+        console.log(max+" users")
+        console.log(hitCount + " hits")
+        console.log("cant keeep up lecture side");
+        var elem = document.getElementById("increaseVolumeBar");
+
+
+        elem.style.width=percent+'%';
+
+    });
+    socket.on('decreaseSpeed', function(max){
+        console.log("decerease speed lecture side");
+        $http.get('/decreaseSpeed').then(function (response){
+            hitCount = response.data.hits;
+
+        });
+        percent = (hitCount/(max))*100
+        console.log(percent +"%")
+        console.log(max+" users")
+        console.log(hitCount + " hits")
+        console.log("cant keeep up lecture side");
+        var elem = document.getElementById("decreaseSpeedBar");
+
+
+        elem.style.width=percent+'%';
+
+
+    });
+    socket.on('increaseSpeed', function(max){
+        console.log("incerease speed lecture side");
+        $http.get('/increaseSpeed').then(function (response){
+            hitCount = response.data.hits;
+
+        });
+        percent = (hitCount/(max))*100
+        console.log(percent +"%")
+        console.log(max+" users")
+        console.log(hitCount + " hits")
+        console.log("cant keeep up lecture side");
+        var elem = document.getElementById("increaseSpeedBar");
+
+
+        elem.style.width=percent+'%';
+
+
+    });
+
 }]);
