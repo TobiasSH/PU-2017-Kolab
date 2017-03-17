@@ -8,7 +8,7 @@ var path = require('path');
 var cookie = require('cookie');
 var cookies = cookie.parse('cantKeepUpCount = 1; decreaseVolumeCount = 1; increaseVolumeCount = 1;decreaseSpeedCount = 1; increaseSpeedCount = 1')
 
-console.log(cookies.ckuCount);
+
 console.log("hai")
 
 

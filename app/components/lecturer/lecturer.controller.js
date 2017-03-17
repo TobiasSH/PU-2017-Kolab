@@ -2,6 +2,7 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', function ($scope, $http)
     console.log("Hello World from controller");
 
     var socket = io();
+    var hitCount;
 
     // initial retrieval of questions from the database
     var refresh = function () {
@@ -48,6 +49,7 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', function ($scope, $http)
 
         $http.get('/cantKeepUp').then(function (response){
             hitCount = response.data.hits;
+            console.log(response.data.hits);
         });
         percent = (hitCount/(max))*100
         console.log(percent +"%")
@@ -70,7 +72,7 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', function ($scope, $http)
         console.log(percent +"%")
         console.log(max+" users")
         console.log(hitCount + " hits")
-        console.log("cant keeep up lecture side");
+        console.log("decrease up lecture side");
         var elem = document.getElementById("decreaseVolumeBar");
 
 
@@ -86,7 +88,7 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', function ($scope, $http)
         console.log(percent +"%")
         console.log(max+" users")
         console.log(hitCount + " hits")
-        console.log("cant keeep up lecture side");
+        console.log("increase vol up lecture side");
         var elem = document.getElementById("increaseVolumeBar");
 
 
@@ -103,7 +105,7 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', function ($scope, $http)
         console.log(percent +"%")
         console.log(max+" users")
         console.log(hitCount + " hits")
-        console.log("cant keeep up lecture side");
+        console.log("decrease speed lecture side");
         var elem = document.getElementById("decreaseSpeedBar");
 
 
@@ -121,7 +123,7 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', function ($scope, $http)
         console.log(percent +"%")
         console.log(max+" users")
         console.log(hitCount + " hits")
-        console.log("cant keeep up lecture side");
+        console.log("increase speed lecture side");
         var elem = document.getElementById("increaseSpeedBar");
 
 
