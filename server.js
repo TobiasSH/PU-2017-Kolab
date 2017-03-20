@@ -17,6 +17,11 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var userCounter = 1;
 
+
+var room = "abc123";
+var rooms = [];
+var room1;
+
 // socket functions
 io.on('connection', function (socket) {
     console.log('User ' + userCounter + ' connected.');
@@ -26,6 +31,33 @@ io.on('connection', function (socket) {
         userCounter -= 1;
     });
 
+    socket.on('new room message', function (msg) {
+        console.log("recieved new room message ");
+        socket.join(msg);
+        console.log("Room joined: " + msg)
+        rooms.push(msg);
+        console.log(rooms.indexOf(msg));
+        //rooms.push(room = "msg");
+      //  socket.join(rooms.get(rooms.indexOf("msg")));
+       // console.log("rooms now: " + rooms.get(0));
+
+    })
+
+    socket.on('join room message', function (msg) {
+        console.log("recieved join room message ");
+        if (rooms.indexOf(msg)+1){
+            console.log('found room: ' + msg);
+            socket.join(msg);
+        } else {
+            console.log('could not find room: '+ msg );
+        }
+            
+    })
+
+    socket.on('room', function (room) {
+        socket.join(room);
+        console.log("Room joined: " + room);
+    });
     // servers response to emitted message from controllers
     socket.on('question message', function (msg) {
         console.log('message: ' + msg);
@@ -55,7 +87,11 @@ io.on('connection', function (socket) {
         io.emit('question delete', index, id);
 
     });
+    io.sockets.in(room).emit('message' ,"hei");
 });
+
+
+io.sockets.in(room).emit('message' ,"hei");
 
 /* ID Generator */
 function randomString(length, chars) {
@@ -80,7 +116,7 @@ app.get('/questions', function (req, res) {
 
 
 /* DATABASE METHODS */
-app.get('/questionsCollection', function (req, res, socket) {
+app.get('/questionsCollection', function (req, res) {
     console.log("I received a GET request");
     db.questionsCollection.find(function (err, docs) {
         if (err) {
@@ -92,6 +128,8 @@ app.get('/questionsCollection', function (req, res, socket) {
         }
     });
 });
+
+
 
 /*app.post('/questionsCollection', function (req, res) {
     console.log("I received a POST request");
@@ -116,6 +154,17 @@ app.get('/questionsCollection/:id', function (req, res) {
         res.json(doc);
     });
 });
+
+app.get('/roomsCollection', function (req, res) {
+    console.log('Saves rooms // hans   ');
+    db.roomsCollection.insert(req.body, function (err, doc) {
+        res.json(doc);
+
+    })
+
+})
+
+
 
 http.listen(process.env.PORT || 3000);
 console.log("Server running on port 3000");

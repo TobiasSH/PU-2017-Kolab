@@ -4,13 +4,42 @@
         <table class="table">
             <tbody>
             <tr>
-                <td><a href="/student">
-                    <button class="btn btn-info btn-lg btn-block bn-square">Student <p> View</button>
-                </a></td>
-                <td><a href="/lecturer">
-                    <button class="btn btn-info btn-lg btn-block bn-square">Lecturer <p> View</button>
-                </a></td>
+                <td><textarea id="textareaNewRoom" maxlength="140" size="80" class="form-control"
+                              ng-model="newRoom.text"
+                              ng-keyup="$event.keyCode == 13 ? createRoom() : null"></textarea>
+                </td>
+                <td>
+                    <a href="/lecturer">
+                        <button class="btn btn-primary btn-lg btn-block btn-send" ng-click="createRoom()">Create room
+                        </button>
+                    </a>
+                </td>
             </tr>
+            <tr>
+
+                    <td> <textarea id="textareaJoinRoom" maxlength="140" size="80" class="form-control"
+                                   ng-model="joinRoom.text"
+                                   ng-keyup="$event.keyCode == 13 ? joinRoom() : null"></textarea></td>
+                    <td>  <a href="/student">
+                        <button class="btn btn-primary btn-lg btn-block btn-send" ng-click="joinRoom()">Join room
+                        </button>
+                    </a>
+                </td>
+            </tr>
+
+
+            <table id="lecturerTable" class="table">
+
+                <tr ng-repeat="rooms in kolabDBScope" class="roomRows">
+                    <!--<td>{{question.number}}</td>-->
+                    <td class="td-room">{{room.text}}</td>
+                    <td>
+                        <button class="btn btn-danger btn-lg btn-block btn-remove" ng-click="join()">Joim
+                        </button>
+                    </td>
+                </tr>
+
+            </table>
             </tbody>
         </table>
     </div>
