@@ -142,4 +142,10 @@ textarea{
     max-height: 300px;
 }
 
+/* IMAGES */
+/********************/
+
+.menu-button-icon {
+  height: 64px;
+}
 
