@@ -74,6 +74,11 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', function ($scope, $http)
         increaseVolumeBar.style.width=0+'%';
         increaseSpeedBar.style.width=0+'%';
         decreaseSpeedBar.style.width=0+'%';
+        cantKeepUpHits =  0
+        decreaseVolumeHits =  0
+        increaseVolumeHits =  0
+        decreaseSpeedHits =  0
+        increaseSpeedHits =  0
 
     })
     socket.on('cantKeepUp',function(max, hit){
