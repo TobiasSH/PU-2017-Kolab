@@ -81,7 +81,7 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', function ($scope, $http)
 
 
         console.log(cantKeepUpHits + "hit get on");
-        var percent = (hitCount/(max))*100
+        var percent = (cantKeepUpHits/(max))*100
         console.log(percent +"%")
         console.log(max+" users")
         console.log(cantKeepUpHits + " hits")
