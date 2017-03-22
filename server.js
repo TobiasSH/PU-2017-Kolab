@@ -6,11 +6,11 @@ var db = mongojs('mongodb://heroku_2hcp9k8k:19uocjcgsn6ce4pp7j66fe1ras@ds119020.
 var bodyParser = require('body-parser');
 var path = require('path');
 var cookie = require('cookie');
-var cookies = cookie.parse('cantKeepUpCount = 1; decreaseVolumeCount = 1; increaseVolumeCount = 1;decreaseSpeedCount = 1; increaseSpeedCount = 1')
+var cookies = cookie.parse('userCount = 1; cantKeepUpCount = 1; decreaseVolumeCount = 1; increaseVolumeCount = 1;decreaseSpeedCount = 1; increaseSpeedCount = 1')
 
 
 console.log("hai")
-
+console.log(cookies);
 
 app.use(express.static(__dirname));
 app.use(bodyParser.json());
@@ -19,15 +19,24 @@ app.use(bodyParser.json());
 /* SOCKET IO */
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var userCounter = 1;
+var userCounter = 0;
 
 // socket functions
 io.on('connection', function (socket) {
     console.log('User ' + userCounter + ' connected.');
-    userCounter += 1;
+    if (cookies.userCount>0){
+        userCounter += 1;
+        cookies.userCount -=1;
+    }
+
+
     socket.on('disconnect', function () {
         console.log('a user disconnected');
-        userCounter -= 1;
+        if (cookies.userCount<1){
+            userCounter -= 1;
+            cookies.userCount +=1;
+        }
+
     });
 
     // servers response to emitted message from controllers
@@ -52,39 +61,52 @@ io.on('connection', function (socket) {
     //menu buttons
     socket.on('cantKeepUp',function(){
         db.counter.update({"counter" : "cantKeepUp"}, {"$inc":{"hits": parseInt(cookies.cantKeepUpCount)}});
-        cookies.cantKeepUpCount=parseInt(cookies.cantKeepUpCount)*(-1);
         console.log("cant keep up server"+ parseInt(cookies.cantKeepUpCount));
+        cookies.cantKeepUpCount=parseInt(cookies.cantKeepUpCount)*(-1);
+
 
         io.emit('cantKeepUp', userCounter )
 
     });
     socket.on('decreaseVolume', function(){
         db.counter.update({"counter" : "decreaseVolume"}, {"$inc":{"hits": parseInt(cookies.decreaseVolumeCount)}});
+        console.log("decrease volume " + cookies.decreaseVolumeCount);
         cookies.decreaseVolumeCount=parseInt(cookies.decreaseVolumeCount)*(-1);
-        console.log("decrease volume");
+        console.log(cookies);
+
         io.emit('decreaseVolume', userCounter)
     });
     socket.on('increaseVolume', function(){
         db.counter.update({"counter" : "increaseVolume"}, {"$inc":{"hits": parseInt(cookies.increaseVolumeCount)}});
+        console.log("increaseses volumes" + cookies.increaseVolumeCount);
         cookies.increaseVolumeCount=parseInt(cookies.increaseVolumeCount)*(-1);
-        console.log("increaseses volumes");
+
         io.emit('increaseVolume', userCounter)
 
     });
     socket.on('decreaseSpeed', function(){
         db.counter.update({"counter" : "decreaseSpeed"}, {"$inc":{"hits": parseInt(cookies.decreaseSpeedCount)}});
+        console.log("decerease speed" + cookies.decreaseSpeedCount);
         cookies.decreaseSpeedCount=parseInt(cookies.decreaseSpeedCount)*(-1);
-        console.log("decerease speed");
+
         io.emit('decreaseSpeed', userCounter)
 
     });
     socket.on('increaseSpeed', function(){
         db.counter.update({"counter" : "increaseSpeed"}, {"$inc":{"hits": parseInt(cookies.increaseSpeedCount)}});
+        console.log("incerease speed"+ cookies.increaseSpeedCount);
         cookies.increaseSpeedCount=parseInt(cookies.increaseSpeedCount)*(-1);
-        console.log("incerease speed");
+
         io.emit('increaseSpeed', userCounter)
 
     });
+    socket.on('resetVotes', function(){
+        db.counter.update({},{"$set":{"hits":0}},{multi:true});
+        console.log(cookies);
+        cookies = cookie.parse('userCount = 0; cantKeepUpCount = 1; decreaseVolumeCount = 1; increaseVolumeCount = 1;decreaseSpeedCount = 1; increaseSpeedCount = 1')
+        console.log(cookies);
+        io.emit('resetVotes');
+    })
 
     //servers response to emitted message to delete question from lecturer controller
     socket.on('question delete', function (index, id) {
@@ -93,6 +115,7 @@ io.on('connection', function (socket) {
         //deletes the selected question from the database
         db.questionsCollection.remove({_id: mongojs.ObjectId(id)});
         io.emit('question delete', index, id);
+
 
     });
 });

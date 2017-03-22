@@ -21,6 +21,11 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', function ($scope, $http)
     $scope.studentView = function () {
         console.log("cantKeepUp button was clicked");
     };
+    $scope.resetVotes = function() {
+        socket.emit('resetVotes');
+        console.log("votes reset")
+    }
+
 
     // remove function bound to the delete buttons in lecture view
     $scope.remove = function (index, id) {
@@ -45,12 +50,26 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', function ($scope, $http)
         $scope.$apply();
 
     });
+    socket.on('resetVotes', function(){
+        var cantKeepUpBar = document.getElementById("cantKeepUpBar");
+        var decreaseVolumeBar = document.getElementById("decreaseVolumeBar");
+        var increaseVolumeBar = document.getElementById("increaseVolumeBar");
+        var decreaseSpeedBar = document.getElementById("decreaseSpeedBar");
+        var increaseSpeedBar = document.getElementById("increaseSpeedBar");
+        cantKeepUpBar.style.width=0+'%';
+        decreaseVolumeBar.style.width=0+'%';
+        increaseVolumeBar.style.width=0+'%';
+        increaseSpeedBar.style.width=0+'%';
+        decreaseSpeedBar.style.width=0+'%';
+
+    })
     socket.on('cantKeepUp',function(max){
 
         $http.get('/cantKeepUp').then(function (response){
             hitCount = response.data.hits;
-            console.log(response.data.hits);
+
         });
+        console.log(hitCount + "hit get on");
         percent = (hitCount/(max))*100
         console.log(percent +"%")
         console.log(max+" users")
