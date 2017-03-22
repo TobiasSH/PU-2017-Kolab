@@ -26,6 +26,7 @@ io.on('connection', function (socket) {
     console.log('User ' + userCounter + ' connected.');
     if (cookies.userCount>0){
         userCounter += 1;
+        io.emit('incUser')
         cookies.userCount -=1;
     }
 
@@ -34,6 +35,7 @@ io.on('connection', function (socket) {
         console.log('a user disconnected');
         if (cookies.userCount<1){
             userCounter -= 1;
+            io.emit('decUser')
             cookies.userCount +=1;
         }
 
@@ -67,7 +69,7 @@ io.on('connection', function (socket) {
         cookies.cantKeepUpCount=parseInt(cookies.cantKeepUpCount)*(-1);
 
 
-        io.emit('cantKeepUp', userCounter, hits )
+        io.emit('cantKeepUp',  hits )
 
     });
     socket.on('decreaseVolume', function(){
@@ -77,7 +79,7 @@ io.on('connection', function (socket) {
         cookies.decreaseVolumeCount=parseInt(cookies.decreaseVolumeCount)*(-1);
         console.log(cookies);
 
-        io.emit('decreaseVolume', userCounter, hits)
+        io.emit('decreaseVolume', hits)
     });
     socket.on('increaseVolume', function(){
         var hits = parseInt(cookies.increaseVolumeCount)
@@ -85,7 +87,7 @@ io.on('connection', function (socket) {
         console.log("increaseses volumes" + cookies.increaseVolumeCount);
         cookies.increaseVolumeCount=parseInt(cookies.increaseVolumeCount)*(-1);
 
-        io.emit('increaseVolume', userCounter , hits)
+        io.emit('increaseVolume', hits)
 
     });
     socket.on('decreaseSpeed', function(){
@@ -94,7 +96,7 @@ io.on('connection', function (socket) {
         console.log("decerease speed" + cookies.decreaseSpeedCount);
         cookies.decreaseSpeedCount=parseInt(cookies.decreaseSpeedCount)*(-1);
 
-        io.emit('decreaseSpeed', userCounter, hits)
+        io.emit('decreaseSpeed', hits)
 
     });
     socket.on('increaseSpeed', function(){
@@ -103,7 +105,7 @@ io.on('connection', function (socket) {
         console.log("incerease speed"+ cookies.increaseSpeedCount);
         cookies.increaseSpeedCount=parseInt(cookies.increaseSpeedCount)*(-1);
 
-        io.emit('increaseSpeed', userCounter, hits)
+        io.emit('increaseSpeed', hits)
 
     });
     socket.on('resetVotes', function(){

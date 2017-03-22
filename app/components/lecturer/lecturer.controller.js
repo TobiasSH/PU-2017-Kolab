@@ -2,7 +2,7 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', function ($scope, $http)
     console.log("Hello World from controller");
 
     var socket = io();
-    var hitCount;
+    var max = 0;
     var cantKeepUpHits;
     var decreaseVolumeHits;
     var increaseVolumeHits;
@@ -81,7 +81,16 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', function ($scope, $http)
         increaseSpeedHits =  0
 
     })
-    socket.on('cantKeepUp',function(max, hit){
+    socket.on('incUser',function(){
+        max+=1;
+        console.log("more users")
+
+    })
+    socket.on('decUser',function(){
+        max-=1;
+
+    })
+    socket.on('cantKeepUp',function( hit){
         cantKeepUpHits += hit;
 
 
@@ -97,7 +106,7 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', function ($scope, $http)
         elem.style.width=percent+'%';
 
     });
-    socket.on('decreaseVolume', function(max,hit){
+    socket.on('decreaseVolume', function(hit){
         decreaseVolumeHits += hit;
         console.log("decrease volume lecture side");
 
@@ -111,7 +120,7 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', function ($scope, $http)
 
         elem.style.width=percent+'%';
     });
-    socket.on('increaseVolume', function(max,hit){
+    socket.on('increaseVolume', function(hit){
         increaseVolumeHits += hit;
         console.log("increaseses volumes lecture side");
 
@@ -126,7 +135,7 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', function ($scope, $http)
         elem.style.width=percent+'%';
 
     });
-    socket.on('decreaseSpeed', function(max,hit){
+    socket.on('decreaseSpeed', function(hit){
         decreaseSpeedHits += hit;
         console.log("decerease speed lecture side");
 
@@ -142,7 +151,7 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', function ($scope, $http)
 
 
     });
-    socket.on('increaseSpeed', function(max,hit){
+    socket.on('increaseSpeed', function(hit){
         increaseSpeedHits  += hit;
         console.log("incerease speed lecture side");
 
