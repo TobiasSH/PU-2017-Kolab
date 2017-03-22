@@ -25,7 +25,16 @@
                         </button>
                     </a>
                 </td>
+
+                //prøver her
+                <table id="questionsTable" class="table">
+                    <tr ng-repeat="question in kolabDBScope | orderBy:'-'" class="questionRows">
+                        <!--<td>{{question.number}}</td>-->
+                        <td class="td-question">{{question.text}}</td>
+                    </tr>
+                </table>
             </tr>
+
 
 
             <table id="lecturerTable" class="table">

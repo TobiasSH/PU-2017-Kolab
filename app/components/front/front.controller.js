@@ -3,13 +3,13 @@ kolabApp.controller('frontCtrl',function($scope,$location) {
             $location.path(path);
         };
 
-        var room = "abc123";
+        //var room = "abc123";
         var socket = io.connect();
 
         // join room
         socket.on('connect', function () {
-            socket.emit('room', room)
-            console.log("Joined room: " + room);
+           // socket.emit('room', room)
+            //console.log("Joined room: " + room);
         });
 
         socket.on('message', function (data) {

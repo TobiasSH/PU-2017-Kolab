@@ -2,7 +2,7 @@ var express = require('express');
 var app = express();
 var mongojs = require('mongojs');
 
-var db = mongojs('mongodb://heroku_2hcp9k8k:19uocjcgsn6ce4pp7j66fe1ras@ds119020.mlab.com:19020/heroku_2hcp9k8k', ['questionsCollection', 'counter']);
+var db = mongojs('mongodb://heroku_2hcp9k8k:19uocjcgsn6ce4pp7j66fe1ras@ds119020.mlab.com:19020/heroku_2hcp9k8k', ['questionsCollection', 'counter', 'roomsCollection']);
 
 var bodyParser = require('body-parser');
 var path = require('path');
@@ -31,17 +31,7 @@ io.on('connection', function (socket) {
         userCounter -= 1;
     });
 
-    socket.on('new room message', function (msg) {
-        console.log("recieved new room message ");
-        socket.join(msg);
-        console.log("Room joined: " + msg)
-        rooms.push(msg);
-        console.log(rooms.indexOf(msg));
-        //rooms.push(room = "msg");
-      //  socket.join(rooms.get(rooms.indexOf("msg")));
-       // console.log("rooms now: " + rooms.get(0));
 
-    })
 
     socket.on('join room message', function (msg) {
         console.log("recieved join room message ");
@@ -58,6 +48,36 @@ io.on('connection', function (socket) {
         socket.join(room);
         console.log("Room joined: " + room);
     });
+
+    socket.on('join room message', function (msg) {
+
+
+    })
+
+    socket.on('new room message', function (msg) {
+        console.log("recieved new room message: " + msg);
+        socket.join(msg);
+        console.log("Socket joined room joined: " + msg)
+        rooms.push(msg);
+        //console.log(rooms.indexOf(msg));
+
+        //creates random string with the function outside the socket function
+        var rString = randomString(24, '0123456789abcdef');
+
+        //inserting new message into mlab database
+        db.roomsCollection.insert({_id: mongojs.ObjectID(rString), text: msg}, function (err, o) {
+            if (err) {
+                console.warn(err.message);
+            }
+            else{
+                console.log("room mesage inserted into the db: " + msg);
+            }
+        });
+        //broadcast room message to all listening sockets with the same object we inset into the database so
+        //they can uodate their list showing available rooms
+        io.emit('room message', {_id: mongojs(rString), text: msg});
+    })
+
     // servers response to emitted message from controllers
     socket.on('question message', function (msg) {
         console.log('message: ' + msg);
@@ -131,6 +151,7 @@ app.get('/questionsCollection', function (req, res) {
 
 
 
+
 /*app.post('/questionsCollection', function (req, res) {
     console.log("I received a POST request");
     console.log(req.body);
@@ -154,6 +175,15 @@ app.get('/questionsCollection/:id', function (req, res) {
         res.json(doc);
     });
 });
+
+app.get('/roomsCollection/:id', function (req, res) {
+    console.log("I received a GET request");
+    var id = req.params.id;
+    console.log(id);
+    db.roomsCollection.findOne({_id:mongojs.ObjectID(id)}, function (err, doc) {
+        res.json(doc);
+    })
+})
 
 app.get('/roomsCollection', function (req, res) {
     console.log('Saves rooms // hans   ');
