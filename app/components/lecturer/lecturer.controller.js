@@ -3,6 +3,11 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', function ($scope, $http)
 
     var socket = io();
     var hitCount;
+    var cantKeepUpHits;
+    var decreaseVolumeHits;
+    var increaseVolumeHits;
+    var decreaseSpeedHits;
+    var increaseSpeedHits;
 
     // initial retrieval of questions from the database
     var refresh = function () {
@@ -11,9 +16,17 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', function ($scope, $http)
                 $scope.kolabDBScope = response.data;
                 $scope.question = null;
             },
+
             function (error) {
                 console.log("I got ERROR");
             });
+        $http.get('/counters').then(function(response){
+            cantKeepUpHits =  response.data[0].hits
+            decreaseVolumeHits =  response.data[1].hits
+            increaseVolumeHits =  response.data[2].hits
+            decreaseSpeedHits =  response.data[3].hits
+            increaseSpeedHits =  response.data[4].hits
+        })
     };
 
     refresh();
@@ -63,17 +76,15 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', function ($scope, $http)
         decreaseSpeedBar.style.width=0+'%';
 
     })
-    socket.on('cantKeepUp',function(max){
+    socket.on('cantKeepUp',function(max, hit){
+        cantKeepUpHits += hit;
 
-        $http.get('/cantKeepUp').then(function (response){
-            hitCount = response.data.hits;
 
-        });
-        console.log(hitCount + "hit get on");
-        percent = (hitCount/(max))*100
+        console.log(cantKeepUpHits + "hit get on");
+        var percent = (hitCount/(max))*100
         console.log(percent +"%")
         console.log(max+" users")
-        console.log(hitCount + " hits")
+        console.log(cantKeepUpHits + " hits")
         console.log("cant keeep up lecture side");
         var elem = document.getElementById("cantKeepUpBar");
 
@@ -81,32 +92,28 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', function ($scope, $http)
         elem.style.width=percent+'%';
 
     });
-    socket.on('decreaseVolume', function(max){
+    socket.on('decreaseVolume', function(max,hit){
+        decreaseVolumeHits += hit;
         console.log("decrease volume lecture side");
-        $http.get('/decreaseVolume').then(function (response){
-            hitCount = response.data.hits;
 
-        });
-        percent = (hitCount/(max))*100
+        var percent = (decreaseVolumeHits/(max))*100
         console.log(percent +"%")
         console.log(max+" users")
-        console.log(hitCount + " hits")
+        console.log(decreaseVolumeHits + " hits")
         console.log("decrease up lecture side");
         var elem = document.getElementById("decreaseVolumeBar");
 
 
         elem.style.width=percent+'%';
     });
-    socket.on('increaseVolume', function(max){
+    socket.on('increaseVolume', function(max,hit){
+        increaseVolumeHits += hit;
         console.log("increaseses volumes lecture side");
-        $http.get('/increaseVolume').then(function (response){
-            hitCount = response.data.hits;
 
-        });
-        percent = (hitCount/(max))*100
+        var percent = (increaseVolumeHits/(max))*100
         console.log(percent +"%")
         console.log(max+" users")
-        console.log(hitCount + " hits")
+        console.log(increaseVolumeHits + " hits")
         console.log("increase vol up lecture side");
         var elem = document.getElementById("increaseVolumeBar");
 
@@ -114,16 +121,14 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', function ($scope, $http)
         elem.style.width=percent+'%';
 
     });
-    socket.on('decreaseSpeed', function(max){
+    socket.on('decreaseSpeed', function(max,hit){
+        decreaseSpeedHits += hit;
         console.log("decerease speed lecture side");
-        $http.get('/decreaseSpeed').then(function (response){
-            hitCount = response.data.hits;
 
-        });
-        percent = (hitCount/(max))*100
+        var percent = (decreaseSpeedHits/(max))*100
         console.log(percent +"%")
         console.log(max+" users")
-        console.log(hitCount + " hits")
+        console.log(decreaseSpeedHits + " hits")
         console.log("decrease speed lecture side");
         var elem = document.getElementById("decreaseSpeedBar");
 
@@ -132,16 +137,14 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', function ($scope, $http)
 
 
     });
-    socket.on('increaseSpeed', function(max){
+    socket.on('increaseSpeed', function(max,hit){
+        increaseSpeedHits  += hit;
         console.log("incerease speed lecture side");
-        $http.get('/increaseSpeed').then(function (response){
-            hitCount = response.data.hits;
 
-        });
-        percent = (hitCount/(max))*100
+        var percent = (increaseSpeedHits/(max))*100
         console.log(percent +"%")
         console.log(max+" users")
-        console.log(hitCount + " hits")
+        console.log(increaseSpeedHits + " hits")
         console.log("increase speed lecture side");
         var elem = document.getElementById("increaseSpeedBar");
 

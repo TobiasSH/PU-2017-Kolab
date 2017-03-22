@@ -60,44 +60,50 @@ io.on('connection', function (socket) {
     });
     //menu buttons
     socket.on('cantKeepUp',function(){
+        var hits = parseInt(cookies.cantKeepUpCount);
         db.counter.update({"counter" : "cantKeepUp"}, {"$inc":{"hits": parseInt(cookies.cantKeepUpCount)}});
         console.log("cant keep up server"+ parseInt(cookies.cantKeepUpCount));
+
         cookies.cantKeepUpCount=parseInt(cookies.cantKeepUpCount)*(-1);
 
 
-        io.emit('cantKeepUp', userCounter )
+        io.emit('cantKeepUp', userCounter, hits )
 
     });
     socket.on('decreaseVolume', function(){
+        var hits = parseInt(cookies.decreaseVolumeCount)
         db.counter.update({"counter" : "decreaseVolume"}, {"$inc":{"hits": parseInt(cookies.decreaseVolumeCount)}});
         console.log("decrease volume " + cookies.decreaseVolumeCount);
         cookies.decreaseVolumeCount=parseInt(cookies.decreaseVolumeCount)*(-1);
         console.log(cookies);
 
-        io.emit('decreaseVolume', userCounter)
+        io.emit('decreaseVolume', userCounter, hits)
     });
     socket.on('increaseVolume', function(){
+        var hits = parseInt(cookies.increaseVolumeCount)
         db.counter.update({"counter" : "increaseVolume"}, {"$inc":{"hits": parseInt(cookies.increaseVolumeCount)}});
         console.log("increaseses volumes" + cookies.increaseVolumeCount);
         cookies.increaseVolumeCount=parseInt(cookies.increaseVolumeCount)*(-1);
 
-        io.emit('increaseVolume', userCounter)
+        io.emit('increaseVolume', userCounter , hits)
 
     });
     socket.on('decreaseSpeed', function(){
+        var hits = parseInt(cookies.decreaseSpeedCount)
         db.counter.update({"counter" : "decreaseSpeed"}, {"$inc":{"hits": parseInt(cookies.decreaseSpeedCount)}});
         console.log("decerease speed" + cookies.decreaseSpeedCount);
         cookies.decreaseSpeedCount=parseInt(cookies.decreaseSpeedCount)*(-1);
 
-        io.emit('decreaseSpeed', userCounter)
+        io.emit('decreaseSpeed', userCounter, hits)
 
     });
     socket.on('increaseSpeed', function(){
+        var hits = parseInt(cookies.increaseSpeedCount)
         db.counter.update({"counter" : "increaseSpeed"}, {"$inc":{"hits": parseInt(cookies.increaseSpeedCount)}});
         console.log("incerease speed"+ cookies.increaseSpeedCount);
         cookies.increaseSpeedCount=parseInt(cookies.increaseSpeedCount)*(-1);
 
-        io.emit('increaseSpeed', userCounter)
+        io.emit('increaseSpeed', userCounter, hits)
 
     });
     socket.on('resetVotes', function(){
@@ -179,6 +185,12 @@ app.get('/questionsCollection/:id', function (req, res) {
         res.json(doc);
     });
 });
+app.get('/counters', function(req, res){
+    db.counter.find(function(err,doc){
+        res.json(doc);
+
+    })
+})
 app.get('/cantKeepUp', function(req, res){
     db.counter.findOne({"counter": "cantKeepUp"}, function(err,doc){
         res.json(doc);
