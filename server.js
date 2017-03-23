@@ -52,7 +52,8 @@ io.on('connection', function (socket) {
     });
 
     socket.on('join room message', function (msg) {
-
+        socket.join(room);
+        console.log("Room joined: " + room);
 
     })
 
@@ -149,7 +150,7 @@ app.get('/questionsCollection', function (req, res) {
             console.warn(err.message);
         }
         else {
-            console.log(docs);
+            //console.log(docs);
             res.json(docs);
         }
     });
@@ -162,7 +163,7 @@ app.get('/roomsCollection', function (req, res) {
                 console.warn(err.message);
             }
             else {
-                console.log(docs);
+                //console.log(docs);
                 res.json(docs);
             }
 
@@ -199,7 +200,7 @@ app.get('/questionsCollection/:id', function (req, res) {
 app.get('/roomsCollection/:id', function (req, res) {
     console.log("I received a GET request");
     var id = req.params.id;
-    console.log(id);
+    //console.log(id);
     db.roomsCollection.findOne({_Rid: mongojs.ObjectID(id)}, function (err, doc) {
         res.json(doc);
     })
