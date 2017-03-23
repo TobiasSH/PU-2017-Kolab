@@ -2,7 +2,7 @@ var express = require('express');
 var app = express();
 var mongojs = require('mongojs');
 
-var db = mongojs('mongodb://heroku_2hcp9k8k:19uocjcgsn6ce4pp7j66fe1ras@ds119020.mlab.com:19020/heroku_2hcp9k8k', ['questionsCollection', 'counter', 'roomsCollection']);
+var db = mongojs('mongodb://heroku_2hcp9k8k:19uocjcgsn6ce4pp7j66fe1ras@ds119020.mlab.com:19020/heroku_2hcp9k8k', ['roomsCollection', 'questionsCollection', 'counter']);
 
 var bodyParser = require('body-parser');
 var path = require('path');
@@ -17,7 +17,7 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var userCounter = 1;
 
-
+// SHOLD MIGHT remove this
 var room = "abc123";
 var rooms = [];
 var room1;
@@ -44,6 +44,8 @@ io.on('connection', function (socket) {
             
     })
 
+
+
     socket.on('room', function (room) {
         socket.join(room);
         console.log("Room joined: " + room);
@@ -57,7 +59,7 @@ io.on('connection', function (socket) {
     socket.on('new room message', function (msg) {
         console.log("recieved new room message: " + msg);
         socket.join(msg);
-        console.log("Socket joined room joined: " + msg)
+        console.log("Socket joined room joined: " + msg);
         rooms.push(msg);
         //console.log(rooms.indexOf(msg));
 
@@ -65,7 +67,7 @@ io.on('connection', function (socket) {
         var rString = randomString(24, '0123456789abcdef');
 
         //inserting new message into mlab database
-        db.roomsCollection.insert({_id: mongojs.ObjectID(rString), text: msg}, function (err, o) {
+        db.roomsCollection.insert({_Rid: mongojs.ObjectID(rString), text: msg}, function (err, o) {
             if (err) {
                 console.warn(err.message);
             }
@@ -75,7 +77,7 @@ io.on('connection', function (socket) {
         });
         //broadcast room message to all listening sockets with the same object we inset into the database so
         //they can uodate their list showing available rooms
-        io.emit('room message', {_id: mongojs(rString), text: msg});
+        io.emit('room message', {_Rid: mongojs(rString), text: msg});
     })
 
     // servers response to emitted message from controllers
@@ -111,7 +113,7 @@ io.on('connection', function (socket) {
 });
 
 
-io.sockets.in(room).emit('message' ,"hei");
+//io.sockets.in(room).emit('message' ,"hei");
 
 /* ID Generator */
 function randomString(length, chars) {
@@ -141,7 +143,7 @@ app.get('/front', function (req, res) {
 
 /* DATABASE METHODS */
 app.get('/questionsCollection', function (req, res) {
-    console.log("I received a GET request");
+    console.log("Q: I received a GET request");
     db.questionsCollection.find(function (err, docs) {
         if (err) {
             console.warn(err.message);
@@ -153,6 +155,20 @@ app.get('/questionsCollection', function (req, res) {
     });
 });
 
+app.get('/roomsCollection', function (req, res) {
+    console.log("R: I received a GET request"),
+        db.roomsCollection.find(function (err, docs) {
+            if (err){
+                console.warn(err.message);
+            }
+            else {
+                console.log(docs);
+                res.json(docs);
+            }
+
+        })
+
+})
 
 
 
@@ -184,19 +200,11 @@ app.get('/roomsCollection/:id', function (req, res) {
     console.log("I received a GET request");
     var id = req.params.id;
     console.log(id);
-    db.roomsCollection.findOne({_id:mongojs.ObjectID(id)}, function (err, doc) {
+    db.roomsCollection.findOne({_Rid:mongojs.ObjectID(id)}, function (err, doc) {
         res.json(doc);
     })
 })
 
-app.get('/roomsCollection', function (req, res) {
-    console.log('Saves rooms // hans   ');
-    db.roomsCollection.insert(req.body, function (err, doc) {
-        res.json(doc);
-
-    })
-
-})
 
 
 
