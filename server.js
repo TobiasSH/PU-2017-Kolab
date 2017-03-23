@@ -89,7 +89,7 @@ io.on('connection', function (socket) {
         var rString = randomString(24, '0123456789abcdef');
 
         //inserting new message into mlab database
-        db.questionsCollection.insert({_id: mongojs.ObjectID(rString), text: msg}, function (err, o) {
+        db.questionsCollection.insert({_id:{ a: mongojs.ObjectID(rString), b: 'b' }, text: msg}, function (err, o) {
             if (err) {
                 console.warn(err.message);
             }
@@ -150,7 +150,7 @@ app.get('/questionsCollection', function (req, res) {
             console.warn(err.message);
         }
         else {
-            //console.log(docs);
+            console.log(docs);
             res.json(docs);
         }
     });
@@ -192,7 +192,7 @@ app.get('/questionsCollection/:id', function (req, res) {
     console.log("I received a GET request");
     var id = req.params.id;
     console.log(id);
-    db.questionsCollection.findOne({_id: mongojs.ObjectId(id)}, function (err, doc) {
+    db.questionsCollection.findOne({_id:{a: mongojs.ObjectId(id), b:'b'}}, function (err, doc) {
         res.json(doc);
     });
 });
