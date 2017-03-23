@@ -9,21 +9,17 @@
                               ng-keyup="$event.keyCode == 13 ? createRoom() : null"></textarea>
                 </td>
                 <td>
-                    <a href="/lecturer">
                         <button class="btn btn-primary btn-lg btn-block btn-send" ng-click="createRoom()">Create room
                         </button>
-                    </a>
                 </td>
             </tr>
             <tr>
-
                     <td> <textarea id="textareaJoinRoom" maxlength="140" size="80" class="form-control"
                                    ng-model="joinRoom.text"
                                    ng-keyup="$event.keyCode == 13 ? joinRoom() : null"></textarea></td>
-                    <td>  <a href="/student">
+                    <td>
                         <button class="btn btn-primary btn-lg btn-block btn-send" ng-click="joinRoom()">Join room
                         </button>
-                    </a>
                 </td>
 
                 //prøver her
