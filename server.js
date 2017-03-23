@@ -200,7 +200,7 @@ app.get('/roomsCollection/:id', function (req, res) {
     console.log("I received a GET request");
     var id = req.params.id;
     console.log(id);
-    db.roomsCollection.findOne({_Rid:mongojs.ObjectID(id)}, function (err, doc) {
+    db.roomsCollection.findOne({_Rid: mongojs.ObjectID(id)}, function (err, doc) {
         res.json(doc);
     })
 })

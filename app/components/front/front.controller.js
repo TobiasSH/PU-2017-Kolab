@@ -11,10 +11,10 @@ kolabApp.controller('frontCtrl', ['$scope',"$location", '$http', function($scope
 
     // initial retrieval of questions from the database
         var refresh = function () {
-            $http.get('/questionsCollection').then(function (response) {
+            $http.get('/roomsCollection').then(function (response) {
                     console.log("I got the data I requested");
                     $scope.kolabDBScope = response.data;
-                    $scope.question = null;
+                    $scope.room = null;
                 },
                 function (error) {
                     console.log("I got ERROR");
