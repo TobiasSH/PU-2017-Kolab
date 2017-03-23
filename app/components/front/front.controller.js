@@ -1,10 +1,28 @@
-kolabApp.controller('frontCtrl',function($scope,$location) {
+kolabApp.controller('frontCtrl', ['$scope',"$location", '$http', function($scope, $location, $http) {
         $scope.go = function (path) {
             $location.path(path);
         };
 
         //var room = "abc123";
-        var socket = io.connect();
+
+        //EDNRET 22 . 03 kl 15:17
+        //var socket = io.connect();
+        var socket = io();
+
+    // initial retrieval of questions from the database
+        var refresh = function () {
+            $http.get('/questionsCollection').then(function (response) {
+                    console.log("I got the data I requested");
+                    $scope.kolabDBScope = response.data;
+                    $scope.question = null;
+                },
+                function (error) {
+                    console.log("I got ERROR");
+                });
+        };
+        refresh();
+
+
 
         // join room
         socket.on('connect', function () {
@@ -17,29 +35,14 @@ kolabApp.controller('frontCtrl',function($scope,$location) {
         });
         
 
-        // Change view
-        function changeView($scope, $location) {
-            console.log('Tried to change view');
-            $scope.changeView = function (view) {
-                $location.path(view); // path not hash
-            }
-        }
-
-
-
         //Create a new room
         $scope.createRoom = function () {
             console.log("method new room called");
             if ($scope.newRoom != null && $scope.newRoom.text.trim().length) {
                 socket.emit('new room message', $('#textareaNewRoom').val());
                 $('#textareaNewRoom').val('');
-                changeView($scope, 'app/components/lecturer/lecturer.html');
-
-                $location.url('/menu.html');
-                
-                $scope.go = function (path) {
-                    $location.path('menu')
-                }
+                console.log("attempt at go lecturer ");
+                $location.path('/lecturer');
                 return false;
             } else {
 
@@ -55,7 +58,8 @@ kolabApp.controller('frontCtrl',function($scope,$location) {
             if ($scope.joinRoom != null && $scope.joinRoom.text.trim().length) {
                 socket.emit('join room message', $('#textareaJoinRoom').val());
                 $('#textareaJoinRoom').val('');
-
+                console.log("attempt at go student ");
+                $location.path('/student');
                 return false;
             } else {
 
@@ -63,4 +67,4 @@ kolabApp.controller('frontCtrl',function($scope,$location) {
         }
 
 
-    });
+    }]);

@@ -42,7 +42,6 @@ kolabApp.controller('questionsCtrl', ['$scope', '$http', function ($scope, $http
         console.log('Trying to populate the table with questions... MSG= '+msg);
         $scope.kolabDBScope.push(msg);
         $scope.$apply();
-
     });
 
 }]);

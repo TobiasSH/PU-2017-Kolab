@@ -134,6 +134,10 @@ app.get('/questions', function (req, res) {
     res.sendFile(__dirname + '/index.html');
 });
 
+app.get('/front', function (req, res) {
+    res.sendFile(__dirname + '/index.html');
+})
+
 
 /* DATABASE METHODS */
 app.get('/questionsCollection', function (req, res) {
