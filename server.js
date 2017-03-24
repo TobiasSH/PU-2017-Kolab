@@ -3,10 +3,14 @@ var app = express();
 var mongojs = require('mongojs');
 
 var db = mongojs('mongodb://heroku_2hcp9k8k:19uocjcgsn6ce4pp7j66fe1ras@ds119020.mlab.com:19020/heroku_2hcp9k8k', ['questionsCollection', 'counter']);
-
 var bodyParser = require('body-parser');
 var path = require('path');
+var cookie = require('cookie');
+var cookies = cookie.parse('userCount = 1; cantKeepUpCount = 1; decreaseVolumeCount = 1; increaseVolumeCount = 1;decreaseSpeedCount = 1; increaseSpeedCount = 1')
 
+
+console.log("hai")
+console.log(cookies);
 
 app.use(express.static(__dirname));
 app.use(bodyParser.json());
@@ -15,15 +19,26 @@ app.use(bodyParser.json());
 /* SOCKET IO */
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var userCounter = 1;
+var userCounter = 0;
 
 // socket functions
 io.on('connection', function (socket) {
     console.log('User ' + userCounter + ' connected.');
-    userCounter += 1;
+    if (cookies.userCount>0){
+        userCounter += 1;
+        io.emit('incUser')
+        cookies.userCount -=1;
+    }
+
+
     socket.on('disconnect', function () {
         console.log('a user disconnected');
-        userCounter -= 1;
+        if (cookies.userCount<1){
+            userCounter -= 1;
+            io.emit('decUser')
+            cookies.userCount +=1;
+        }
+
     });
 
     // servers response to emitted message from controllers
@@ -45,6 +60,61 @@ io.on('connection', function (socket) {
         // broadcasts question message to all listening sockets with the same object we insert into the database
         io.emit('question message', {_id: mongojs.ObjectID(rString), text: msg});
     });
+    //menu buttons
+    socket.on('cantKeepUp',function(){
+        var hits = parseInt(cookies.cantKeepUpCount);
+        db.counter.update({"counter" : "cantKeepUp"}, {"$inc":{"hits": parseInt(cookies.cantKeepUpCount)}});
+        console.log("cant keep up server"+ parseInt(cookies.cantKeepUpCount));
+
+        cookies.cantKeepUpCount=parseInt(cookies.cantKeepUpCount)*(-1);
+
+
+        io.emit('cantKeepUp',  hits )
+
+    });
+    socket.on('decreaseVolume', function(){
+        var hits = parseInt(cookies.decreaseVolumeCount)
+        db.counter.update({"counter" : "decreaseVolume"}, {"$inc":{"hits": parseInt(cookies.decreaseVolumeCount)}});
+        console.log("decrease volume " + cookies.decreaseVolumeCount);
+        cookies.decreaseVolumeCount=parseInt(cookies.decreaseVolumeCount)*(-1);
+        console.log(cookies);
+
+        io.emit('decreaseVolume', hits)
+    });
+    socket.on('increaseVolume', function(){
+        var hits = parseInt(cookies.increaseVolumeCount)
+        db.counter.update({"counter" : "increaseVolume"}, {"$inc":{"hits": parseInt(cookies.increaseVolumeCount)}});
+        console.log("increaseses volumes" + cookies.increaseVolumeCount);
+        cookies.increaseVolumeCount=parseInt(cookies.increaseVolumeCount)*(-1);
+
+        io.emit('increaseVolume', hits)
+
+    });
+    socket.on('decreaseSpeed', function(){
+        var hits = parseInt(cookies.decreaseSpeedCount)
+        db.counter.update({"counter" : "decreaseSpeed"}, {"$inc":{"hits": parseInt(cookies.decreaseSpeedCount)}});
+        console.log("decerease speed" + cookies.decreaseSpeedCount);
+        cookies.decreaseSpeedCount=parseInt(cookies.decreaseSpeedCount)*(-1);
+
+        io.emit('decreaseSpeed', hits)
+
+    });
+    socket.on('increaseSpeed', function(){
+        var hits = parseInt(cookies.increaseSpeedCount)
+        db.counter.update({"counter" : "increaseSpeed"}, {"$inc":{"hits": parseInt(cookies.increaseSpeedCount)}});
+        console.log("incerease speed"+ cookies.increaseSpeedCount);
+        cookies.increaseSpeedCount=parseInt(cookies.increaseSpeedCount)*(-1);
+
+        io.emit('increaseSpeed', hits)
+
+    });
+    socket.on('resetVotes', function(){
+        db.counter.update({},{"$set":{"hits":0}},{multi:true});
+        console.log(cookies);
+        cookies = cookie.parse('userCount = 0; cantKeepUpCount = 1; decreaseVolumeCount = 1; increaseVolumeCount = 1;decreaseSpeedCount = 1; increaseSpeedCount = 1')
+        console.log(cookies);
+        io.emit('resetVotes');
+    })
 
     //servers response to emitted message to delete question from lecturer controller
     socket.on('question delete', function (index, id) {
@@ -53,6 +123,7 @@ io.on('connection', function (socket) {
         //deletes the selected question from the database
         db.questionsCollection.remove({_id: mongojs.ObjectId(id)});
         io.emit('question delete', index, id);
+
 
     });
 });
@@ -116,6 +187,41 @@ app.get('/questionsCollection/:id', function (req, res) {
         res.json(doc);
     });
 });
+app.get('/counters', function(req, res){
+    db.counter.find(function(err,doc){
+        res.json(doc);
+
+    })
+})
+app.get('/cantKeepUp', function(req, res){
+    db.counter.findOne({"counter": "cantKeepUp"}, function(err,doc){
+        res.json(doc);
+
+    })
+})
+app.get('/decreaseVolume', function(req, res){
+    db.counter.findOne({"counter": "decreaseVolume"}, function(err,doc){
+        res.json(doc);
+
+    })
+})
+app.get('/increaseVolume', function(req, res){
+    db.counter.findOne({"counter": "increaseVolume"}, function(err,doc){
+        res.json(doc);
+
+    })
+})
+app.get('/decreaseSpeed', function(req, res){
+    db.counter.findOne({"counter": "decreaseSpeed"}, function(err,doc){
+        res.json(doc);
+
+    })
+})
+app.get('/increaseSpeed', function(req, res){
+    db.counter.findOne({"counter": "increaseSpeed"}, function(err,doc) {
+        res.json(doc);
+    })
+})
 
 http.listen(process.env.PORT || 3000);
 console.log("Server running on port 3000");
