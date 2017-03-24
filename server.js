@@ -2,7 +2,7 @@ var express = require('express');
 var app = express();
 var mongojs = require('mongojs');
 
-var db = mongojs('mongodb://heroku_2hcp9k8k:19uocjcgsn6ce4pp7j66fe1ras@ds119020.mlab.com:19020/heroku_2hcp9k8k', ['roomsCollection', 'questionsCollection', 'counter']);
+var db = mongojs('mongodb://heroku_2hcp9k8k:19uocjcgsn6ce4pp7j66fe1ras@ds119020.mlab.com:19020/heroku_2hcp9k8k', ['roomsCollection', 'roomsQuestionsCollection', 'counter']);
 
 var bodyParser = require('body-parser');
 var path = require('path');
@@ -21,6 +21,7 @@ var userCounter = 1;
 var room = "abc123";
 var rooms = [];
 var room1;
+var currentRoom;
 
 // socket functions
 io.on('connection', function (socket) {
@@ -46,20 +47,27 @@ io.on('connection', function (socket) {
 
 
 
-    socket.on('room', function (room) {
+  /*  socket.on('room', function (room) {
         socket.join(room);
         console.log("Room joined: " + room);
-    });
+        currentRoom = room;
+        console.log("current room: " + currentRoom);
+    }); */
+
+    //JOIN A ROOM
 
     socket.on('join room message', function (msg) {
-        socket.join(room);
-        console.log("Room joined: " + room);
+        socket.join(msg);
+        console.log("Room joined: " + msg);
+        currentRoom = msg;
+        console.log("current room: " + currentRoom);
 
     })
 
+    // CREATE A NEW ROOM
     socket.on('new room message', function (msg) {
         console.log("recieved new room message: " + msg);
-        socket.join(msg);
+        socket.join(msg); // ROOM IS CREATED IF IT NOT ALREADY EXISTS
         console.log("Socket joined room joined: " + msg);
         rooms.push(msg);
         //console.log(rooms.indexOf(msg));
@@ -81,6 +89,41 @@ io.on('connection', function (socket) {
         io.emit('room message', {_Rid: mongojs(rString), text: msg});
     })
 
+
+    // JOIN BUTTON IN FRONT
+    socket.on('join existing room', function (index, id) {
+
+        console.log("Server received 'join existing room' broadcast for id: "+id);
+        //deletes the selected question from the database
+        db.roomsQuestionsCollection.remove({_id:{a: mongojs.ObjectId(id), b: 'b'}});
+        io.emit('question delete', index, id);
+
+        //var id = req.params.id;
+        //db.roomsCollection.findOne({_Rid: mongojs.ObjectID(id)}, function (err, doc) {
+          //  res.json(doc);
+
+
+        socket.join()
+        })
+
+
+    });
+    //HUSK Å SLETTE
+    app.get('/roomsCollection/:id', function (req, res) {
+        console.log("I received a GET request");
+        var id = req.params.id;
+        //console.log(id);
+        db.roomsCollection.findOne({_Rid: mongojs.ObjectID(id)}, function (err, doc) {
+            res.json(doc);
+        })
+    })
+
+
+
+    io.sockets.in(currentRoom).emit('message' ,"hei");
+
+
+
     // servers response to emitted message from controllers
     socket.on('question message', function (msg) {
         console.log('message: ' + msg);
@@ -89,7 +132,7 @@ io.on('connection', function (socket) {
         var rString = randomString(24, '0123456789abcdef');
 
         //inserting new message into mlab database
-        db.questionsCollection.insert({_id:{ a: mongojs.ObjectID(rString), b: 'b' }, text: msg}, function (err, o) {
+        db.roomsQuestionsCollection.insert({_id:{ a: mongojs.ObjectID(rString), b: currentRoom }, text: msg}, function (err, o) {
             if (err) {
                 console.warn(err.message);
             }
@@ -98,7 +141,7 @@ io.on('connection', function (socket) {
             }
         });
         // broadcasts question message to all listening sockets with the same object we insert into the database
-        io.emit('question message', {_id: mongojs.ObjectID(rString), text: msg});
+        io.emit('question message', {_id:{a: mongojs.ObjectID(rString), b: currentRoom}, text: msg});
     });
 
     //servers response to emitted message to delete question from lecturer controller
@@ -106,11 +149,11 @@ io.on('connection', function (socket) {
 
         console.log("Server received 'question delete' broadcast for id: "+id);
         //deletes the selected question from the database
-        db.questionsCollection.remove({_id: mongojs.ObjectId(id)});
+        db.roomsQuestionsCollection.remove({_id:{a: mongojs.ObjectId(id), b: 'b'}});
         io.emit('question delete', index, id);
 
     });
-    io.sockets.in(room).emit('message' ,"hei");
+    io.sockets.in(currentRoom).emit('message' ,"hei");
 });
 
 
@@ -143,9 +186,9 @@ app.get('/front', function (req, res) {
 
 
 /* DATABASE METHODS */
-app.get('/questionsCollection', function (req, res) {
+app.get('/roomsQuestionsCollection', function (req, res) {
     console.log("Q: I received a GET request");
-    db.questionsCollection.find(function (err, docs) {
+    db.roomsQuestionsCollection.find(function (err, docs) {
         if (err) {
             console.warn(err.message);
         }
@@ -188,11 +231,11 @@ app.delete('/questionsCollection/:id', function (req, res) {
     db.questionsCollection.remove({_id: mongojs.ObjectId(id)});
 });*/
 
-app.get('/questionsCollection/:id', function (req, res) {
+app.get('/roomsQuestionsCollection/:id', function (req, res) {
     console.log("I received a GET request");
     var id = req.params.id;
     console.log(id);
-    db.questionsCollection.findOne({_id:{a: mongojs.ObjectId(id), b:'b'}}, function (err, doc) {
+    db.roomsQuestionsCollection.findOne({_id:{a: mongojs.ObjectId(id), b:  'b'}}, function (err, doc) {
         res.json(doc);
     });
 });
