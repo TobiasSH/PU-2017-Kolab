@@ -6,7 +6,7 @@ kolabApp.controller('questionsCtrl', ['$scope', '$http', function ($scope, $http
 
     // initial retrieval of questions from the database
     var refresh = function () {
-        $http.get('/questionsCollection').then(function (response) {
+        $http.get('/roomsQuestionsCollection').then(function (response) {
                 console.log("I got the data I requested, questions-controller");
                 console.log("This is the pure response object:"+ response.text);
                 $scope.kolabDBScope = response.data;
@@ -42,7 +42,6 @@ kolabApp.controller('questionsCtrl', ['$scope', '$http', function ($scope, $http
         console.log('Trying to populate the table with questions... MSG= '+msg);
         $scope.kolabDBScope.push(msg);
         $scope.$apply();
-
     });
 
 }]);
