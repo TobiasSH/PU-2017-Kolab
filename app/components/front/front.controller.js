@@ -1,4 +1,4 @@
-kolabApp.controller('frontCtrl', ['$scope',"$location", '$http', function($scope, $location, $http) {
+kolabApp.controller('frontCtrl', ['$scope',"$location", '$http','socket', function($scope, $location, $http, socket) {
         $scope.go = function (path) {
             $location.path(path);
         };
@@ -7,7 +7,7 @@ kolabApp.controller('frontCtrl', ['$scope',"$location", '$http', function($scope
 
         //EDNRET 22 . 03 kl 15:17
         //var socket = io.connect();
-        var socket = io();
+
 
     // initial retrieval of questions from the database
         var refresh = function () {
@@ -47,11 +47,11 @@ kolabApp.controller('frontCtrl', ['$scope',"$location", '$http', function($scope
             } else {
 
             }
-        }
+        };
 
         $scope.join = function () {
             
-        }
+        };
         
         $scope.joinRoom = function () {
             console.log("method join room called");
@@ -64,7 +64,7 @@ kolabApp.controller('frontCtrl', ['$scope',"$location", '$http', function($scope
             } else {
 
             }
-        }
+        };
         $scope.joinExistingRoom = function (index, text) {
             console.log("This is the index of the room we're trying to join: " +index+ "\n and this is the text: "+text);
             socket.emit('join existing room', index, text);

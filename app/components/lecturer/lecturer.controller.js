@@ -1,7 +1,6 @@
-kolabApp.controller('lecturerCtrl', ['$scope', '$http', function ($scope, $http) {
+kolabApp.controller('lecturerCtrl', ['$scope', '$http','socket', function ($scope, $http, socket) {
     console.log("Hello World from controller");
 
-    var socket = io();
 
     // initial retrieval of questions from the database
     var refresh = function () {

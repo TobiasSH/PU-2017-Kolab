@@ -1,7 +1,6 @@
 kolabApp.controller('menuCtrl', ['$scope', '$http', function ($scope, $http) {
     console.log("Hello World from menu-controller");
 
-
     $scope.questions = function () {
         console.log("questions button was clicked");
     };
