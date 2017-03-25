@@ -42,7 +42,6 @@ io.on('connection', function (socket) {
         if (rooms.indexOf(msg)+1){
             console.log('found room: ' + msg);
             socket.join(msg);
-            //currentRoom = msg;
 
 
 
@@ -117,7 +116,7 @@ io.on('connection', function (socket) {
         var rString = randomString(24, '0123456789abcdef');
 
         //inserting new message into mlab database
-        db.roomsQuestionsCollection.insert({_id: mongojs.ObjectID(rString), room: currentRoom, text: msg}, function (err, o) {
+        db.roomsQuestionsCollection.insert({_id: mongojs.ObjectID(rString), room: String(socket.room), text: msg}, function (err, o) {
             if (err) {
                 console.warn(err.message);
             }
@@ -126,7 +125,8 @@ io.on('connection', function (socket) {
             }
         });
         // broadcasts question message to all listening sockets with the same object we insert into the database
-        io.to('').emit('question message', {_id: mongojs.ObjectID(rString), room: currentRoom, text: msg});
+        console.log("QM: This is the room"+socket.room);
+        io.to(socket.room).emit('question message', {_id: mongojs.ObjectID(rString), room: String(socket.room), text: msg});
     });
 
     //servers response to emitted message to delete question from lecturer controller
@@ -207,7 +207,7 @@ app.get('/roomsQuestionsCollection/:id', function (req, res) {
     var id = req.params.id;
     console.log(id);
     console.log("Current room: " + currentRoom);
-    db.roomsQuestionsCollection.findOne({_id: mongojs.ObjectId(id), room: currentRoom }, function (err, doc) {
+    db.roomsQuestionsCollection.findOne({_id: mongojs.ObjectId(id), room: String(socket.room) }, function (err, doc) {
         res.json(doc);
     });
 });

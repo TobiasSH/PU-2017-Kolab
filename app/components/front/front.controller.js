@@ -14,7 +14,7 @@ kolabApp.controller('frontCtrl', ['$scope',"$location", '$http','socket', functi
             $http.get('/roomsCollection').then(function (response) {
                     console.log("I got the data I requested");
                     $scope.kolabDBScope = response.data;
-                    $scope.room = null;
+                    //$scope.room = null;
                 },
                 function (error) {
                     console.log("I got ERROR");

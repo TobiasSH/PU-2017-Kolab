@@ -21,7 +21,7 @@ kolabApp.controller('questionsCtrl', ['$scope', '$http','socket', function ($sco
     // remove function bound to the delete buttons in lecture view
     $scope.sendQuestion = function () {
         if ($scope.question != null && $scope.question.text.trim().length) {
-            socket.emit('question message', $('#textareaQ').val());
+            socket.emit('question message', $('#textareaQ').val(), socket.currentRoom);
             $('#textareaQ').val('');
             return false;
         } else {
