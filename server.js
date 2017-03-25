@@ -2,10 +2,13 @@ var express = require('express');
 var app = express();
 var mongojs = require('mongojs');
 
-var db = mongojs('mongodb://heroku_2hcp9k8k:19uocjcgsn6ce4pp7j66fe1ras@ds119020.mlab.com:19020/heroku_2hcp9k8k', ['roomsCollection', 'roomsQuestionsCollection', 'counter']);
 
+var db = mongojs('mongodb://heroku_2hcp9k8k:19uocjcgsn6ce4pp7j66fe1ras@ds119020.mlab.com:19020/heroku_2hcp9k8k', ['roomsCollection', 'roomsQuestionsCollection', 'counter']);
 var bodyParser = require('body-parser');
 var path = require('path');
+
+var cookie = require('cookie');
+var cookies = cookie.parse('currentRoom = Not set yet;userCount = 1; cantKeepUpCount = 1; decreaseVolumeCount = 1; increaseVolumeCount = 1;decreaseSpeedCount = 1; increaseSpeedCount = 1')
 
 
 app.use(express.static(__dirname));
@@ -17,16 +20,16 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var userCounter = 1;
 
-// SHOLD MIGHT remove this
-var room = "abc123";
-var rooms = [];
 
-var currentRoom;
+
+// SHOLD MIGHT remove this
+//var room = "abc123";
+var rooms = []; //what is this for?
 
 // socket functions
 io.on('connection', function (socket) {
-    currentRoom = "Not set yet";
-    console.log("current room: " + currentRoom);
+
+    console.log("From initial connection; current room: " + cookies.currentRoom);
 
     console.log('User ' + userCounter + ' connected.');
     userCounter += 1;
@@ -42,6 +45,7 @@ io.on('connection', function (socket) {
         if (rooms.indexOf(msg)+1){
             console.log('found room: ' + msg);
             socket.join(msg);
+            cookies.currentRoom = socket.room;
 
 
 
@@ -60,14 +64,16 @@ io.on('connection', function (socket) {
         socket.join(text);
         io.emit('join existing room', index, text);
         socket.room = text;
+        cookies.currentRoom = text;
         //currentRoom = text;
-        console.log("The current room: " + socket.room);
+        console.log("The current room: " + cookies.currentRoom);
+
 
 
 
     });
 
-    io.sockets.in(currentRoom).emit('message' ,"hei");
+    io.sockets.in(socket.room).emit('message' ,"hei");
 
 
 
@@ -138,7 +144,7 @@ io.on('connection', function (socket) {
         io.emit('question delete', index, id);
 
     });
-    io.sockets.in(currentRoom).emit('message' ,"hei");
+    io.sockets.in(socket.room).emit('message' ,"hei");
 });
 
 
@@ -174,8 +180,8 @@ app.get('/front', function (req, res) {
 /* DATABASE METHODS */
 app.get('/roomsQuestionsCollection', function (req, res) {
     console.log("Q: I received a GET request");
-    console.log("current room: " + currentRoom);
-    db.roomsQuestionsCollection.find({room: currentRoom}, function (err, docs) {
+    console.log("current room: " + cookies.currentRoom);
+    db.roomsQuestionsCollection.find({room: cookies.currentRoom}, function (err, docs) {
         if (err) {
             console.warn(err.message);
         }
@@ -206,7 +212,7 @@ app.get('/roomsQuestionsCollection/:id', function (req, res) {
     console.log("I received a GET request");
     var id = req.params.id;
     console.log(id);
-    console.log("Current room: " + currentRoom);
+    console.log("Current room: " + socket.currentRoom);
     db.roomsQuestionsCollection.findOne({_id: mongojs.ObjectId(id), room: String(socket.room) }, function (err, doc) {
         res.json(doc);
     });

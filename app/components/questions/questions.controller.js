@@ -8,6 +8,7 @@ kolabApp.controller('questionsCtrl', ['$scope', '$http','socket', function ($sco
         $http.get('/roomsQuestionsCollection').then(function (response) {
                 console.log("I go8t the data I requested, questions-controller");
                 console.log("This is the pure response object:"+ response.text);
+                console.log("This is the room we're in: "+ String(socket.room));
                 $scope.kolabDBScope = response.data;
               //  $scope.question = null;
             },
