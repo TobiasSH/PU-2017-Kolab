@@ -20,11 +20,14 @@ var userCounter = 1;
 // SHOLD MIGHT remove this
 var room = "abc123";
 var rooms = [];
-var room1;
+
 var currentRoom;
 
 // socket functions
 io.on('connection', function (socket) {
+    currentRoom = "Not set yet";
+    console.log("current room: " + currentRoom);
+
     console.log('User ' + userCounter + ' connected.');
     userCounter += 1;
     socket.on('disconnect', function () {
@@ -38,13 +41,17 @@ io.on('connection', function (socket) {
         console.log("recieved join room message ");
         if (rooms.indexOf(msg)+1){
             console.log('found room: ' + msg);
+            socket.leaveAll();
             socket.join(msg);
+            //currentRoom = msg;
+
+
+
         } else {
             console.log('could not find room: '+ msg );
         }
-            
-    })
 
+    })
 
 
   /*  socket.on('room', function (room) {
@@ -54,15 +61,6 @@ io.on('connection', function (socket) {
         console.log("current room: " + currentRoom);
     }); */
 
-    //JOIN A ROOM
-
-    socket.on('join room message', function (msg) {
-        socket.join(msg);
-        console.log("Room joined: " + msg);
-        currentRoom = msg;
-        console.log("current room: " + currentRoom);
-
-    })
 
     // CREATE A NEW ROOM
     socket.on('new room message', function (msg) {
@@ -91,34 +89,20 @@ io.on('connection', function (socket) {
 
 
     // JOIN BUTTON IN FRONT
-    socket.on('join existing room', function (index, id) {
+    socket.on('join existing room', function (index, text) {
 
-        console.log("Server received 'join existing room' broadcast for id: "+id);
+        console.log("Server received 'join existing room' broadcast for: "+ text);
         //deletes the selected question from the database
-        db.roomsQuestionsCollection.remove({_id:{a: mongojs.ObjectId(id), b: 'b'}});
-        io.emit('question delete', index, id);
+        socket.leaveAll();
+        socket.join(text);
+        io.emit('join existing room', index, text);
+        socket.room = text;
+        //currentRoom = text;
+        console.log("The current room: " + socket.room);
 
-        //var id = req.params.id;
-        //db.roomsCollection.findOne({_Rid: mongojs.ObjectID(id)}, function (err, doc) {
-          //  res.json(doc);
-
-
-        socket.join()
-        })
 
 
     });
-    //HUSK Å SLETTE
-    app.get('/roomsCollection/:id', function (req, res) {
-        console.log("I received a GET request");
-        var id = req.params.id;
-        //console.log(id);
-        db.roomsCollection.findOne({_Rid: mongojs.ObjectID(id)}, function (err, doc) {
-            res.json(doc);
-        })
-    })
-
-
 
     io.sockets.in(currentRoom).emit('message' ,"hei");
 
@@ -132,7 +116,7 @@ io.on('connection', function (socket) {
         var rString = randomString(24, '0123456789abcdef');
 
         //inserting new message into mlab database
-        db.roomsQuestionsCollection.insert({_id:{ a: mongojs.ObjectID(rString), b: currentRoom }, text: msg}, function (err, o) {
+        db.roomsQuestionsCollection.insert({_id: mongojs.ObjectID(rString), room: currentRoom, text: msg}, function (err, o) {
             if (err) {
                 console.warn(err.message);
             }
@@ -141,7 +125,7 @@ io.on('connection', function (socket) {
             }
         });
         // broadcasts question message to all listening sockets with the same object we insert into the database
-        io.emit('question message', {_id:{a: mongojs.ObjectID(rString), b: currentRoom}, text: msg});
+        io.emit('question message', {_id: mongojs.ObjectID(rString), room: currentRoom, text: msg});
     });
 
     //servers response to emitted message to delete question from lecturer controller
@@ -149,12 +133,13 @@ io.on('connection', function (socket) {
 
         console.log("Server received 'question delete' broadcast for id: "+id);
         //deletes the selected question from the database
-        db.roomsQuestionsCollection.remove({_id:{a: mongojs.ObjectId(id), b: 'b'}});
+        db.roomsQuestionsCollection.remove({_id: mongojs.ObjectId(id)});
         io.emit('question delete', index, id);
 
     });
     io.sockets.in(currentRoom).emit('message' ,"hei");
 });
+
 
 
 //io.sockets.in(room).emit('message' ,"hei");
@@ -188,7 +173,8 @@ app.get('/front', function (req, res) {
 /* DATABASE METHODS */
 app.get('/roomsQuestionsCollection', function (req, res) {
     console.log("Q: I received a GET request");
-    db.roomsQuestionsCollection.find(function (err, docs) {
+    console.log("current room: " + currentRoom);
+    db.roomsQuestionsCollection.find({room: currentRoom}, function (err, docs) {
         if (err) {
             console.warn(err.message);
         }
@@ -235,7 +221,8 @@ app.get('/roomsQuestionsCollection/:id', function (req, res) {
     console.log("I received a GET request");
     var id = req.params.id;
     console.log(id);
-    db.roomsQuestionsCollection.findOne({_id:{a: mongojs.ObjectId(id), b:  'b'}}, function (err, doc) {
+    console.log("Current room: " + currentRoom);
+    db.roomsQuestionsCollection.findOne({_id: mongojs.ObjectId(id), room: currentRoom }, function (err, doc) {
         res.json(doc);
     });
 });

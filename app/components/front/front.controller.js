@@ -65,9 +65,10 @@ kolabApp.controller('frontCtrl', ['$scope',"$location", '$http', function($scope
 
             }
         }
-        $scope.joinExistingRoom = function (index, id) {
-            console.log("This is the index of the room we're trying to join: " +index+ "\n and this is the ID: "+id);
-            socket.emit('join existing room', index, id);
+        $scope.joinExistingRoom = function (index, text) {
+            console.log("This is the index of the room we're trying to join: " +index+ "\n and this is the text: "+text);
+            socket.emit('join existing room', index, text);
+            $location.path('/student');
 
         };
 
