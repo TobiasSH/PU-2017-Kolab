@@ -1,5 +1,5 @@
 kolabApp.controller('lecturerCtrl', ['$scope', '$http','socket', function ($scope, $http, socket) {
-    console.log("Hello World from controller");
+    console.log("Hello World from lecturer-controller");
 
 
     // initial retrieval of questions from the database
@@ -12,6 +12,7 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http','socket', function ($scop
             function (error) {
                 console.log("I got ERROR");
             });
+        console.log(socket.room);
     };
 
     refresh();

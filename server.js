@@ -68,23 +68,7 @@ io.on('connection', function (socket) {
         //currentRoom = text;
         console.log("The current room: " + cookies.currentRoom);
 
-
-
-
     });
-
-    io.sockets.in(socket.room).emit('message' ,"hei");
-
-
-
-
-    /*  socket.on('room', function (room) {
-          socket.join(room);
-          console.log("Room joined: " + room);
-          currentRoom = room;
-          console.log("current room: " + currentRoom);
-      }); */
-
 
     // CREATE A NEW ROOM
     socket.on('new room message', function (msg) {
@@ -144,7 +128,6 @@ io.on('connection', function (socket) {
         io.emit('question delete', index, id);
 
     });
-    io.sockets.in(socket.room).emit('message' ,"hei");
 });
 
 
