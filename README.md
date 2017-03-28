@@ -1,9 +1,11 @@
 # Kolab
 The Kolab App
 
-### Screenshots
-<img src="/screenshots/student-view-2017-02-20.png" alt="alt text" width="250">
-<img src="/screenshots/student-questions-2017-02-20.png" alt="alt text" width="250">
+### [Screenshots](/screenshots/screenshots.md)
+
+### Use npm to install all dependencies
+1. Navigate to the folder you've placed the project in with terminal/cmd
+2. Run: `npm install`
 
 ### Run the server
 1. `cd` into the directory that contains the server.js file

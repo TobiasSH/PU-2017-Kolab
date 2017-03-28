@@ -1,24 +1,69 @@
-<div class="container horizontal-center">
-    <h1>TDT4140 <p> Software Engineering</h1>
-    <h1>Questions</h1>
+<div class="vertical-center">
+    <div class="horizontal-center">
+        <table class="title">
+            <tbody>
+            <tr>
+                <td width="90%">
+                    <h1>TDT4140 <p> Software Engineering</h1>
+                </td>
+                <td width="10%">
+                    <a href="/">
+                        <button type="button" class="btn btn-lg btn-responsive btn-home">
+                        <img class="home-button-icon" src="../../../assets/img/icons/chevron-right.svg" onerror="this.onerror=null; this.src='../../../assets/img/icons/chevron-right.png'">
+                        </button>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <span style="display:block; height: 20px;"></span>
+        <div class="progress">
+            <div id="cantKeepUpBar" class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="40"
+                 aria-valuemin="0" aria-valuemax="100" style="width:0%">
+                Cant Keep up
+            </div>
+        </div>
+        <div class="progress">
+            <div id="decreaseVolumeBar" class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="50"
+                 aria-valuemin="0" aria-valuemax="100" style="width:0%">
+                Decrease Volume
+            </div>
+        </div>
+        <div class="progress">
+            <div id="increaseVolumeBar" class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="60"
+                 aria-valuemin="0" aria-valuemax="100" style="width:0%">
+                Increase Volume
+            </div>
+        </div>
+        <div class="progress">
+            <div id="decreaseSpeedBar" class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="40"
+                 aria-valuemin="0" aria-valuemax="100" style="width:0%">
+                Decrease Speed
+            </div>
+        </div>
+        <div class="progress">
+            <div id="increaseSpeedBar" class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="70"
+                 aria-valuemin="0" aria-valuemax="100" style="width:0%">
+                Increase Speed
+            </div>
+        </div>
 
-    <a href="/">
-        <button type="button" class="btn btn-primary">
-            Home
+        <button type="button" class="btn btn-primary" ng-click="resetVotes()">
+            Reset votes
         </button>
-    </a>
-    <div class="container vertical-center">
-    <table class="table">
-        <tbody>
-        <tr ng-repeat="question in kolabDBScope" class="questionRows">
-            <!--<td>{{question.number}}</td>-->
-            <td class="td-question">{{question.text}}</td>
-            <td>
-                <button class="btn btn-danger btn-lg btn-block btn-remove" ng-click="remove(question._id)">Remove
-                </button>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+        <span style="display:block; height: 20px;"></span>
+        <table id="lecturerTable" class="table lecturer-table">
+            <tbody>
+            <tr ng-repeat="question in kolabDBScope" class="questionRows">
+                <!--<td>{{question.number}}</td>-->
+                <td width="80%" class="td-question">{{question.text}}</td>
+                <td width="20%">
+                    <button class="btn btn-lg btn-block btn-remove" ng-click="remove($index, question._id)">
+                    <img class="lecturer-button-icon" src="../../../assets/img/icons/remove.svg" onerror="this.onerror=null; this.src='../../../assets/img/icons/remove.png'">
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </div>
