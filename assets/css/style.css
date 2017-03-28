@@ -251,3 +251,16 @@ textarea{
   width: 128px;
 }
 
+/* PROGRESSBAR */
+/********************/
+
+.progress {
+    width: 92%;
+    height: 40px;
+    margin: 10px 40px 0px 40px;
+}
+
+.progress-bar {
+    font-size: 28px;
+    line-height: 32px;
+} 
