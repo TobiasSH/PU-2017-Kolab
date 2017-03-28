@@ -1,21 +1,7 @@
 # Kolab
 The Kolab App
 
-### Sprint 1 - Screenshots
-<img src="/screenshots/sprint-1/student-view.png" alt="alt text" width="250">
-<img src="/screenshots/sprint-1/student-questions.png" alt="alt text" width="250">
-
-## Sprint 2 - Screenshots
-<img src="/screenshots/sprint-2/student-questions.png" alt="alt text" width="250">
-<img src="/screenshots/sprint-2/student-view.png" alt="alt text" width="250">
-<img src="/screenshots/sprint-2/front-view.png" alt="alt text" width="250">
-<img src="/screenshots/sprint-2/lecturer-view.png" alt="alt text" width="250">
-
-## Sprint 3 - Screenshots
-<img src="/screenshots/sprint-3/student-questions.png" alt="alt text" width="250">
-<img src="/screenshots/sprint-3/student-view.png" alt="alt text" width="250">
-<img src="/screenshots/sprint-3/front-view.png" alt="alt text" width="250">
-<img src="/screenshots/sprint-3/lecturer-view.png" alt="alt text" width="250">
+### [Screenshots](/screenshots/screenshots.md)
 
 ### Use npm to install all dependencies
 1. Navigate to the folder you've placed the project in with terminal/cmd
