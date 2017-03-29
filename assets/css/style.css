@@ -78,6 +78,15 @@ rgba(50, 50, 50, 1);
     word-break: break-all;
 }
 
+th{
+    border: 0px !important;
+    font-size: 38px;
+    min-height: inherit;
+    height: 100%;
+    width: 25%;
+
+}
+
 td {
 
     border: 0px !important;

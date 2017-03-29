@@ -3,9 +3,53 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', func
         $location.path(path);
     };
 
+    // COOKIE STUFF FOR TESTING UNIQUE COOKIES
+    function getCname() {
+        return "hans";
+    }
+
+
+
+    function setCookie(cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+        var expires = "expires="+d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    }
+
+    function getCookie(cname) {
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for(var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
+
+    function checkCookie() {
+        var user = getCookie("username");
+        if (user != "") {
+            alert("Welcome again " + user);
+        } else {
+            user = prompt("Please enter your name:", "");
+            if (user != "" && user != null) {
+                setCookie("username", user, 365);
+            }
+        }
+    }
+
+
 
     // initial retrieval of questions from the database
     var refresh = function () {
+        console.log("Early refresh ck: " + document.cookie);
+
         $http.get('/roomsCollection').then(function (response) {
                 console.log("I got the data I requested");
                 $scope.kolabDBScope = response.data;
@@ -14,6 +58,7 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', func
             function (error) {
                 console.log("I got ERROR");
             });
+        console.log("Late refresh ck: " + document.cookie);
     };
     refresh();
 
@@ -56,6 +101,7 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', func
         }
     };
     $scope.joinExistingRoom = function (index, text) {
+        document.cookie = "Safari";
         console.log("This is the index of the room we're trying to join: " + index + "\n and this is the text: " + text);
         socket.emit('join existing room', index, text);
         $location.path('/student');

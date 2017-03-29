@@ -8,8 +8,8 @@ var bodyParser = require('body-parser');
 var path = require('path');
 
 var cookie = require('cookie');
-var cookies = cookie.parse('currentRoom = Not set yet;userCount = 1; cantKeepUpCount = 1; decreaseVolumeCount = 1; increaseVolumeCount = 1;decreaseSpeedCount = 1; increaseSpeedCount = 1')
-
+var cookies = cookie.parse('userID = not yet; currentRoom = Not set yet; userCount = 1; cantKeepUpCount = 1; decreaseVolumeCount = 1; increaseVolumeCount = 1;decreaseSpeedCount = 1; increaseSpeedCount = 1')
+var users = 0;
 
 app.use(express.static(__dirname));
 app.use(bodyParser.json());
@@ -22,13 +22,10 @@ var userCounter = 1;
 
 
 
-// SHOLD MIGHT remove this
-//var room = "abc123";
-var rooms = []; //what is this for?
+
 
 // socket functions
 io.on('connection', function (socket) {
-
     console.log("From initial connection; current room: " + cookies.currentRoom);
 
     console.log('User ' + userCounter + ' connected.');
@@ -59,13 +56,13 @@ io.on('connection', function (socket) {
     socket.on('join existing room', function (index, text) {
 
         console.log("Server received 'join existing room' broadcast for: "+ text);
-        //deletes the selected question from the database
+
         socket.leaveAll();
         socket.join(text);
         io.emit('join existing room', index, text);
         socket.room = text;
         cookies.currentRoom = text;
-        //currentRoom = text;
+
         console.log("The current room: " + cookies.currentRoom);
 
     });
@@ -73,7 +70,13 @@ io.on('connection', function (socket) {
     // CREATE A NEW ROOM
     socket.on('new room message', function (msg) {
         console.log("recieved new room message: " + msg);
+        socket.leaveAll();
+
+        //TODO check if room allready exists
         socket.join(msg); // ROOM IS CREATED IF IT NOT ALREADY EXISTS
+        socket.room = msg;
+        cookies.currentRoom = msg;
+
         console.log("Socket joined room joined: " + msg);
         rooms.push(msg);
         //console.log(rooms.indexOf(msg));
