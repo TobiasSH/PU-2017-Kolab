@@ -9,7 +9,8 @@
                 <td width="10%">
                     <a href="/student">
                         <button type="button" class="btn btn-lg btn-responsive btn-home">
-                        <img class="home-button-icon" src="../../../assets/img/icons/chevron-right.svg" onerror="this.onerror=null; this.src='../../../assets/img/icons/chevron-right.png'">
+                            <img class="home-button-icon" src="../../../assets/img/icons/chevron-right.svg"
+                                 onerror="this.onerror=null; this.src='../../../assets/img/icons/chevron-right.png'">
                         </button>
                     </a>
                 </td>
@@ -29,6 +30,8 @@
         </table>
         <table id="questionsTable" class="table questions-table">
             <tr ng-repeat="question in kolabDBScope | orderBy:'-'" class="questionRows">
+                <td> {{question.tag}}
+                </td>
                 <!--<td>{{question.number}}</td>-->
                 <td class="td-question">{{question.text}}</td>
             </tr>

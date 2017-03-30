@@ -2,7 +2,8 @@ var express = require('express');
 var app = express();
 var mongojs = require('mongojs');
 
-var db = mongojs('mongodb://heroku_2hcp9k8k:19uocjcgsn6ce4pp7j66fe1ras@ds119020.mlab.com:19020/heroku_2hcp9k8k', ['questionsCollection', 'counter']);
+//var db = mongojs('mongodb://heroku_2hcp9k8k:19uocjcgsn6ce4pp7j66fe1ras@ds119020.mlab.com:19020/heroku_2hcp9k8k', ['questionsCollection', 'counter']);
+var db = mongojs('mongodb://kolabgroup:12345678@ds115110.mlab.com:15110/kolabdb', ['questionsCollection', 'counter']);
 var bodyParser = require('body-parser');
 var path = require('path');
 var cookie = require('cookie');
@@ -35,7 +36,7 @@ io.on('connection', function (socket) {
         console.log('a user disconnected');
         if (cookies.userCount<1){
             userCounter -= 1;
-            io.emit('decUser')
+            io.emit('decUser');
             cookies.userCount +=1;
         }
 
@@ -49,7 +50,7 @@ io.on('connection', function (socket) {
         var rString = randomString(24, '0123456789abcdef');
 
         //inserting new message into mlab database
-        db.questionsCollection.insert({_id: mongojs.ObjectID(rString), text: msg}, function (err, o) {
+        db.questionsCollection.insert({_id: mongojs.ObjectID(rString), text: msg, tag: ""}, function (err, o) {
             if (err) {
                 console.warn(err.message);
             }
@@ -114,7 +115,7 @@ io.on('connection', function (socket) {
         cookies = cookie.parse('userCount = 0; cantKeepUpCount = 1; decreaseVolumeCount = 1; increaseVolumeCount = 1;decreaseSpeedCount = 1; increaseSpeedCount = 1')
         console.log(cookies);
         io.emit('resetVotes');
-    })
+    });
 
     //servers response to emitted message to delete question from lecturer controller
     socket.on('question delete', function (index, id) {
@@ -164,21 +165,6 @@ app.get('/questionsCollection', function (req, res, socket) {
     });
 });
 
-/*app.post('/questionsCollection', function (req, res) {
-    console.log("I received a POST request");
-    console.log(req.body);
-    db.questionsCollection.insert(req.body, function (err, doc) {
-        res.json(doc);
-    });
-});
-
-app.delete('/questionsCollection/:id', function (req, res) {
-    console.log("Server received a DELETE request for ID: " + req.params.id);
-    var id = req.params.id;
-    console.log(typeof id);
-    db.questionsCollection.remove({_id: mongojs.ObjectId(id)});
-});*/
-
 app.get('/questionsCollection/:id', function (req, res) {
     console.log("I received a GET request");
     var id = req.params.id;
@@ -192,36 +178,36 @@ app.get('/counters', function(req, res){
         res.json(doc);
 
     })
-})
+});
 app.get('/cantKeepUp', function(req, res){
     db.counter.findOne({"counter": "cantKeepUp"}, function(err,doc){
         res.json(doc);
 
     })
-})
+});
 app.get('/decreaseVolume', function(req, res){
     db.counter.findOne({"counter": "decreaseVolume"}, function(err,doc){
         res.json(doc);
 
     })
-})
+});
 app.get('/increaseVolume', function(req, res){
     db.counter.findOne({"counter": "increaseVolume"}, function(err,doc){
         res.json(doc);
 
     })
-})
+});
 app.get('/decreaseSpeed', function(req, res){
     db.counter.findOne({"counter": "decreaseSpeed"}, function(err,doc){
         res.json(doc);
 
     })
-})
+});
 app.get('/increaseSpeed', function(req, res){
     db.counter.findOne({"counter": "increaseSpeed"}, function(err,doc) {
         res.json(doc);
     })
-})
+});
 
 http.listen(process.env.PORT || 3000);
 console.log("Server running on port 3000");

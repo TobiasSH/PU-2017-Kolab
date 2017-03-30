@@ -8,11 +8,6 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', function ($scope, $http) {
 
     };
 
-
-
-
-
-
     $scope.cantKeepUp = function () {
         console.log("cantKeepUp button was clicked");
 
