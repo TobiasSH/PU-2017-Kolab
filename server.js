@@ -18,7 +18,7 @@ app.use(bodyParser.json());
 /* SOCKET IO */
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var clients = [];
+
 
 // socket functions
 io.on('connection', function (socket) {
@@ -27,12 +27,15 @@ io.on('connection', function (socket) {
     socket.on('storeClient', function(inc){
         userCount+=inc;
         console.log(userCount+ " count")
+        db.counter.update({"counter" : "userCount"}, {"$inc":{"hits": inc}});
+
 
     });
 
 
 
     socket.on('disconnect', function () {
+
 
 
     });
@@ -175,35 +178,7 @@ app.get('/counters', function(req, res){
 
     })
 })
-app.get('/cantKeepUp', function(req, res){
-    db.counter.findOne({"counter": "cantKeepUp"}, function(err,doc){
-        res.json(doc);
 
-    })
-})
-app.get('/decreaseVolume', function(req, res){
-    db.counter.findOne({"counter": "decreaseVolume"}, function(err,doc){
-        res.json(doc);
-
-    })
-})
-app.get('/increaseVolume', function(req, res){
-    db.counter.findOne({"counter": "increaseVolume"}, function(err,doc){
-        res.json(doc);
-
-    })
-})
-app.get('/decreaseSpeed', function(req, res){
-    db.counter.findOne({"counter": "decreaseSpeed"}, function(err,doc){
-        res.json(doc);
-
-    })
-})
-app.get('/increaseSpeed', function(req, res){
-    db.counter.findOne({"counter": "increaseSpeed"}, function(err,doc) {
-        res.json(doc);
-    })
-})
 
 http.listen(process.env.PORT || 3000);
 console.log("Server running on port 3000");
