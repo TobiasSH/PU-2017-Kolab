@@ -2,7 +2,7 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', function ($scope, $http)
     console.log("Hello World from controller");
 
     var socket = io();
-    var max = 0;
+
     var cantKeepUpHits;
     var decreaseVolumeHits;
     var increaseVolumeHits;
@@ -21,10 +21,10 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', function ($scope, $http)
                 console.log("I got ERROR");
             });
         $http.get('/counters').then(function(response){
-            cantKeepUpHits =  response.data[0].hits
-            decreaseVolumeHits =  response.data[1].hits
-            increaseVolumeHits =  response.data[2].hits
-            decreaseSpeedHits =  response.data[3].hits
+            cantKeepUpHits =  response.data[0].hits;
+            decreaseVolumeHits =  response.data[1].hits;
+            increaseVolumeHits =  response.data[2].hits;
+            decreaseSpeedHits =  response.data[3].hits;
             increaseSpeedHits =  response.data[4].hits
         })
     };
@@ -35,9 +35,25 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', function ($scope, $http)
         console.log("cantKeepUp button was clicked");
     };
     $scope.resetVotes = function() {
+        var cantKeepUpBar = document.getElementById("cantKeepUpBar");
+        var decreaseVolumeBar = document.getElementById("decreaseVolumeBar");
+        var increaseVolumeBar = document.getElementById("increaseVolumeBar");
+        var decreaseSpeedBar = document.getElementById("decreaseSpeedBar");
+        var increaseSpeedBar = document.getElementById("increaseSpeedBar");
+        cantKeepUpBar.style.width=0+'%';
+        decreaseVolumeBar.style.width=0+'%';
+        increaseVolumeBar.style.width=0+'%';
+        increaseSpeedBar.style.width=0+'%';
+        decreaseSpeedBar.style.width=0+'%';
+        cantKeepUpHits =  0;
+        decreaseVolumeHits =  0;
+        increaseVolumeHits =  0;
+        decreaseSpeedHits =  0;
+        increaseSpeedHits =  0;
+
         socket.emit('resetVotes');
-        console.log("votes reset")
-    }
+        console.log("votes reset");
+    };
 
 
     // remove function bound to the delete buttons in lecture view
@@ -63,34 +79,9 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', function ($scope, $http)
         $scope.$apply();
 
     });
-    socket.on('resetVotes', function(){
-        var cantKeepUpBar = document.getElementById("cantKeepUpBar");
-        var decreaseVolumeBar = document.getElementById("decreaseVolumeBar");
-        var increaseVolumeBar = document.getElementById("increaseVolumeBar");
-        var decreaseSpeedBar = document.getElementById("decreaseSpeedBar");
-        var increaseSpeedBar = document.getElementById("increaseSpeedBar");
-        cantKeepUpBar.style.width=0+'%';
-        decreaseVolumeBar.style.width=0+'%';
-        increaseVolumeBar.style.width=0+'%';
-        increaseSpeedBar.style.width=0+'%';
-        decreaseSpeedBar.style.width=0+'%';
-        cantKeepUpHits =  0
-        decreaseVolumeHits =  0
-        increaseVolumeHits =  0
-        decreaseSpeedHits =  0
-        increaseSpeedHits =  0
 
-    })
-    socket.on('incUser',function(){
-        max+=1;
-        console.log("more users")
 
-    })
-    socket.on('decUser',function(){
-        max-=1;
-
-    })
-    socket.on('cantKeepUp',function( hit){
+    socket.on('cantKeepUp',function(hit,max ){
         cantKeepUpHits += hit;
 
 
@@ -106,7 +97,7 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', function ($scope, $http)
         elem.style.width=percent+'%';
 
     });
-    socket.on('decreaseVolume', function(hit){
+    socket.on('decreaseVolume', function(hit,max ){
         decreaseVolumeHits += hit;
         console.log("decrease volume lecture side");
 
@@ -120,7 +111,7 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', function ($scope, $http)
 
         elem.style.width=percent+'%';
     });
-    socket.on('increaseVolume', function(hit){
+    socket.on('increaseVolume', function(hit,max ){
         increaseVolumeHits += hit;
         console.log("increaseses volumes lecture side");
 
@@ -135,7 +126,7 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', function ($scope, $http)
         elem.style.width=percent+'%';
 
     });
-    socket.on('decreaseSpeed', function(hit){
+    socket.on('decreaseSpeed', function(hit,max ){
         decreaseSpeedHits += hit;
         console.log("decerease speed lecture side");
 
@@ -151,7 +142,7 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', function ($scope, $http)
 
 
     });
-    socket.on('increaseSpeed', function(hit){
+    socket.on('increaseSpeed', function(hit,max ){
         increaseSpeedHits  += hit;
         console.log("incerease speed lecture side");
 

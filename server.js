@@ -5,12 +5,11 @@ var mongojs = require('mongojs');
 var db = mongojs('mongodb://heroku_2hcp9k8k:19uocjcgsn6ce4pp7j66fe1ras@ds119020.mlab.com:19020/heroku_2hcp9k8k', ['questionsCollection', 'counter']);
 var bodyParser = require('body-parser');
 var path = require('path');
-var cookie = require('cookie');
-var cookies = cookie.parse('userCount = 1; cantKeepUpCount = 1; decreaseVolumeCount = 1; increaseVolumeCount = 1;decreaseSpeedCount = 1; increaseSpeedCount = 1')
+var userCount=0;
 
 
 console.log("hai")
-console.log(cookies);
+
 
 app.use(express.static(__dirname));
 app.use(bodyParser.json());
@@ -19,25 +18,22 @@ app.use(bodyParser.json());
 /* SOCKET IO */
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var userCounter = 0;
+var clients = [];
 
 // socket functions
 io.on('connection', function (socket) {
-    console.log('User ' + userCounter + ' connected.');
-    if (cookies.userCount>0){
-        userCounter += 1;
-        io.emit('incUser')
-        cookies.userCount -=1;
-    }
+    console.log('User ' + socket.id + ' connected.' + userCount);
+
+    socket.on('storeClient', function(inc){
+        userCount+=inc;
+        console.log(userCount+ " count")
+
+    });
+
 
 
     socket.on('disconnect', function () {
-        console.log('a user disconnected');
-        if (cookies.userCount<1){
-            userCounter -= 1;
-            io.emit('decUser')
-            cookies.userCount +=1;
-        }
+
 
     });
 
@@ -61,60 +57,46 @@ io.on('connection', function (socket) {
         io.emit('question message', {_id: mongojs.ObjectID(rString), text: msg});
     });
     //menu buttons
-    socket.on('cantKeepUp',function(){
-        var hits = parseInt(cookies.cantKeepUpCount);
-        db.counter.update({"counter" : "cantKeepUp"}, {"$inc":{"hits": parseInt(cookies.cantKeepUpCount)}});
-        console.log("cant keep up server"+ parseInt(cookies.cantKeepUpCount));
+    socket.on('cantKeepUp',function(inc){
 
-        cookies.cantKeepUpCount=parseInt(cookies.cantKeepUpCount)*(-1);
+        db.counter.update({"counter" : "cantKeepUp"}, {"$inc":{"hits": inc}});
 
 
-        io.emit('cantKeepUp',  hits )
+        io.emit('cantKeepUp',  inc, userCount )
 
     });
-    socket.on('decreaseVolume', function(){
-        var hits = parseInt(cookies.decreaseVolumeCount)
-        db.counter.update({"counter" : "decreaseVolume"}, {"$inc":{"hits": parseInt(cookies.decreaseVolumeCount)}});
-        console.log("decrease volume " + cookies.decreaseVolumeCount);
-        cookies.decreaseVolumeCount=parseInt(cookies.decreaseVolumeCount)*(-1);
-        console.log(cookies);
+    socket.on('decreaseVolume', function(inc){
 
-        io.emit('decreaseVolume', hits)
+        db.counter.update({"counter" : "decreaseVolume"}, {"$inc":{"hits": inc}});
+
+        io.emit('decreaseVolume', inc, userCount)
     });
-    socket.on('increaseVolume', function(){
-        var hits = parseInt(cookies.increaseVolumeCount)
-        db.counter.update({"counter" : "increaseVolume"}, {"$inc":{"hits": parseInt(cookies.increaseVolumeCount)}});
-        console.log("increaseses volumes" + cookies.increaseVolumeCount);
-        cookies.increaseVolumeCount=parseInt(cookies.increaseVolumeCount)*(-1);
+    socket.on('increaseVolume', function(inc){
 
-        io.emit('increaseVolume', hits)
+        db.counter.update({"counter" : "increaseVolume"}, {"$inc":{"hits": inc}});
+
+        io.emit('increaseVolume', inc, userCount);
 
     });
-    socket.on('decreaseSpeed', function(){
-        var hits = parseInt(cookies.decreaseSpeedCount)
-        db.counter.update({"counter" : "decreaseSpeed"}, {"$inc":{"hits": parseInt(cookies.decreaseSpeedCount)}});
-        console.log("decerease speed" + cookies.decreaseSpeedCount);
-        cookies.decreaseSpeedCount=parseInt(cookies.decreaseSpeedCount)*(-1);
+    socket.on('decreaseSpeed', function(inc){
 
-        io.emit('decreaseSpeed', hits)
+        db.counter.update({"counter" : "decreaseSpeed"}, {"$inc":{"hits": inc}});
+        console.log("decerease speed" );
+
+
+        io.emit('decreaseSpeed', inc, userCount)
 
     });
-    socket.on('increaseSpeed', function(){
-        var hits = parseInt(cookies.increaseSpeedCount)
-        db.counter.update({"counter" : "increaseSpeed"}, {"$inc":{"hits": parseInt(cookies.increaseSpeedCount)}});
-        console.log("incerease speed"+ cookies.increaseSpeedCount);
-        cookies.increaseSpeedCount=parseInt(cookies.increaseSpeedCount)*(-1);
+    socket.on('increaseSpeed', function(inc){
 
-        io.emit('increaseSpeed', hits)
+        db.counter.update({"counter" : "increaseSpeed"}, {"$inc":{"hits": inc}});
+        io.emit('increaseSpeed', inc, userCount)
 
     });
     socket.on('resetVotes', function(){
         db.counter.update({},{"$set":{"hits":0}},{multi:true});
-        console.log(cookies);
-        cookies = cookie.parse('userCount = 0; cantKeepUpCount = 1; decreaseVolumeCount = 1; increaseVolumeCount = 1;decreaseSpeedCount = 1; increaseSpeedCount = 1')
-        console.log(cookies);
         io.emit('resetVotes');
-    })
+    });
 
     //servers response to emitted message to delete question from lecturer controller
     socket.on('question delete', function (index, id) {
