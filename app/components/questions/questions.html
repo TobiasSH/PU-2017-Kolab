@@ -29,11 +29,10 @@
             </tr>
         </table>
         <table id="questionsTable" class="table questions-table">
-            <tr ng-repeat="question in kolabDBScope | orderBy:'-'" class="questionRows">
-                <td> {{question.tag}}
-                </td>
+            <tr ng-repeat="(key, value) in kolabDBScope | orderBy:'-' | groupBy: value.tag" class="questionRows">
+
                 <!--<td>{{question.number}}</td>-->
-                <td class="td-question">{{question.text}}</td>
+                <td class="td-question">{{value.text}}</td>
             </tr>
         </table>
     </div>

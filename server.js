@@ -9,8 +9,6 @@ var path = require('path');
 var cookie = require('cookie');
 var cookies = cookie.parse('userCount = 1; cantKeepUpCount = 1; decreaseVolumeCount = 1; increaseVolumeCount = 1;decreaseSpeedCount = 1; increaseSpeedCount = 1')
 
-
-console.log("hai")
 console.log(cookies);
 
 app.use(express.static(__dirname));
@@ -27,7 +25,7 @@ io.on('connection', function (socket) {
     console.log('User ' + userCounter + ' connected.');
     if (cookies.userCount>0){
         userCounter += 1;
-        io.emit('incUser')
+        io.emit('incUser');
         cookies.userCount -=1;
     }
 
@@ -45,7 +43,11 @@ io.on('connection', function (socket) {
     // servers response to emitted message from controllers
     socket.on('question message', function (msg) {
         console.log('message: ' + msg);
+        io.emit('pp message', {_id: mongojs.ObjectID(rString), text: msg, tag: ""});
+    });
 
+    socket.on('processed message', function (msg) {
+        console.log('message: ' + msg);
         //creates random string with the function outside the socket function
         var rString = randomString(24, '0123456789abcdef');
 
@@ -61,6 +63,7 @@ io.on('connection', function (socket) {
         // broadcasts question message to all listening sockets with the same object we insert into the database
         io.emit('question message', {_id: mongojs.ObjectID(rString), text: msg});
     });
+
     //menu buttons
     socket.on('cantKeepUp',function(){
         var hits = parseInt(cookies.cantKeepUpCount);

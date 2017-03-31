@@ -165,7 +165,7 @@ class Namespace(BaseNamespace):
     def on_disconnect(self):
         print('[Disconnected]')
 
-    def on_question_message(self, message):
+    def on_pp_message(self, message):
         processNew(message)
 
 socketIO = SocketIO('localhost', 3000, Namespace) #connects to localhost:3000
