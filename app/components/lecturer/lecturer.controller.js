@@ -105,65 +105,30 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', function ($scope, $http)
 
     socket.on('cantKeepUp',function(hit,max ){
         cantKeepUpHits += hit;
-
-
-        console.log(cantKeepUpHits + "hit get on");
-        var percent = (cantKeepUpHits/(total))*100
-        console.log(percent +"%")
-        console.log(total+" users")
-        console.log(cantKeepUpHits + " hits")
-        console.log("cant keeep up lecture side");
+        var percent = (cantKeepUpHits/(total))*100;
         cantKeepUpBar.style.width=percent+'%';
 
     });
     socket.on('decreaseVolume', function(hit,max ){
         decreaseVolumeHits += hit;
-        console.log("decrease volume lecture side");
-
         var percent = (decreaseVolumeHits/(total))*100
-        console.log(percent +"%")
-        console.log(total+" users")
-        console.log(decreaseVolumeHits + " hits")
-        console.log("decrease up lecture side");
         decreaseVolumeBar.style.width=percent+'%';
     });
     socket.on('increaseVolume', function(hit,max ){
         increaseVolumeHits += hit;
-        console.log("increaseses volumes lecture side");
-
         var percent = (increaseVolumeHits/(total))*100
-        console.log(percent +"%")
-        console.log(total+" users")
-        console.log(increaseVolumeHits + " hits")
-        console.log("increase vol up lecture side");
         increaseVolumeBar.style.width=percent+'%';
 
     });
     socket.on('decreaseSpeed', function(hit,max ){
         decreaseSpeedHits += hit;
-        console.log("decerease speed lecture side");
-
         var percent = (decreaseSpeedHits/(total))*100
-        console.log(percent +"%")
-        console.log(total+" users")
-        console.log(decreaseSpeedHits + " hits")
-        console.log("decrease speed lecture side");
         decreaseSpeedBar.style.width=percent+'%';
-
-
     });
     socket.on('increaseSpeed', function(hit,max ){
         increaseSpeedHits  += hit;
-        console.log("incerease speed lecture side");
-
         var percent = (increaseSpeedHits/(total))*100
-        console.log(percent +"%")
-        console.log(total+" users")
-        console.log(increaseSpeedHits + " hits")
-        console.log("increase speed lecture side");
         increaseSpeedBar.style.width=percent+'%';
-
-
     });
 
 }]);

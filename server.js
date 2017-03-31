@@ -1,15 +1,10 @@
 var express = require('express');
 var app = express();
 var mongojs = require('mongojs');
-
 var db = mongojs('mongodb://heroku_2hcp9k8k:19uocjcgsn6ce4pp7j66fe1ras@ds119020.mlab.com:19020/heroku_2hcp9k8k', ['questionsCollection', 'counter']);
 var bodyParser = require('body-parser');
 var path = require('path');
 var userCount=0;
-
-
-console.log("hai")
-
 
 app.use(express.static(__dirname));
 app.use(bodyParser.json());
@@ -23,20 +18,12 @@ var io = require('socket.io')(http);
 // socket functions
 io.on('connection', function (socket) {
     console.log('User ' + socket.id + ' connected.' + userCount);
-
     socket.on('storeClient', function(inc){
         userCount+=inc;
-        console.log(userCount+ " count")
+        console.log(userCount+ " count");
         db.counter.update({"counter" : "userCount"}, {"$inc":{"hits": inc}});
-
-
     });
-
-
-
     socket.on('disconnect', function () {
-
-
 
     });
 
@@ -61,40 +48,25 @@ io.on('connection', function (socket) {
     });
     //menu buttons
     socket.on('cantKeepUp',function(inc){
-
         db.counter.update({"counter" : "cantKeepUp"}, {"$inc":{"hits": inc}});
-
-
-        io.emit('cantKeepUp',  inc, userCount )
-
+        io.emit('cantKeepUp',  inc, userCount );
     });
     socket.on('decreaseVolume', function(inc){
-
         db.counter.update({"counter" : "decreaseVolume"}, {"$inc":{"hits": inc}});
-
-        io.emit('decreaseVolume', inc, userCount)
+        io.emit('decreaseVolume', inc, userCount);
     });
     socket.on('increaseVolume', function(inc){
-
         db.counter.update({"counter" : "increaseVolume"}, {"$inc":{"hits": inc}});
-
         io.emit('increaseVolume', inc, userCount);
-
     });
     socket.on('decreaseSpeed', function(inc){
-
         db.counter.update({"counter" : "decreaseSpeed"}, {"$inc":{"hits": inc}});
         console.log("decerease speed" );
-
-
-        io.emit('decreaseSpeed', inc, userCount)
-
+        io.emit('decreaseSpeed', inc, userCount);
     });
     socket.on('increaseSpeed', function(inc){
-
         db.counter.update({"counter" : "increaseSpeed"}, {"$inc":{"hits": inc}});
-        io.emit('increaseSpeed', inc, userCount)
-
+        io.emit('increaseSpeed', inc, userCount);
     });
     socket.on('resetVotes', function(){
         db.counter.update({},{"$set":{"hits":0}},{multi:true});
