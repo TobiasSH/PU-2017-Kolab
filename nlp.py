@@ -119,7 +119,10 @@ def processNew(newmessage):  # Used when a new question arrives
                 if word[1].startswith('N'):
                     nouns.append(lemmatized)
         print ("This is the document at the end", str(newmessage))
-        db.questionsCollection.update({'_id': newmessage['_id']}, {"$set": {'tag': nouns}}, upsert=False)
+        #db.questionsCollection.update({'_id': newmessage['_id']}, {"$set": {'tag': nouns}}, upsert=False)
+        msg = {'_id': newmessage['_id'], 'text': newmessage['text'], 'tag': nouns }
+        print ("This is the message: ",msg)
+        socketIO.emit('processed message', msg)
         print ("Processed question: " + str(filtered_sentence))  # This is the processed question
         print ("These are the nouns: ", str(nouns))
         print ()

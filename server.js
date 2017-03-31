@@ -43,16 +43,17 @@ io.on('connection', function (socket) {
     // servers response to emitted message from controllers
     socket.on('question message', function (msg) {
         console.log('message: ' + msg);
+        var rString = randomString(24, '0123456789abcdef');
         io.emit('pp message', {_id: mongojs.ObjectID(rString), text: msg, tag: ""});
     });
 
     socket.on('processed message', function (msg) {
         console.log('message: ' + msg);
+
         //creates random string with the function outside the socket function
-        var rString = randomString(24, '0123456789abcdef');
 
         //inserting new message into mlab database
-        db.questionsCollection.insert({_id: mongojs.ObjectID(rString), text: msg, tag: ""}, function (err, o) {
+        db.questionsCollection.insert({_id: mongojs.ObjectID(msg._id), text: msg.text, tag: msg.tag}, function (err, o) {
             if (err) {
                 console.warn(err.message);
             }
@@ -61,7 +62,7 @@ io.on('connection', function (socket) {
             }
         });
         // broadcasts question message to all listening sockets with the same object we insert into the database
-        io.emit('question message', {_id: mongojs.ObjectID(rString), text: msg});
+        io.emit('question message', {_id: mongojs.ObjectID(msg._id), text: msg.text});
     });
 
     //menu buttons
@@ -86,7 +87,7 @@ io.on('connection', function (socket) {
         io.emit('decreaseVolume', hits)
     });
     socket.on('increaseVolume', function(){
-        var hits = parseInt(cookies.increaseVolumeCount)
+        var hits = parseInt(cookies.increaseVolumeCount);
         db.counter.update({"counter" : "increaseVolume"}, {"$inc":{"hits": parseInt(cookies.increaseVolumeCount)}});
         console.log("increaseses volumes" + cookies.increaseVolumeCount);
         cookies.increaseVolumeCount=parseInt(cookies.increaseVolumeCount)*(-1);
@@ -95,7 +96,7 @@ io.on('connection', function (socket) {
 
     });
     socket.on('decreaseSpeed', function(){
-        var hits = parseInt(cookies.decreaseSpeedCount)
+        var hits = parseInt(cookies.decreaseSpeedCount);
         db.counter.update({"counter" : "decreaseSpeed"}, {"$inc":{"hits": parseInt(cookies.decreaseSpeedCount)}});
         console.log("decerease speed" + cookies.decreaseSpeedCount);
         cookies.decreaseSpeedCount=parseInt(cookies.decreaseSpeedCount)*(-1);
@@ -104,7 +105,7 @@ io.on('connection', function (socket) {
 
     });
     socket.on('increaseSpeed', function(){
-        var hits = parseInt(cookies.increaseSpeedCount)
+        var hits = parseInt(cookies.increaseSpeedCount);
         db.counter.update({"counter" : "increaseSpeed"}, {"$inc":{"hits": parseInt(cookies.increaseSpeedCount)}});
         console.log("incerease speed"+ cookies.increaseSpeedCount);
         cookies.increaseSpeedCount=parseInt(cookies.increaseSpeedCount)*(-1);
