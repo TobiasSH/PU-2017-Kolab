@@ -14,14 +14,13 @@ body{
     z-index: -10000;
 
     display: block;
-    background-image: url('/assets/img/triangle.svg');
+    opacity: 0.8;
+    background-image: url('/assets/img/triangle-blur.png');
     width: 100%;
     height: 100%;
     background-repeat: repeat;
 
 }
-
-
 
 
 .vertical-center {
@@ -39,58 +38,96 @@ body{
 }
 
 h1 {
-    color: white;
+    color: #EEEEEE;
     text-shadow: -2px 2px black;
 }
-
 
 
 /* TABLE CSS */
 /********************/
 
 .table {
-    table-layout: fixed;
+    /*table-layout: fixed;*/
     width: 100%;
+    /*border: 1px solid green;*/
 }
 
-th {
-    font-size: 48px;
+.menu-table {
+    /*table-layout: fixed;*/
+    width: 98%;
+    margin: 10px 0px -60px 10px;
+    /*border: 1px solid green;*/
+}
 
+.front-table {
+    width: 92%;
+    margin: 40px 0px 0px 40px;
+}
+
+.lecturer-table {
+    width: 92%;
+    margin: 40px 0px 0px 40px;
+}
+
+.questions-table {
+    width: 92%;
+    margin: 40px 0px 0px 40px;
+}
+
+.table th {
+    font-size: 48px;
 }
 
 tbody{
     width: 100%;
     display:inherit;
+    /*border: 1px solid yellow;*/
 }
 
 
-tr {
+.table tr {
     min-width: inherit;
     color: white;
     padding: 0;
-rgba(50, 50, 50, 1);
     line-height: 25px;
     min-height: 200px;
 }
 
 .questionRows{
     border-bottom: 1px solid black;
-    word-break: break-all;
+    /*word-break: break-all;*/
 }
 
-td {
-
+.table td {
     border: 0px !important;
+    /*border: 1px solid black;*/
     font-size: 38px;
     min-height: inherit;
     height: 100%;
-    width: 50%;
+    /*width: 50%;*/
 }
 
 .td-question {
     font-size: 30px;
     width: 100%;
 }
+
+.title{
+    /*text-align: left;
+    table-layout: fixed;*/
+    width: 92%;
+    margin: 40px 40px 0px 40px;
+    background: rgba(204,204,204,0.05);
+    /*border: 1px solid black;*/
+    border-radius: 0px 128px 128px 0px;
+}
+.title h1 {
+    margin-left: 20px;
+}
+
+/*.title td {
+    border: 1px solid black;
+}*/
 
 
 /* TEXTAREA AND FORM */
@@ -112,7 +149,7 @@ textarea{
 /********************/
 
 .btn {
-    border-radius: 0;
+    border-radius: 0px;
 }
 
 
@@ -121,25 +158,109 @@ textarea{
     width:100%;
     font-size: 34px;
     min-width: 150px;
+    background: #99DDEE;
+    color: #555555;
+    border-radius: 0px 128px 128px 0px;
 }
 
 .btn-remove{
-    height: 100%;
-    width:100%;
+    height: 50%;
+    width: 50%;
     font-size: 34px;
-    min-width: 150px;
+    min-height: 100px;
+    min-width: 100px;
+    background: #FFCCCC;
+    border-radius: 50px;
+    margin: 10px 0px 10px 0px; 
 }
 
 
 .bn-square {
-
     width:100%;
-    height:300px;
-    font-size: 24px;
+    height:450px;
+    font-size: 28px;
     min-height: 100%;
     min-width: 100%;
-    max-width: 300px;
-    max-height: 300px;
+    max-width: 450px;
+    max-height: 450px;
+    /*border: 1px solid red;*/
+    border-radius: 30px;
 }
 
+.btn-question {
+    background: #99EAEE;
+    color: #555555;
+}
 
+.btn-cantkeepup {
+    background: #99EAEE;
+    color: #555555;
+}
+
+.btn-volume {
+    background: #FFCCCC;
+    color: #555555;
+}
+
+.btn-speed {
+    background: #FFDDAA;
+    color: #555555;
+}
+
+.btn-student {
+    background: #99DDEE;
+    color: #555555;
+}
+
+.btn-lecturer {
+    background: #99DDEE;
+    color: #555555;
+}
+
+.btn-home {
+    float: right;
+    /*width:100%;*/
+    height:150px;
+    min-height: 100%;
+    min-width: 100%;
+    max-width: 150px;
+    max-height: 150px;
+    /*background: #CCFFCC;*/
+    background: rgba(204,255,204,0.05);
+    color: #888888;
+    border-radius: 128px;
+}
+
+/* IMAGES */
+/********************/
+
+.front-button-icon {
+  height: 128px;
+}
+
+.menu-button-icon {
+  height: 100px;
+}
+
+.lecturer-button-icon {
+    height: 50px;
+}
+
+.home-button-icon {
+  height: 100%;
+  width: 128px;
+}
+
+/* PROGRESSBAR */
+/********************/
+
+.progress {
+    width: 92%;
+    height: 40px;
+    margin: 10px 40px 0px 40px;
+}
+
+.progress-bar {
+    font-size: 28px;
+    line-height: 32px;
+} 
