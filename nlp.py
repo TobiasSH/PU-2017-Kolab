@@ -118,6 +118,8 @@ def processNew(newmessage):  # Used when a new question arrives
                 filtered_sentence.append(lemmatized)
                 if word[1].startswith('N'):
                     nouns.append(lemmatized)
+        if len(nouns)==0:
+            nouns.append("Uncategorized")
         print ("This is the document at the end", str(newmessage))
         #db.questionsCollection.update({'_id': newmessage['_id']}, {"$set": {'tag': nouns}}, upsert=False)
         msg = {'_id': newmessage['_id'], 'text': newmessage['text'], 'tag': nouns }

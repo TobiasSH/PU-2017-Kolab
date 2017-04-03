@@ -29,9 +29,11 @@
             </tr>
         </table>
         <table id="questionsTable" class="table questions-table">
-            <thead ng-repeat="noun in newTags">
+            <thead  ng-repeat="noun in newTags track by $index"
+                   ng-init="$rowIndex = $index">
+
             <tr class="nounRows"><td class="td-noun">{{noun[0].tag}}</td></tr>
-                <tr ng-repeat="question in noun" class="questionRows">
+                <tr ng-repeat="question in noun track by $index" class="questionRows">
 
                     <!--<td>{{question.number}}</td>-->
                     <td class="td-question">{{question.text}}</td>

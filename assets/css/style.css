@@ -91,11 +91,25 @@ tbody{
     padding: 0;
     line-height: 25px;
     min-height: 200px;
+
 }
 
 .questionRows{
     border-bottom: 1px solid black;
     /*word-break: break-all;*/
+}
+
+thead.nounhead{
+    cursor:pointer !important;
+}
+
+.nounRows {
+    background-color: darkgray;
+    border-bottom: 1px solid black;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    border-top: 1px solid black;
+    opacity: 0.4;
 }
 
 .table td {
@@ -113,16 +127,12 @@ tbody{
 }
 
 .td-noun{
-    color: lightgray;
+    color: white;
+    opacity: 1;
     text-shadow: -2px 2px black;
 }
 
-.nounRows {
-    border-bottom: 1px solid black;
-    border-left: 1px solid black;
-    border-right: 1px solid black;
-    border-top: 1px solid black;
-}
+
 .title{
     /*text-align: left;
     table-layout: fixed;*/

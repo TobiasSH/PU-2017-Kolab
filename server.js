@@ -62,7 +62,7 @@ io.on('connection', function (socket) {
             }
         });
         // broadcasts question message to all listening sockets with the same object we insert into the database
-        io.emit('question message', {_id: mongojs.ObjectID(msg._id), text: msg.text});
+        io.emit('question message', {_id: mongojs.ObjectID(msg._id), text: msg.text, tag: msg.tag});
     });
 
     //menu buttons
