@@ -28,17 +28,34 @@
                 </td>
             </tr>
         </table>
-        <table id="questionsTable" class="table questions-table">
-            <thead  ng-repeat="noun in newTags track by $index"
-                   ng-init="$rowIndex = $index">
+        <div ng-switch="grouped">
+            <button type="button" class="btn btn-small" ng-click="switchView()">Grouped/Ungrouped</button>
 
-            <tr class="nounRows"><td class="td-noun">{{noun[0].tag}}</td></tr>
-                <tr ng-repeat="question in noun track by $index" class="questionRows">
+            <div ng-switch-when="groupedFalse">
+                <table id="questionsTable" class="table questions-table">
+                    <tr ng-repeat="question in kolabDBScope | orderBy:'-'" class="questionRows">
+                        <!--<td>{{question.number}}</td>-->
+                        <td class="td-question">{{question.text}}</td>
+                    </tr>
+                </table>
+            </div>
+            <div ng-switch-when="groupedTrue">
 
-                    <!--<td>{{question.number}}</td>-->
-                    <td class="td-question">{{question.text}}</td>
-                </tr>
-            </thead>
-        </table>
+                <table id="questionsTableGrouped" class="table questions-table">
+                    <thead ng-repeat="noun in newTags track by $index"
+                           ng-init="$rowIndex = $index">
+
+                    <tr class="nounRows">
+                        <td class="td-noun">{{noun[0].tag}}</td>
+                    </tr>
+                    <tr ng-repeat="question in noun track by $index" class="questionRows">
+
+                        <!--<td>{{question.number}}</td>-->
+                        <td class="td-question">{{question.text}}</td>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
     </div>
 </div>

@@ -3,6 +3,7 @@ kolabApp.controller('questionsCtrl', ['$scope', '$http', function ($scope, $http
 
     var socket = io();
 
+    $scope.grouped = "groupedTrue";
 
     // initial retrieval of questions from the database
     var refresh = function () {
@@ -21,24 +22,15 @@ kolabApp.controller('questionsCtrl', ['$scope', '$http', function ($scope, $http
                     $scope.newTags[$scope.kolabDBScope[i].tag].push($scope.kolabDBScope[i]);
                 }
                 console.log("These are the tags: ", $scope.newTags); //object with array of objects
-                var newobj = $scope.newTags;
+               /* var newobj = $scope.newTags;
                 for (var property in newobj) {
                     if (newobj.hasOwnProperty(property)) {
                         //console.log(newobj[property]);
                         for (var i = 0; i < newobj[property].length; i++) {
-                            console.log(newobj[property][i].text);
+                            //console.log(newobj[property][i].text);
                         }
                     }
-                }
-                /*Object.keys(newobj).forEach(function(key,index) {
-                 console.log("This is the key ", key,index);
-                 for (e in key){
-                 console.log(e);
-                 }
-                 // key: the name of the object key
-                 // index: the ordinal position of the key within the object
-                 });*/
-
+                }*/
 
             },
             function (error) {
@@ -57,6 +49,14 @@ kolabApp.controller('questionsCtrl', ['$scope', '$http', function ($scope, $http
         }
     };
 
+    $scope.switchView = function () {
+        if ($scope.grouped == "groupedTrue"){
+            $scope.grouped = "groupedFalse";
+        }else{
+            $scope.grouped = "groupedTrue";
+        }
+    };
+
     // socket message "question delete" and the response to that message
     socket.on('question delete', function (index, id) {
         console.log("Trying to delete message (SOCKET) with ID: " + id);
@@ -67,15 +67,12 @@ kolabApp.controller('questionsCtrl', ['$scope', '$http', function ($scope, $http
     // socket message "question message" and the response to that message
     socket.on('question message', function (msg) {
         console.log(msg.tag);
-        //$scope.newTags.push(msg);
-        //console.log("Newtags currently : ", $scope.newTags);
+        $scope.kolabDBScope.push(msg);
+        $scope.$apply();
         //needs an if-statement for whether we're on grouped or non-grouped view
         var newcategory = true;
         for (var property in $scope.newTags) {
-            console.log(property);
             if ($scope.newTags.hasOwnProperty(property)) {
-
-                console.log("What is the value of msg.tag?? ", msg.tag, "vs the value of property: ", property);
                 if (msg.tag[0] === property) {
                     console.log("We tried inserting directly into the scope", property);
                     newcategory = false;
@@ -85,25 +82,16 @@ kolabApp.controller('questionsCtrl', ['$scope', '$http', function ($scope, $http
                 }
             }
         }
-        if (newcategory == true){
+        if (newcategory == true){ //if the tag cannot be found we insert it into the scope
             console.log("Category not found.");
             $scope.newTags[msg.tag]= [];
             $scope.newTags[msg.tag].push(msg);
             $scope.$apply();
         }
-        //$scope.$apply();
 
 
     });
 
-    /*for (var i = 0; i < $scope.newTags.length; i++) { //for-loop for finding the location we should place the new question
 
-        console.log($scope.newTags);
-
-        $scope.newTags[$scope.kolabDBScope[i].tag].push($scope.kolabDBScope[i]);
-    }*/
-    /*$('.nounrows').click(function(){
-     $(this).nextUntil('.nounRows').toggle();
-     });*/
 
 }]);
