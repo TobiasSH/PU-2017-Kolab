@@ -2,6 +2,10 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', function ($scope, $http) {
     console.log("Hello World from menu-controller");
     var socket = io();
     var countString;
+    //countString is used to save the current users clicks in cookie
+    //it consist of 5 digits, initially all ones 11111
+    //When a button is clicked the the corresponding digit is set to 0
+    //Clicking the same button is registered as unclicking this button
 
     $scope.cantKeepUp = function () {
         console.log("cantKeepUp button was clicked");
@@ -11,6 +15,7 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', function ($scope, $http) {
             var newString = 0+countString.slice(1);
             countString = document.cookie=newString;
             inc = 1;
+
          }
         else if (hits==0){
             var newString = 1+countString.slice(1);
@@ -18,6 +23,7 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', function ($scope, $http) {
             inc = -1;
           }
         socket.emit('cantKeepUp', inc)
+
     };
 
     $scope.decreaseVolume = function () {
