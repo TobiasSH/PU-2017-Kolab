@@ -3,13 +3,13 @@ var app = express();
 var mongojs = require('mongojs');
 
 
-var db = mongojs('mongodb://heroku_2hcp9k8k:19uocjcgsn6ce4pp7j66fe1ras@ds119020.mlab.com:19020/heroku_2hcp9k8k', ['roomsCollection', 'roomsQuestionsCollection', 'counter']);
+var db = mongojs('mongodb://heroku_2hcp9k8k:19uocjcgsn6ce4pp7j66fe1ras@ds119020.mlab.com:19020/heroku_2hcp9k8k', ['userIdCollection','roomsCollection', 'roomsQuestionsCollection', 'counter']);
 var bodyParser = require('body-parser');
 var path = require('path');
 
 var cookie = require('cookie');
 var cookies = cookie.parse('userID = not yet; currentRoom = Not set yet; userCount = 1; cantKeepUpCount = 1; decreaseVolumeCount = 1; increaseVolumeCount = 1;decreaseSpeedCount = 1; increaseSpeedCount = 1')
-var users = 0;
+var uniqeUsers = 0;
 
 app.use(express.static(__dirname));
 app.use(bodyParser.json());
@@ -35,6 +35,21 @@ io.on('connection', function (socket) {
         userCounter -= 1;
     });
 
+    // Sjekker om brukeren har besøkt oss tifligere og dermed er lagret i dbs
+    // Hvis ikke inkrementerer vi Id og lager en ny
+    socket.on('get uniqueuser id', function (msg) {
+        db.userIdCollection.find({userId: msg}, function (err, docs) {
+            if (err) {
+                console.warn(err.message)
+                uniqeUsers ++;
+            }
+            else {
+                console.log(docs);
+                res.json(docs);
+            }
+        });
+
+    })
 
 
     socket.on('join room message', function (msg) {
