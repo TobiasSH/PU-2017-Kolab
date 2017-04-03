@@ -1,12 +1,16 @@
 kolabApp.controller('menuCtrl', ['$scope', '$http', function ($scope, $http) {
     console.log("Hello World from menu-controller");
     var socket = io();
-    var countString; //Contains a string of 0 and 1 corresponding to the status of the 5 buttons after cant keep up.
     var cantKeepUp = document.getElementById("cantKeepUp");
     var decreaseVolume = document.getElementById("decreaseVolume");
     var increaseVolume = document.getElementById("increaseVolume");
     var decreaseSpeed = document.getElementById("decreaseSpeed");
     var increaseSpeed = document.getElementById("increaseSpeed");
+    var countString;
+    //countString is used to save the current users clicks in cookie
+    //it consist of 5 digits, initially all ones 11111
+    //When a button is clicked the the corresponding digit is set to 0
+    //Clicking the same button is registered as unclicking this button
 
 
 
@@ -29,6 +33,7 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', function ($scope, $http) {
             cantKeepUp.className="btn btn-responsive btn-lg btn-block bn-square btn-cantkeepup"
           }
         socket.emit('cantKeepUp', inc)
+
     };
 
     $scope.decreaseVolume = function () {
