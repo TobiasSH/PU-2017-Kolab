@@ -80,14 +80,16 @@ kolabApp.controller('questionsCtrl', ['$scope', '$http', function ($scope, $http
                     console.log("We tried inserting directly into the scope", property);
                     newcategory = false;
                     $scope.newTags[property].push(msg);
-                    $scope.apply();
+                    $scope.$apply();
                     break;
                 }
             }
         }
         if (newcategory == true){
             console.log("Category not found.");
-            $scope.newTags.push(msg);
+            $scope.newTags[msg.tag]= [];
+            $scope.newTags[msg.tag].push(msg);
+            $scope.$apply();
         }
         //$scope.$apply();
 
