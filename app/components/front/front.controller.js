@@ -4,11 +4,14 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', func
     };
 
     // COOKIE STUFF FOR TESTING UNIQUE COOKIES
-    function getCname() {
-        return "hans";
+    //function getCname() {
+      //  return "hans";
+    //}
+
+    //TODO
+    function checkForExistingUser(cookieString) {
+
     }
-
-
 
     function setCookie(cname, cvalue, exdays) {
         var d = new Date();
@@ -48,7 +51,7 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', func
 
     // initial retrieval of questions from the database
     var refresh = function () {
-        console.log("Early refresh ck: " + document.cookie);
+       // console.log("Early refresh cookie: " + document.cookie);
 
         $http.get('/roomsCollection').then(function (response) {
                 console.log("I got the data I requested");
@@ -58,7 +61,8 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', func
             function (error) {
                 console.log("I got ERROR");
             });
-        console.log("Late refresh ck: " + document.cookie);
+
+        //console.log("Late refresh cookie: " + document.cookie);
     };
     refresh();
 
