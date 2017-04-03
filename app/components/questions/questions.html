@@ -19,7 +19,7 @@
         </table>
         <table class="table questions-table">
 
-            <tr> <!-- Push enter so send question, key code for enter is 13 -->
+            <tr> <!-- Push enter to send question, key code for enter is 13 -->
                 <td><textarea id="textareaQ" maxlength="140" size="80" class="form-control"
                               ng-model="question.text"
                               ng-keyup="$event.keyCode == 13 ? sendQuestion() : null"></textarea></td>
@@ -29,11 +29,14 @@
             </tr>
         </table>
         <table id="questionsTable" class="table questions-table">
-            <tr ng-repeat="(key, value) in kolabDBScope | orderBy:'-' | groupBy: value.tag" class="questionRows">
+            <thead ng-repeat="noun in newTags">
+            <tr class="nounRows"><td class="td-noun">{{noun[0].tag}}</td></tr>
+                <tr ng-repeat="question in noun" class="questionRows">
 
-                <!--<td>{{question.number}}</td>-->
-                <td class="td-question">{{value.text}}</td>
-            </tr>
+                    <!--<td>{{question.number}}</td>-->
+                    <td class="td-question">{{question.text}}</td>
+                </tr>
+            </thead>
         </table>
     </div>
 </div>
