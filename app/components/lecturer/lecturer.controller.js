@@ -36,8 +36,6 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', function ($scope, $http)
             total = response.data[5].hits;
             console.log(total + " kn");
             var percent = (cantKeepUpHits/(total))*100;
-            console.log(percent)
-
             cantKeepUpBar.style.width=percent+'%';
             var percent = (decreaseVolumeHits/(total))*100;
             decreaseVolumeBar.style.width=percent+'%';
@@ -102,7 +100,7 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', function ($scope, $http)
 
     });
 
-
+    //Progress bars
     socket.on('cantKeepUp',function(hit,max ){
         cantKeepUpHits += hit;
         var percent = (cantKeepUpHits/(total))*100;
@@ -111,23 +109,23 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', function ($scope, $http)
     });
     socket.on('decreaseVolume', function(hit,max ){
         decreaseVolumeHits += hit;
-        var percent = (decreaseVolumeHits/(total))*100
+        var percent = (decreaseVolumeHits/(total))*100;
         decreaseVolumeBar.style.width=percent+'%';
     });
     socket.on('increaseVolume', function(hit,max ){
         increaseVolumeHits += hit;
-        var percent = (increaseVolumeHits/(total))*100
+        var percent = (increaseVolumeHits/(total))*100;
         increaseVolumeBar.style.width=percent+'%';
 
     });
     socket.on('decreaseSpeed', function(hit,max ){
         decreaseSpeedHits += hit;
-        var percent = (decreaseSpeedHits/(total))*100
+        var percent = (decreaseSpeedHits/(total))*100;
         decreaseSpeedBar.style.width=percent+'%';
     });
     socket.on('increaseSpeed', function(hit,max ){
         increaseSpeedHits  += hit;
-        var percent = (increaseSpeedHits/(total))*100
+        var percent = (increaseSpeedHits/(total))*100;
         increaseSpeedBar.style.width=percent+'%';
     });
 

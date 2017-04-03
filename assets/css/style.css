@@ -195,16 +195,36 @@ textarea{
 .btn-cantkeepup {
     background: #99EAEE;
     color: #555555;
+    opacity: 1.0;
 }
 
 .btn-volume {
     background: #FFCCCC;
     color: #555555;
+    opacity: 1.0;
 }
 
 .btn-speed {
     background: #FFDDAA;
     color: #555555;
+    opacity: 1.0;
+}
+.btn-cantkeepupClicked {
+    background: #99EAEE;
+    color: #555555;
+    opacity: 0.6;
+}
+
+.btn-volumeClicked {
+    background: #FFCCCC;
+    color: #555555;
+    opacity: 0.6;
+}
+
+.btn-speedClicked {
+    background: #FFDDAA;
+    color: #555555;
+    opacity: 0.6;
 }
 
 .btn-student {
@@ -230,6 +250,7 @@ textarea{
     color: #888888;
     border-radius: 128px;
 }
+
 
 /* IMAGES */
 /********************/

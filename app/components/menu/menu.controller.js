@@ -1,8 +1,16 @@
 kolabApp.controller('menuCtrl', ['$scope', '$http', function ($scope, $http) {
     console.log("Hello World from menu-controller");
     var socket = io();
-    var countString;
+    var countString; //Contains a string of 0 and 1 corresponding to the status of the 5 buttons after cant keep up.
+    var cantKeepUp = document.getElementById("cantKeepUp");
+    var decreaseVolume = document.getElementById("decreaseVolume");
+    var increaseVolume = document.getElementById("increaseVolume");
+    var decreaseSpeed = document.getElementById("decreaseSpeed");
+    var increaseSpeed = document.getElementById("increaseSpeed");
 
+
+
+    //Button clicks
     $scope.cantKeepUp = function () {
         console.log("cantKeepUp button was clicked");
         var inc;
@@ -11,11 +19,14 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', function ($scope, $http) {
             var newString = 0+countString.slice(1);
             countString = document.cookie=newString;
             inc = 1;
+            cantKeepUp.className="btn btn-responsive btn-lg btn-block bn-square btn-cantkeepupClicked"
+
          }
         else if (hits==0){
             var newString = 1+countString.slice(1);
             countString = document.cookie=newString;
             inc = -1;
+            cantKeepUp.className="btn btn-responsive btn-lg btn-block bn-square btn-cantkeepup"
           }
         socket.emit('cantKeepUp', inc)
     };
@@ -28,11 +39,13 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', function ($scope, $http) {
             var newString = countString.slice(0,1)+0+countString.slice(2);
             countString = document.cookie=newString;
             inc = 1;
+            decreaseVolume.className="btn btn-responsive btn-lg btn-block bn-square btn-volume"
          }
         else if (hits==0){
             var newString = countString.slice(0,1)+1+countString.slice(2);
             countString = document.cookie=newString;
             inc = -1;
+            decreaseVolume.className="btn btn-responsive btn-lg btn-block bn-square btn-volumeClicked"
          }
         socket.emit('decreaseVolume', inc);
     };
@@ -45,11 +58,13 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', function ($scope, $http) {
             var newString = countString.slice(0,2)+0+countString.slice(3);
             countString = document.cookie=newString;
             inc = 1;
+            increaseVolume.className="btn btn-responsive btn-lg btn-block bn-square btn-volume"
         }
         else if (hits==0){
             var newString = countString.slice(0,2)+1+countString.slice(3);
             countString = document.cookie=newString;
             inc = -1;
+            increaseVolume.className="btn btn-responsive btn-lg btn-block bn-square btn-volumeClicked"
         }
         socket.emit('increaseVolume', inc)
     };
@@ -62,11 +77,13 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', function ($scope, $http) {
             var newString = countString.slice(0,3)+0+countString.slice(4);
             countString = document.cookie=newString;
             inc = 1;
+            decreaseSpeed.className="btn btn-responsive btn-lg btn-block bn-square btn-speed"
         }
         else if (hits==0){
             var newString = countString.slice(0,3)+1+countString.slice(4);
             countString = document.cookie=newString;
             inc = -1;
+            decreaseSpeed.className="btn btn-responsive btn-lg btn-block bn-square btn-speedClicked"
        }
         socket.emit('decreaseSpeed', inc);
     };
@@ -79,14 +96,17 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', function ($scope, $http) {
             var newString = countString.slice(0,4)+0+countString.slice(5);
             countString = document.cookie=newString;
             inc = 1;
+            increaseSpeed.className="btn btn-responsive btn-lg btn-block bn-square btn-speed"
       }
         else if (hits==0){
             var newString = countString.slice(0,4)+1+countString.slice(5);
             countString = document.cookie=newString;
             inc = -1;
+            increaseSpeed.className="btn btn-responsive btn-lg btn-block bn-square btn-speedClicked"
         }
         socket.emit('increaseSpeed', inc);
     };
+    //on connect sets cookie and counts users
     socket.on('connect', function () {
         countString = document.cookie;
         if (document.cookie=="" ){
