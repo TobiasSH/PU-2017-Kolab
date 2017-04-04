@@ -1,12 +1,13 @@
 from datetime import datetime
-
 start_time = datetime.now()
+
 import nltk
 from nltk.corpus import stopwords
-from nltk.tokenize import sent_tokenize, word_tokenize, PunktSentenceTokenizer
-from nltk.stem import PorterStemmer, WordNetLemmatizer
-from pymongo import MongoClient
+from nltk.tokenize import word_tokenize
+from nltk.stem import WordNetLemmatizer
 from nltk.corpus import wordnet
+
+from pymongo import MongoClient
 
 # CONNECTION TO HEROKU DATABASE
 #connection = MongoClient('mongodb://kolabgroup:12345678@ds119020.mlab.com:19020/heroku_2hcp9k8k')
@@ -21,7 +22,6 @@ questionsData = db.questionsCollection.find()  # Retrieving data from database
 
 stop_words = set(stopwords.words("english"))  # Retrieving stop words from corpus
 
-stemmer = PorterStemmer()  # Setting up the porter stemmer function
 
 lemmatizer = WordNetLemmatizer()  # Setup of the lemmatizer
 
@@ -49,9 +49,6 @@ def get_wordnet_pos(treebank_tag):  # conversion from the treebank tag of nltk-t
         return 'n'
 
 
-# for doced in questionsData:
-#    if doced['tag']:
-#        print (str(doced['tag']))
 print ("Load time before NLTK processing: ", str(datetime.now() - start_time))
 nltk_start = datetime.now()
 
@@ -134,30 +131,7 @@ def processNew(newmessage):  # Used when a new question arrives
         print (str(e))
 
 
-# ### SPACY ATTEMPTS
-#
-# #def processNew():  # Used when a new question arrives
-# #    return True
-# spacy_start = datetime.now()
-# import spacy
-#
-# nlp = spacy.load('en')
-#
-# doc = nlp(u'Hello, spacy!')          # See "Using the pipeline"
-# print((w.text, w.pos_) for w in doc)
-#
-#
-#
-# #print ("This is the question data",questionsData)
-#
-# for word in questionsData:
-#     print ("Printing within the loop")
-#     print(word.text, word.lemma, word.lemma_, word.tag, word.tag_, word.pos, word.pos_)
-#
-# print ("NLTK processing: ", str(datetime.now() - spacy_start))
-
-
-## BACK TO SOCKETIO
+##  SOCKETIO
 
 from socketIO_client import SocketIO, BaseNamespace
 
