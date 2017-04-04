@@ -9,8 +9,6 @@ var path = require('path');
 var cookie = require('cookie');
 var cookies = cookie.parse('userCount = 1; cantKeepUpCount = 1; decreaseVolumeCount = 1; increaseVolumeCount = 1;decreaseSpeedCount = 1; increaseSpeedCount = 1')
 
-console.log(cookies);
-
 app.use(express.static(__dirname));
 app.use(bodyParser.json());
 
@@ -63,6 +61,31 @@ io.on('connection', function (socket) {
         });
         // broadcasts question message to all listening sockets with the same object we insert into the database
         io.emit('question message', {_id: mongojs.ObjectID(msg._id), text: msg.text, tag: msg.tag});
+    });
+
+
+
+    //servers response to emitted message to delete question from lecturer controller
+    socket.on('question delete', function (index, id) {
+
+        console.log("Server received 'question delete' broadcast for id: "+id);
+        //deletes the selected question from the database
+        db.questionsCollection.remove({_id: mongojs.ObjectId(id)});
+        io.emit('question delete', index, id);
+
+
+    });
+
+
+    //servers response to emitted message to delete question from lecturer controller
+    socket.on('question delete grouped', function (rowIndex, index, obj) {
+
+        console.log("Server received 'question delete' broadcast for id: "+obj._id);
+        //deletes the selected question from the database
+        db.questionsCollection.remove({_id: mongojs.ObjectId(obj._id)});
+        io.emit('question delete grouped',rowIndex, index, obj);
+
+
     });
 
     //menu buttons
@@ -120,16 +143,6 @@ io.on('connection', function (socket) {
         io.emit('resetVotes');
     });
 
-    //servers response to emitted message to delete question from lecturer controller
-    socket.on('question delete', function (index, id) {
-
-        console.log("Server received 'question delete' broadcast for id: "+id);
-        //deletes the selected question from the database
-        db.questionsCollection.remove({_id: mongojs.ObjectId(id)});
-        io.emit('question delete', index, id);
-
-
-    });
 });
 
 /* ID Generator */

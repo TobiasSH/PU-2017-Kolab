@@ -67,13 +67,29 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', function ($scope, $http)
         socket.emit('question delete', index, id);
 
     };
+    // remove from grouped view
+    $scope.removeGrouped = function (rowIndex,index, id) {
+        console.log("This is the index of the question we're trying to delete: " + index + "\n and this is the ID: " + id);
+        socket.emit('question delete grouped',rowIndex, index, id);
+        for (property in $scope.newTags){
+
+            console.log("Current state of scope: "+ $scope.newTags[property]);
+
+        }
+
+    };
 
     // socket message "question delete" and the response to that message
     socket.on('question delete', function (index, id) {
         console.log("Trying to delete message (SOCKET) with ID: " + id);
-        console.log("kolabDBScope object: ");
 
         $scope.kolabDBScope.splice(index, 1);
+        $scope.$apply();
+    });
+
+    socket.on('question delete grouped', function (rowIndex, index, obj) {
+        console.log("Grouped: Trying to delete message with ID: " + obj._id + ", and rowIndex: "+rowIndex+ ", and normal index: "+index);
+        $scope.newTags[obj.tag].splice(index, 1);
         $scope.$apply();
     });
 
