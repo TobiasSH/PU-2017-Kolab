@@ -66,12 +66,12 @@ io.on('connection', function (socket) {
 
 
     //servers response to emitted message to delete question from lecturer controller
-    socket.on('question delete', function (index, id) {
+    socket.on('question delete', function (index, obj) {
 
-        console.log("Server received 'question delete' broadcast for id: "+id);
+        console.log("Server received 'question delete' broadcast for id: "+obj._id);
         //deletes the selected question from the database
-        db.questionsCollection.remove({_id: mongojs.ObjectId(id)});
-        io.emit('question delete', index, id);
+        db.questionsCollection.remove({_id: mongojs.ObjectId(obj._id)});
+        io.emit('question delete', index, obj);
 
 
     });

@@ -62,7 +62,7 @@
                         <!--<td>{{question.number}}</td>-->
                         <td width="80%" class="td-question">{{question.text}}</td>
                         <td width="20%">
-                            <button class="btn btn-lg btn-block btn-remove" ng-click="remove($index, question._id)">
+                            <button class="btn btn-lg btn-block btn-remove" ng-click="remove($index, question)">
                                 <img class="lecturer-button-icon" src="../../../assets/img/icons/remove.svg" onerror="this.onerror=null; this.src='../../../assets/img/icons/remove.png'">
                             </button>
                         </td>
@@ -73,7 +73,7 @@
 
                 <table id="questionsTableGrouped" class="table questions-table">
                     <tbody class="nounhead" ng-repeat="noun in newTags track by $index"
-                           ng-init="$rowIndex = $index">
+                           ng-init="$rowIndex = $index" ng-show="noun.length > 0">
 
                     <tr class="nounRows" ng-init="toggle[$rowIndex] = true"
                         ng-click="toggle[$index] = !toggle[$rowIndex]">

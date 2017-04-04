@@ -62,26 +62,28 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', function ($scope, $http)
 
 
     // remove function bound to the delete buttons in lecture view
-    $scope.remove = function (index, id) {
-        console.log("This is the index of the question we're trying to delete: " + index + "\n and this is the ID: " + id);
-        socket.emit('question delete', index, id);
+    $scope.remove = function (index, obj) {
+        console.log("This is the index of the question we're trying to delete: " + index + "\n and this is the ID: " + obj._id);
+        socket.emit('question delete', index, obj);
 
     };
     // remove from grouped view
     $scope.removeGrouped = function (rowIndex,index, id) {
         console.log("This is the index of the question we're trying to delete: " + index + "\n and this is the ID: " + id);
         socket.emit('question delete grouped',rowIndex, index, id);
-        for (property in $scope.newTags){
-
-            console.log("Current state of scope: "+ $scope.newTags[property]);
-
-        }
 
     };
 
     // socket message "question delete" and the response to that message
-    socket.on('question delete', function (index, id) {
-        console.log("Trying to delete message (SOCKET) with ID: " + id);
+    socket.on('question delete', function (index, obj) {
+        console.log("Trying to delete message (SOCKET) with ID: " + obj._id);
+
+        for (var i = 0; i < $scope.newTags[obj.tag].length; i++){
+            if ($scope.newTags[obj.tag][i]._id=== obj._id){
+                $scope.newTags[obj.tag].splice(i,1);
+            }
+        }
+
 
         $scope.kolabDBScope.splice(index, 1);
         $scope.$apply();
@@ -90,6 +92,15 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', function ($scope, $http)
     socket.on('question delete grouped', function (rowIndex, index, obj) {
         console.log("Grouped: Trying to delete message with ID: " + obj._id + ", and rowIndex: "+rowIndex+ ", and normal index: "+index);
         $scope.newTags[obj.tag].splice(index, 1);
+        console.log("Current state of scope: "+ $scope.kolabDBScope);
+        for (var i = 0; i < $scope.kolabDBScope.length; i++){
+            console.log($scope.kolabDBScope[i]);
+            if ($scope.kolabDBScope[i]._id == obj._id){
+                $scope.kolabDBScope.splice(i, 1);
+                $scope.$apply();
+                break;
+            }
+        }
         $scope.$apply();
     });
 
