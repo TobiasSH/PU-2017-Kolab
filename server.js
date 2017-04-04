@@ -117,7 +117,6 @@ io.on('connection', function (socket) {
         db.counter.update({},{"$set":{"hits":0}},{multi:true});
         console.log(cookies);
         cookies = cookie.parse('userCount = 0; cantKeepUpCount = 1; decreaseVolumeCount = 1; increaseVolumeCount = 1;decreaseSpeedCount = 1; increaseSpeedCount = 1')
-        console.log(cookies);
         io.emit('resetVotes');
     });
 
@@ -183,35 +182,5 @@ app.get('/counters', function(req, res){
 
     })
 });
-app.get('/cantKeepUp', function(req, res){
-    db.counter.findOne({"counter": "cantKeepUp"}, function(err,doc){
-        res.json(doc);
-
-    })
-});
-app.get('/decreaseVolume', function(req, res){
-    db.counter.findOne({"counter": "decreaseVolume"}, function(err,doc){
-        res.json(doc);
-
-    })
-});
-app.get('/increaseVolume', function(req, res){
-    db.counter.findOne({"counter": "increaseVolume"}, function(err,doc){
-        res.json(doc);
-
-    })
-});
-app.get('/decreaseSpeed', function(req, res){
-    db.counter.findOne({"counter": "decreaseSpeed"}, function(err,doc){
-        res.json(doc);
-
-    })
-});
-app.get('/increaseSpeed', function(req, res){
-    db.counter.findOne({"counter": "increaseSpeed"}, function(err,doc) {
-        res.json(doc);
-    })
-});
-
 http.listen(process.env.PORT || 3000);
 console.log("Server running on port 3000");

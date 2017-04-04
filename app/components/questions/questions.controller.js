@@ -73,7 +73,7 @@ kolabApp.controller('questionsCtrl', ['$scope', '$http', function ($scope, $http
         var newcategory = true;
         for (var property in $scope.newTags) {
             if ($scope.newTags.hasOwnProperty(property)) {
-                if (msg.tag[0] === property) {
+                if (msg.tag === property) {
                     console.log("We tried inserting directly into the scope", property);
                     newcategory = false;
                     $scope.newTags[property].push(msg);
@@ -92,6 +92,15 @@ kolabApp.controller('questionsCtrl', ['$scope', '$http', function ($scope, $http
 
     });
 
+    /*$('.nounRows').click(function(){
+        console.log("Click action triggered");
+        $(this).nextUntil('.nounRows').slideToggle(100, function(){
+        });
+    });*/
 
+    function showTable() {
+        console.log("meme");
+        $('#'+message).toggle();
+    }
 
 }]);

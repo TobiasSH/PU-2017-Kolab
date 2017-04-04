@@ -42,18 +42,25 @@
             <div ng-switch-when="groupedTrue">
 
                 <table id="questionsTableGrouped" class="table questions-table">
-                    <thead ng-repeat="noun in newTags track by $index"
+                    <tbody class="nounhead" ng-repeat="noun in newTags track by $index"
                            ng-init="$rowIndex = $index">
 
                     <tr class="nounRows">
-                        <td class="td-noun">{{noun[0].tag}}</td>
+                        <td class="td-noun"><a class="btn-link" ng-init="toggle[$rowIndex] = true"
+                                               ng-click="toggle[$index] = !toggle[$rowIndex]">
+                            <span class="glyphicon glyphicon-plus-sign" ng-if="!toggle[$rowIndex]"></span>
+                            <span class="glyphicon glyphicon-minus-sign" ng-if="toggle[$rowIndex]"></span>{{noun[0].tag}}
+
+
+                        </a>
+                        </td>
                     </tr>
-                    <tr ng-repeat="question in noun track by $index" class="questionRows">
+                    <tr ng-if="toggle[$rowIndex]" ng-repeat="question in noun track by $index" class="questionRows">
 
                         <!--<td>{{question.number}}</td>-->
                         <td class="td-question">{{question.text}}</td>
                     </tr>
-                    </thead>
+                    </tbody>
                 </table>
             </div>
         </div>

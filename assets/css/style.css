@@ -99,9 +99,6 @@ tbody{
     /*word-break: break-all;*/
 }
 
-thead.nounhead{
-    cursor:pointer !important;
-}
 
 .nounRows {
     background-color: darkgray;
@@ -130,6 +127,7 @@ thead.nounhead{
     color: white;
     opacity: 1;
     text-shadow: -2px 2px black;
+    cursor: pointer;
 }
 
 
