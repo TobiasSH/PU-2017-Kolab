@@ -1,2 +1,2 @@
 web: node server.js
-worker: python3 nlp.py
+worker: python nlp.py
