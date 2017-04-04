@@ -45,14 +45,11 @@
                     <tbody class="nounhead" ng-repeat="noun in newTags track by $index"
                            ng-init="$rowIndex = $index">
 
-                    <tr class="nounRows">
-                        <td class="td-noun"><a class="btn-link" ng-init="toggle[$rowIndex] = true"
-                                               ng-click="toggle[$index] = !toggle[$rowIndex]">
+                    <tr class="nounRows" ng-init="toggle[$rowIndex] = true" ng-click="toggle[$index] = !toggle[$rowIndex]">>
+                        <td class="td-noun">
                             <span class="glyphicon glyphicon-plus-sign" ng-if="!toggle[$rowIndex]"></span>
-                            <span class="glyphicon glyphicon-minus-sign" ng-if="toggle[$rowIndex]"></span>{{noun[0].tag}}
-
-
-                        </a>
+                            <span class="glyphicon glyphicon-minus-sign" ng-if="toggle[$rowIndex]"></span>
+                            {{noun[0].tag}}
                         </td>
                     </tr>
                     <tr ng-if="toggle[$rowIndex]" ng-repeat="question in noun track by $index" class="questionRows">
