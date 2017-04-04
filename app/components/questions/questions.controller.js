@@ -48,12 +48,37 @@ kolabApp.controller('questionsCtrl', ['$scope', '$http', function ($scope, $http
         }
     };
 
-    // socket message "question delete" and the response to that message
-    socket.on('question delete', function (index, id) {
-        console.log("Trying to delete message (SOCKET) with ID: " + id);
+    //delete function from standard, ungrouped view
+    socket.on('question delete', function (index, obj) {
+        console.log("Trying to delete message (SOCKET) with ID: " + obj._id);
+
+        for (var i = 0; i < $scope.newTags[obj.tag].length; i++){
+            if ($scope.newTags[obj.tag][i]._id=== obj._id){
+                $scope.newTags[obj.tag].splice(i,1);
+            }
+        }
+
+
         $scope.kolabDBScope.splice(index, 1);
         $scope.$apply();
     });
+
+    //delete function from grouped view
+    socket.on('question delete grouped', function (rowIndex, index, obj) {
+        console.log("Grouped: Trying to delete message with ID: " + obj._id + ", and rowIndex: "+rowIndex+ ", and normal index: "+index);
+        $scope.newTags[obj.tag].splice(index, 1);
+        console.log("Current state of scope: "+ $scope.kolabDBScope);
+        for (var i = 0; i < $scope.kolabDBScope.length; i++){
+            console.log($scope.kolabDBScope[i]);
+            if ($scope.kolabDBScope[i]._id == obj._id){
+                $scope.kolabDBScope.splice(i, 1);
+                $scope.$apply();
+                break;
+            }
+        }
+        $scope.$apply();
+    });
+
 
     // socket message "question message" and the response to that message
     socket.on('question message', function (msg) {
