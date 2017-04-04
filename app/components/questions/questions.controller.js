@@ -22,19 +22,10 @@ kolabApp.controller('questionsCtrl', ['$scope', '$http', function ($scope, $http
                     $scope.newTags[$scope.kolabDBScope[i].tag].push($scope.kolabDBScope[i]);
                 }
                 console.log("These are the tags: ", $scope.newTags); //object with array of objects
-               /* var newobj = $scope.newTags;
-                for (var property in newobj) {
-                    if (newobj.hasOwnProperty(property)) {
-                        //console.log(newobj[property]);
-                        for (var i = 0; i < newobj[property].length; i++) {
-                            //console.log(newobj[property][i].text);
-                        }
-                    }
-                }*/
 
             },
             function (error) {
-                console.log("I got ERROR");
+                console.log("I got ERROR", error);
             });
     };
     refresh();
@@ -50,9 +41,9 @@ kolabApp.controller('questionsCtrl', ['$scope', '$http', function ($scope, $http
     };
 
     $scope.switchView = function () {
-        if ($scope.grouped == "groupedTrue"){
+        if ($scope.grouped == "groupedTrue") {
             $scope.grouped = "groupedFalse";
-        }else{
+        } else {
             $scope.grouped = "groupedTrue";
         }
     };
@@ -82,25 +73,14 @@ kolabApp.controller('questionsCtrl', ['$scope', '$http', function ($scope, $http
                 }
             }
         }
-        if (newcategory == true){ //if the tag cannot be found we insert it into the scope
+        if (newcategory == true) { //if the tag cannot be found we insert it into the scope
             console.log("Category not found.");
-            $scope.newTags[msg.tag]= [];
+            $scope.newTags[msg.tag] = [];
             $scope.newTags[msg.tag].push(msg);
             $scope.$apply();
         }
 
 
     });
-
-    /*$('.nounRows').click(function(){
-        console.log("Click action triggered");
-        $(this).nextUntil('.nounRows').slideToggle(100, function(){
-        });
-    });*/
-
-    function showTable() {
-        console.log("meme");
-        $('#'+message).toggle();
-    }
 
 }]);
