@@ -132,11 +132,11 @@ def processNew(newmessage):  # Used when a new question arrives
     except Exception as e:
         print (str(e))
 
-import os
-ON_HEROKU = os.environ.get('BASE_IRI')
+#import os
+#ON_HEROKU = os.environ.get('BASE_IRI')
 
 #if ON_HEROKU:
-    # get the heroku port
+#    # get the heroku port
 #    port = int(os.environ.get('PORT', 17995))
 #    print ("On heroku, port is: ", port)
 #else:
@@ -167,7 +167,7 @@ class Namespace(BaseNamespace):
         processNew(message)
 
 print ("Connecting to socketIO.. Port is: ", port['text'])
-socketIO = SocketIO(ON_HEROKU, port['text'], Namespace) #connects to localhost:3000
+socketIO = SocketIO(http://kolab-group.herokuapp.com, port['text'], Namespace) #connects to localhost:3000
 socketIO.wait() #waits forever
 
 
