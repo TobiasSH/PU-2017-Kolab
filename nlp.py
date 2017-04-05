@@ -136,8 +136,10 @@ ON_HEROKU = os.environ.get('ON_HEROKU')
 if ON_HEROKU:
     # get the heroku port
     port = int(os.environ.get('PORT', 17995))
+    print ("On heroku, port is: ", port)
 else:
     port = 3000
+    print("Port 300, not good")
 
 ##  SOCKETIO
 
@@ -157,6 +159,7 @@ class Namespace(BaseNamespace):
     def on_pp_message(self, message):
         processNew(message)
 
+print ("Connecting to socketIO.. Port is: ", port)
 socketIO = SocketIO('localhost', port, Namespace) #connects to localhost:3000
 socketIO.wait() #waits forever
 
