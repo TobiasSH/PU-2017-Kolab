@@ -20,6 +20,8 @@ from pymongo import MongoClient
 connection = MongoClient('mongodb://kolabgroup:12345678@ds115110.mlab.com:15110/kolabdb')
 db = connection["kolabdb"]
 
+
+
 questionsData = db.questionsCollection.find()  # Retrieving data from database
 
 stop_words = set(stopwords.words("english"))  # Retrieving stop words from corpus
@@ -130,16 +132,21 @@ def processNew(newmessage):  # Used when a new question arrives
     except Exception as e:
         print (str(e))
 
-import os
-ON_HEROKU = os.environ.get('ON_HEROKU')
+#import os
+#ON_HEROKU = os.environ.get('ON_HEROKU')
 
-if ON_HEROKU:
+#if ON_HEROKU:
     # get the heroku port
-    port = int(os.environ.get('PORT', 17995))
-    print ("On heroku, port is: ", port)
-else:
-    port = 3000
-    print("Port 300, not good")
+#    port = int(os.environ.get('PORT', 17995))
+#    print ("On heroku, port is: ", port)
+#else:
+#    port = 3000
+#    print("Port 3000, not good")
+
+port = db.port.find()
+for doc in port:
+    print (doc)
+    port = doc
 
 ##  SOCKETIO
 
@@ -159,8 +166,8 @@ class Namespace(BaseNamespace):
     def on_pp_message(self, message):
         processNew(message)
 
-print ("Connecting to socketIO.. Port is: ", PORT)
-socketIO = SocketIO('localhost', PORT, Namespace) #connects to localhost:3000
+print ("Connecting to socketIO.. Port is: ", port['text'])
+socketIO = SocketIO('localhost', port['text'], Namespace) #connects to localhost:3000
 socketIO.wait() #waits forever
 
 
