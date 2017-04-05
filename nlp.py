@@ -1,7 +1,9 @@
 from datetime import datetime
 start_time = datetime.now()
 
+
 import nltk
+nltk.data.path.append('/nltk_data/')
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
@@ -56,7 +58,6 @@ nltk_start = datetime.now()
 def startup():  # Used when we restart the system, uses information from database
     try:
         for document in questionsData:
-            print ("maymes", document['tag'])
             if not document['tag']:
                 print ("Original question: ", str(document['text']), end='')  # This is the original question
 
@@ -65,7 +66,6 @@ def startup():  # Used when we restart the system, uses information from databas
                 nouns = []
                 words = word_tokenize(lowercasedoc)  # tokenize on word so we can use a POS tagger
                 tagged = nltk.pos_tag(words)  # POS tagging
-                # chunkGram = r""" Chunk: {<RB>} """ #CHUNKING
                 print ("Tagged items: ", str(tagged))
 
                 for word in tagged:  # Breaking questions into words
