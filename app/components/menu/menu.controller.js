@@ -17,98 +17,81 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', function ($scope, $http) {
     //Button clicks
     $scope.cantKeepUp = function () {
         console.log("cantKeepUp button was clicked");
-        var inc;
-        var hits = parseInt(countString.charAt(0));
-        if (hits==1){
-            var newString = 0+countString.slice(1);
-            countString = document.cookie=newString;
-            inc = 1;
-            cantKeepUp.className="btn btn-responsive btn-lg btn-block bn-square btn-cantkeepupClicked"
+        var inc = setCountGetInc(0);
+        if (inc == -1){
+            cantKeepUp.className="btn btn-responsive btn-lg btn-block bn-square btn-cantkeepup";
+        } else if (inc == 1){
+            cantKeepUp.className="btn btn-responsive btn-lg btn-block bn-square btn-cantkeepupClicked";
 
-         }
-        else if (hits==0){
-            var newString = 1+countString.slice(1);
-            countString = document.cookie=newString;
-            inc = -1;
-            cantKeepUp.className="btn btn-responsive btn-lg btn-block bn-square btn-cantkeepup"
-          }
+        }
         socket.emit('cantKeepUp', inc)
 
     };
 
     $scope.decreaseVolume = function () {
         console.log("decreaseVolume button was clicked");
-        var inc;
-        var hits = parseInt(countString.charAt(1));
-        if (hits==1){
-            var newString = countString.slice(0,1)+0+countString.slice(2);
-            countString = document.cookie=newString;
-            inc = 1;
-            decreaseVolume.className="btn btn-responsive btn-lg btn-block bn-square btn-volume"
-         }
-        else if (hits==0){
-            var newString = countString.slice(0,1)+1+countString.slice(2);
-            countString = document.cookie=newString;
-            inc = -1;
-            decreaseVolume.className="btn btn-responsive btn-lg btn-block bn-square btn-volumeClicked"
-         }
+        var inc = setCountGetInc(1);
+        if (inc == -1){
+            decreaseVolume.className="btn btn-responsive btn-lg btn-block bn-square btn-volume";
+        } else if (inc == 1&& countString.charAt(2)==1){
+            decreaseVolume.className="btn btn-responsive btn-lg btn-block bn-square btn-volumeClicked";
+
+        }else if (inc == 1 && countString.charAt(2)==0){
+            setCountGetInc(2);
+            decreaseVolume.className="btn btn-responsive btn-lg btn-block bn-square btn-volumeClicked";
+            increaseVolume.className="btn btn-responsive btn-lg btn-block bn-square btn-volume";
+        }
+
         socket.emit('decreaseVolume', inc);
     };
 
     $scope.increaseVolume = function () {
         console.log("increaseVolume button was clicked");
-        var inc;
-        var hits = parseInt(countString.charAt(2));
-        if (hits==1){
-            var newString = countString.slice(0,2)+0+countString.slice(3);
-            countString = document.cookie=newString;
-            inc = 1;
-            increaseVolume.className="btn btn-responsive btn-lg btn-block bn-square btn-volume"
-        }
-        else if (hits==0){
-            var newString = countString.slice(0,2)+1+countString.slice(3);
-            countString = document.cookie=newString;
-            inc = -1;
-            increaseVolume.className="btn btn-responsive btn-lg btn-block bn-square btn-volumeClicked"
+        var inc = setCountGetInc(2);
+        if (inc == -1){
+            increaseVolume.className="btn btn-responsive btn-lg btn-block bn-square btn-volume";
+
+        } else if (inc == 1 && countString.charAt(1)==1){
+            increaseVolume.className="btn btn-responsive btn-lg btn-block bn-square btn-volumeClicked";
+
+        }else if (inc == 1 && countString.charAt(1)==0){
+            setCountGetInc(1);
+            increaseVolume.className="btn btn-responsive btn-lg btn-block bn-square btn-volumeClicked";
+            decreaseVolume.className="btn btn-responsive btn-lg btn-block bn-square btn-volume";
         }
         socket.emit('increaseVolume', inc)
     };
 
     $scope.decreaseSpeed = function () {
         console.log("decreaseSpeed button was clicked");
-        var inc;
-        var hits = parseInt(countString.charAt(3));
-        if (hits==1){
-            var newString = countString.slice(0,3)+0+countString.slice(4);
-            countString = document.cookie=newString;
-            inc = 1;
-            decreaseSpeed.className="btn btn-responsive btn-lg btn-block bn-square btn-speed"
+        var inc = setCountGetInc(3);
+        if (inc == -1){
+            decreaseSpeed.className="btn btn-responsive btn-lg btn-block bn-square btn-speed";
+
+        } else if (inc == 1 && countString.charAt(4)==1){
+            decreaseSpeed.className="btn btn-responsive btn-lg btn-block bn-square btn-speedClicked";
+
+        }else if (inc == 1 && countString.charAt(4)==0){
+            setCountGetInc(4);
+            decreaseSpeed.className="btn btn-responsive btn-lg btn-block bn-square btn-speedClicked";
+            increaseSpeed.className="btn btn-responsive btn-lg btn-block bn-square btn-speed";
         }
-        else if (hits==0){
-            var newString = countString.slice(0,3)+1+countString.slice(4);
-            countString = document.cookie=newString;
-            inc = -1;
-            decreaseSpeed.className="btn btn-responsive btn-lg btn-block bn-square btn-speedClicked"
-       }
         socket.emit('decreaseSpeed', inc);
     };
 
     $scope.increaseSpeed = function () {
         console.log("increaseSpeed button was clicked");
-        var inc;
-        var hits = parseInt(countString.charAt(4));
-        if (hits==1){
-            var newString = countString.slice(0,4)+0+countString.slice(5);
-            countString = document.cookie=newString;
-            inc = 1;
-            increaseSpeed.className="btn btn-responsive btn-lg btn-block bn-square btn-speed"
-      }
-        else if (hits==0){
-            var newString = countString.slice(0,4)+1+countString.slice(5);
-            countString = document.cookie=newString;
-            inc = -1;
-            increaseSpeed.className="btn btn-responsive btn-lg btn-block bn-square btn-speedClicked"
+        var inc = setCountGetInc(4);
+        if (inc == -1){
+            increaseSpeed.className="btn btn-responsive btn-lg btn-block bn-square btn-speed";
+        } else if (inc == 1 && countString.charAt(3)==1){
+            increaseSpeed.className="btn btn-responsive btn-lg btn-block bn-square btn-speedClicked";
+        }else if (inc == 1 && countString.charAt(3)==0){
+            setCountGetInc(3);
+            increaseSpeed.className="btn btn-responsive btn-lg btn-block bn-square btn-speedClicked";
+            decreaseSpeed.className="btn btn-responsive btn-lg btn-block bn-square btn-speed";
         }
+        console.log(countString);
         socket.emit('increaseSpeed', inc);
     };
     //on connect sets cookie and counts users
@@ -126,6 +109,22 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', function ($scope, $http) {
     socket.on('resetVotes', function(){
        countString = document.cookie="11111";
     });
+    function setCountGetInc(x) {
+        var inc;
+        var hits = parseInt(countString.charAt(x));
+        if (hits==1){
+            var newString = countString.slice(0,x)+0+countString.slice(x+1);
+            countString = document.cookie=newString;
+            inc = 1;
+        }
+        else if (hits==0){
+            var newString = countString.slice(0,x)+1+countString.slice(x+1);
+            countString = document.cookie=newString;
+            inc = -1;
+        }
+        return inc
+    }
+
 
 
 
