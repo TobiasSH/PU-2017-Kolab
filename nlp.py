@@ -167,7 +167,7 @@ class Namespace(BaseNamespace):
         processNew(message)
 
 print ("Connecting to socketIO.. Port is: ", port['text'])
-socketIO = SocketIO('http://kolab-group.herokuapp.com', port['text'], Namespace) #connects to localhost:3000
+socketIO = SocketIO('kolab-group.herokuapp.com', port['text'], Namespace) #connects to localhost:3000
 socketIO.wait() #waits forever
 
 
