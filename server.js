@@ -196,4 +196,4 @@ app.get('/counters', function(req, res){
     })
 });
 http.listen(process.env.PORT || 3000);
-console.log("Server running on port 3000");
+console.log("Server running on port: ", process.env.PORT);
