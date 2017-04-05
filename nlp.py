@@ -130,6 +130,14 @@ def processNew(newmessage):  # Used when a new question arrives
     except Exception as e:
         print (str(e))
 
+import os
+ON_HEROKU = os.environ.get('ON_HEROKU')
+
+if ON_HEROKU:
+    # get the heroku port
+    port = int(os.environ.get('PORT', 17995))
+else:
+    port = 3000
 
 ##  SOCKETIO
 
@@ -149,7 +157,7 @@ class Namespace(BaseNamespace):
     def on_pp_message(self, message):
         processNew(message)
 
-socketIO = SocketIO('localhost', 3000, Namespace) #connects to localhost:3000
+socketIO = SocketIO('localhost', port, Namespace) #connects to localhost:3000
 socketIO.wait() #waits forever
 
 
