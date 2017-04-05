@@ -133,7 +133,7 @@ def processNew(newmessage):  # Used when a new question arrives
         print (str(e))
 
 import os
-ON_HEROKU = os.environ.get('BASE_IRI, 'localhost')
+ON_HEROKU = os.environ.get('BASE_IRI')
 
 #if ON_HEROKU:
     # get the heroku port
