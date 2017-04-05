@@ -1,1 +1,4 @@
+stopwords
+word_tokenize
+WordNetLemmatizer
 wordnet
