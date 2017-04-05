@@ -7,21 +7,39 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', function ($scope, $http) {
     var decreaseSpeed = document.getElementById("decreaseSpeed");
     var increaseSpeed = document.getElementById("increaseSpeed");
     var countString;
+    var buttonList = [cantKeepUp, decreaseVolume, increaseVolume, decreaseSpeed, increaseSpeed]
+    var button = "btn btn-responsive btn-lg btn-block bn-square ";
     //countString is used to save the current users clicks in cookie
     //it consist of 5 digits, initially all ones 11111
     //When a button is clicked the the corresponding digit is set to 0
     //Clicking the same button is registered as unclicking this button
 
+    var refresh = function () {
+        for (var x = 0; x < 5 ;x++ ){
+            if (document.cookie.charAt(x) == 0){
+                if (x<1){
+                    buttonList[x].className=button + " btn-cantkeepupClicked"
+                }else if (x <3 ){
+                    buttonList[x].className=button + " btn-volumeClicked"
+                } else if (x < 5){
+                    buttonList[x].className=button + "btn-speedClicked"
+                }
+            }
+        }
+    };
+
+    refresh();
 
 
     //Button clicks
+
     $scope.cantKeepUp = function () {
         console.log("cantKeepUp button was clicked");
         var inc = setCountGetInc(0);
         if (inc == -1){
-            cantKeepUp.className="btn btn-responsive btn-lg btn-block bn-square btn-cantkeepup";
+            cantKeepUp.className= button + "btn-cantkeepup";
         } else if (inc == 1){
-            cantKeepUp.className="btn btn-responsive btn-lg btn-block bn-square btn-cantkeepupClicked";
+            cantKeepUp.className=button + " btn-cantkeepupClicked";
 
         }
         socket.emit('cantKeepUp', inc)
@@ -32,14 +50,14 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', function ($scope, $http) {
         console.log("decreaseVolume button was clicked");
         var inc = setCountGetInc(1);
         if (inc == -1){
-            decreaseVolume.className="btn btn-responsive btn-lg btn-block bn-square btn-volume";
+            decreaseVolume.className=button + " btn-volume";
         } else if (inc == 1&& countString.charAt(2)==1){
-            decreaseVolume.className="btn btn-responsive btn-lg btn-block bn-square btn-volumeClicked";
+            decreaseVolume.className=button + "btn-volumeClicked";
 
         }else if (inc == 1 && countString.charAt(2)==0){
             setCountGetInc(2);
-            decreaseVolume.className="btn btn-responsive btn-lg btn-block bn-square btn-volumeClicked";
-            increaseVolume.className="btn btn-responsive btn-lg btn-block bn-square btn-volume";
+            decreaseVolume.className=button + " btn-volumeClicked";
+            increaseVolume.className=button + "btn-volume";
         }
 
         socket.emit('decreaseVolume', inc);
@@ -49,15 +67,15 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', function ($scope, $http) {
         console.log("increaseVolume button was clicked");
         var inc = setCountGetInc(2);
         if (inc == -1){
-            increaseVolume.className="btn btn-responsive btn-lg btn-block bn-square btn-volume";
+            increaseVolume.className=button + " btn-volume";
 
         } else if (inc == 1 && countString.charAt(1)==1){
-            increaseVolume.className="btn btn-responsive btn-lg btn-block bn-square btn-volumeClicked";
+            increaseVolume.className=button + "btn-volumeClicked";
 
         }else if (inc == 1 && countString.charAt(1)==0){
             setCountGetInc(1);
-            increaseVolume.className="btn btn-responsive btn-lg btn-block bn-square btn-volumeClicked";
-            decreaseVolume.className="btn btn-responsive btn-lg btn-block bn-square btn-volume";
+            increaseVolume.className=button + "btn-volumeClicked";
+            decreaseVolume.className=button + "btn-volume";
         }
         socket.emit('increaseVolume', inc)
     };
@@ -66,15 +84,15 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', function ($scope, $http) {
         console.log("decreaseSpeed button was clicked");
         var inc = setCountGetInc(3);
         if (inc == -1){
-            decreaseSpeed.className="btn btn-responsive btn-lg btn-block bn-square btn-speed";
+            decreaseSpeed.className=button + " btn-speed";
 
         } else if (inc == 1 && countString.charAt(4)==1){
-            decreaseSpeed.className="btn btn-responsive btn-lg btn-block bn-square btn-speedClicked";
+            decreaseSpeed.className=button + "btn-speedClicked";
 
         }else if (inc == 1 && countString.charAt(4)==0){
             setCountGetInc(4);
-            decreaseSpeed.className="btn btn-responsive btn-lg btn-block bn-square btn-speedClicked";
-            increaseSpeed.className="btn btn-responsive btn-lg btn-block bn-square btn-speed";
+            decreaseSpeed.className=button + "btn-speedClicked";
+            increaseSpeed.className=button + "btn-speed";
         }
         socket.emit('decreaseSpeed', inc);
     };
@@ -83,13 +101,13 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', function ($scope, $http) {
         console.log("increaseSpeed button was clicked");
         var inc = setCountGetInc(4);
         if (inc == -1){
-            increaseSpeed.className="btn btn-responsive btn-lg btn-block bn-square btn-speed";
+            increaseSpeed.className=button + "btn-speed";
         } else if (inc == 1 && countString.charAt(3)==1){
-            increaseSpeed.className="btn btn-responsive btn-lg btn-block bn-square btn-speedClicked";
+            increaseSpeed.className=button + "btn-speedClicked";
         }else if (inc == 1 && countString.charAt(3)==0){
             setCountGetInc(3);
-            increaseSpeed.className="btn btn-responsive btn-lg btn-block bn-square btn-speedClicked";
-            decreaseSpeed.className="btn btn-responsive btn-lg btn-block bn-square btn-speed";
+            increaseSpeed.className=button + "btn-speedClicked";
+            decreaseSpeed.className=button + "btn-speed";
         }
         console.log(countString);
         socket.emit('increaseSpeed', inc);
