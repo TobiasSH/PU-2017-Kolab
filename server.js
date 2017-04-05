@@ -189,6 +189,7 @@ app.get('/questionsCollection/:id', function (req, res) {
         res.json(doc);
     });
 });
+
 app.get('/counters', function(req, res){
     db.counter.find(function(err,doc){
         res.json(doc);
