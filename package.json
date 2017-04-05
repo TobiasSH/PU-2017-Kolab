@@ -8,6 +8,7 @@
   "main": "server.js",
   "scripts": {
     "test": "nyc --reporter=text --reporter=text-summary --reporter=lcovonly ./node_modules/.bin/mocha --reporter spec",
+    "coverage": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     "start": "node server.js"
   },
   "repository": {
