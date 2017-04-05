@@ -13,7 +13,7 @@ from pymongo import MongoClient
 
 # CONNECTION TO HEROKU DATABASE
 #connection = MongoClient('mongodb://kolabgroup:12345678@ds119020.mlab.com:19020/heroku_2hcp9k8k')
-#db = connection["heroku_2hcp9k8k"]#
+#db = connection["heroku_2hcp9k8k"]
 
 
 # CONNECTION TO MY TEST DATABASE
@@ -132,8 +132,8 @@ def processNew(newmessage):  # Used when a new question arrives
     except Exception as e:
         print (str(e))
 
-#import os
-#ON_HEROKU = os.environ.get('ON_HEROKU')
+import os
+ON_HEROKU = os.environ.get('BASE_IRI, 'localhost')
 
 #if ON_HEROKU:
     # get the heroku port
@@ -167,7 +167,7 @@ class Namespace(BaseNamespace):
         processNew(message)
 
 print ("Connecting to socketIO.. Port is: ", port['text'])
-socketIO = SocketIO('0.0.0.0', port['text'], Namespace) #connects to localhost:3000
+socketIO = SocketIO(ON_HEROKU, port['text'], Namespace) #connects to localhost:3000
 socketIO.wait() #waits forever
 
 

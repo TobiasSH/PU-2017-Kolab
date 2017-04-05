@@ -1,0 +1,1 @@
+os.environ.get('BASE_IRI', 'localhost')
