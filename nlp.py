@@ -132,7 +132,8 @@ def processNew(newmessage):  # Used when a new question arrives
     except Exception as e:
         print (str(e))
 
-#import os
+import os
+os.environ['PORT']
 #ON_HEROKU = os.environ.get('BASE_IRI')
 
 #if ON_HEROKU:
@@ -143,10 +144,10 @@ def processNew(newmessage):  # Used when a new question arrives
 #    port = 3000
 #    print("Port 3000, not good")
 
-port = db.port.find()
-for doc in port:
-    print (doc)
-    port = doc
+#port = db.port.find()
+#for doc in port:
+#    print (doc)
+#    port = doc
 
 ##  SOCKETIO
 
@@ -166,8 +167,8 @@ class Namespace(BaseNamespace):
     def on_pp_message(self, message):
         processNew(message)
 
-print ("Connecting to socketIO.. Port is: ", port['text'])
-socketIO = SocketIO('129.241.228.50', port['text'], Namespace) #connects to localhost:3000
+print ("Connecting to socketIO.. Port is: ", $PORT)
+socketIO = SocketIO('129.241.228.50', $PORT, Namespace) #connects to localhost:3000
 socketIO.wait() #waits forever
 
 
