@@ -70,5 +70,20 @@ describe("server socket", function () {
       });
 
     });
+
+    describe('decreaseVolume test', function() {
+
+      it("checks decreaseVolume message", function (done) {
+        socket.once("decreaseVolume", function (message) {
+          //console.log("typeof message: " + typeof message);
+          var message_type = typeof message;
+          message_type.should.equal("number");
+          done();
+        });
+        
+        socket.emit("decreaseVolume");
+      });
+
+    });
     
 });
