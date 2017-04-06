@@ -1,5 +1,5 @@
 # Kolab
-The Kolab App
+[![Build Status](https://travis-ci.com/TobiasSH/PU-2017-Kolab.svg?token=XPoxJGAcCUwTmyc9W9ea&branch=develop)](https://travis-ci.com/TobiasSH/PU-2017-Kolab) [![Coverage Status](https://coveralls.io/repos/github/TobiasSH/PU-2017-Kolab/badge.svg?branch=develop)](https://coveralls.io/github/TobiasSH/PU-2017-Kolab?branch=develop)
 
 ### [Screenshots](/screenshots/screenshots.md)
 
