@@ -132,22 +132,7 @@ def processNew(newmessage):  # Used when a new question arrives
     except Exception as e:
         print (str(e))
 
-import os
-#os.environ['PORT']
-#ON_HEROKU = os.environ.get('BASE_IRI')
 
-#if ON_HEROKU:
-#    # get the heroku port
-#    port = int(os.environ.get('PORT', 17995))
-#    print ("On heroku, port is: ", port)
-#else:
-#    port = 3000
-#    print("Port 3000, not good")
-
-#port = db.port.find()
-#for doc in port:
-#    print (doc)
-#    port = doc
 
 ##  SOCKETIO
 
@@ -167,7 +152,7 @@ class Namespace(BaseNamespace):
     def on_pp_message(self, message):
         processNew(message)
 
-print ("Connecting to socketIO.. Port is: ", os.environ['PORT'])
+print ("Connecting to socketIO.. Port is: ", 80)
 socketIO = SocketIO('kolab-group.herokuapp.com', 80, Namespace)
 socketIO.wait() #waits forever
 

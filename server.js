@@ -3,7 +3,7 @@ var app = express();
 var mongojs = require('mongojs');
 
 //var db = mongojs('mongodb://heroku_2hcp9k8k:19uocjcgsn6ce4pp7j66fe1ras@ds119020.mlab.com:19020/heroku_2hcp9k8k', ['questionsCollection', 'counter']);
-var db = mongojs('mongodb://kolabgroup:12345678@ds115110.mlab.com:15110/kolabdb', ['questionsCollection', 'counter', 'port']);
+var db = mongojs('mongodb://kolabgroup:12345678@ds115110.mlab.com:15110/kolabdb', ['questionsCollection', 'counter']);
 var bodyParser = require('body-parser');
 var path = require('path');
 var cookie = require('cookie');
@@ -199,7 +199,5 @@ app.get('/counters', function(req, res){
 
 
 http.listen(process.env.PORT || 3000);
-db.port.remove({_id: 1});
-db.port.insert({_id: 1, text: process.env.PORT});
 
 console.log("Server running on port: ", process.env.PORT);
