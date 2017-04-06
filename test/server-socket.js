@@ -115,5 +115,20 @@ describe("server socket", function () {
       });
 
     });
+
+    describe('increaseSpeed test', function() {
+
+      it("checks increaseSpeed message", function (done) {
+        socket.once("increaseSpeed", function (message) {
+          //console.log("typeof message: " + typeof message);
+          var message_type = typeof message;
+          message_type.should.equal("number");
+          done();
+        });
+        
+        socket.emit("increaseSpeed");
+      });
+
+    });
     
 });
