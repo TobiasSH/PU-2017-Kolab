@@ -167,7 +167,7 @@ class Namespace(BaseNamespace):
     def on_pp_message(self, message):
         processNew(message)
 
-print ("Connecting to socketIO.. Port is: ", $PORT)
+print ("Connecting to socketIO.. Port is: ", str($PORT))
 socketIO = SocketIO('129.241.228.50', $PORT, Namespace) #connects to localhost:3000
 socketIO.wait() #waits forever
 
