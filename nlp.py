@@ -133,7 +133,7 @@ def processNew(newmessage):  # Used when a new question arrives
         print (str(e))
 
 import os
-os.environ['PORT']
+#os.environ['PORT']
 #ON_HEROKU = os.environ.get('BASE_IRI')
 
 #if ON_HEROKU:
@@ -167,8 +167,8 @@ class Namespace(BaseNamespace):
     def on_pp_message(self, message):
         processNew(message)
 
-print ("Connecting to socketIO.. Port is: ", str($PORT))
-socketIO = SocketIO('129.241.228.50', $PORT, Namespace) #connects to localhost:3000
+print ("Connecting to socketIO.. Port is: ", os.environ['PORT'])
+socketIO = SocketIO('129.241.228.50', os.environ['PORT'], Namespace) #connects to localhost:3000
 socketIO.wait() #waits forever
 
 
