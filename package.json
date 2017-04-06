@@ -7,7 +7,8 @@
   },
   "main": "server.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha --reporter spec",
+    "test": "nyc --reporter=text --reporter=text-summary --reporter=lcovonly ./node_modules/.bin/mocha --reporter spec",
+    "coverage": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     "start": "node server.js"
   },
   "repository": {
@@ -31,7 +32,10 @@
     "socket.io": "^1.7.3"
   },
   "devDependencies": {
+    "coveralls": "^2.13.0",
+    "istanbul": "^0.4.5",
     "mocha": "^3.2.0",
+    "nyc": "^10.2.0",
     "supertest": "^3.0.0"
   }
 }
