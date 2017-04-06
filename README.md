@@ -9,7 +9,13 @@ The Kolab App
 
 ### Run the server
 1. `cd` into the directory that contains the server.js file
-2. Run the server using this command: `nodemon server`
+2. Run the server using this command: `nodemon server.js`
+
+### Preparing and running the python NLP script
+1. `cd` into the directory of nlp.py
+2. Install python dependencies by running this command: `pip install package && pip freeze > requirements.txt`
+3. Run the python script by running this command: `python nlp.py`
+(Requires Python 3.4+,  if you have several version it needs to be specified: `python3 nlp.py`)
 
 ### Visit the website
 - Open <http://localhost:3000> in your web browser
