@@ -13,14 +13,17 @@ The Kolab App
 
 ### Preparing and running the python NLP script
 1. `cd` into the directory of nlp.py
-2. Install python dependencies by running this command: `pip install package && pip freeze > requirements.txt`
+2. Install python dependencies by running this command: `pip install -r requirements.txt`
+(This script and its dependencies requires python 3.5+, and if you have several versions of python it needs to be specified,
+as follows: `pip3 install -r requirements.txt`)
 3. Run the python script by running this command: `python nlp.py`
-(Requires Python 3.4+,  if you have several version it needs to be specified: `python3 nlp.py`)
+(Same applies here, if you have several python version you need to specify: `python3 nlp.py`)
 
 ### Visit the website
 - Open <http://localhost:3000> in your web browser
 
-### MongoDB
+### MongoDB, locally
+### You will have to change server.js database connection and the python script mongodb connection if you want to run everything locally
 1. Run MongoDB: `mongod`
 2. `mongo`
 3. Show databases: `show dbs`
