@@ -39,13 +39,12 @@ describe("server socket", function () {
             // There will not be a connection unless you have done() in beforeEach, socket.on('connect'...)
             console.log('no connection to break...');
         }
-        server.close();
         done();
     });
 
-    describe('First (hopefully useful) test', function() {
+    describe('question message id length', function() {
 
-      it("check question message id length", function (done) {
+      it("checks question message id length", function (done) {
         socket.once("question message", function (message) {
           //console.log("message._id.length: " + message._id.length);
           message._id.length.should.equal(24);
@@ -53,6 +52,21 @@ describe("server socket", function () {
         });
         
         socket.emit("question message");
+      });
+
+    });
+
+    describe('cantKeepUp test', function() {
+
+      it("checks cantKeepUp message", function (done) {
+        socket.once("cantKeepUp", function (message) {
+          //console.log("typeof message: " + typeof message);
+          var message_type = typeof message;
+          message_type.should.equal("number");
+          done();
+        });
+        
+        socket.emit("cantKeepUp");
       });
 
     });
