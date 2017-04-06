@@ -130,5 +130,20 @@ describe("server socket", function () {
       });
 
     });
+
+    describe('question delete test', function() {
+
+      it("checks question delete message", function (done) {
+        socket.once("question delete", function (message) {
+          console.log("typeof message: " + typeof message);
+          var message_type = typeof message;
+          message_type.should.equal("object");
+          done();
+        });
+        
+        socket.emit("question delete");
+      });
+
+    });
     
 });
