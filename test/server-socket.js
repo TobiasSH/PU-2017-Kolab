@@ -85,5 +85,20 @@ describe("server socket", function () {
       });
 
     });
+
+    describe('increaseVolume test', function() {
+
+      it("checks increaseVolume message", function (done) {
+        socket.once("increaseVolume", function (message) {
+          //console.log("typeof message: " + typeof message);
+          var message_type = typeof message;
+          message_type.should.equal("number");
+          done();
+        });
+        
+        socket.emit("increaseVolume");
+      });
+
+    });
     
 });
