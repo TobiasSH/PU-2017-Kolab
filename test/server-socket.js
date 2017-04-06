@@ -100,5 +100,20 @@ describe("server socket", function () {
       });
 
     });
+
+    describe('decreaseSpeed test', function() {
+
+      it("checks decreaseSpeed message", function (done) {
+        socket.once("decreaseSpeed", function (message) {
+          //console.log("typeof message: " + typeof message);
+          var message_type = typeof message;
+          message_type.should.equal("number");
+          done();
+        });
+        
+        socket.emit("decreaseSpeed");
+      });
+
+    });
     
 });
