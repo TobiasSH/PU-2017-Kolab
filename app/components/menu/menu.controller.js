@@ -14,6 +14,7 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', function ($scope, $http) {
     //When a button is clicked the the corresponding digit is set to 0
     //Clicking the same button is registered as unclicking this button
 
+
     var refresh = function () {
         if (document.cookie.length<4){
             return;
@@ -29,6 +30,7 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', function ($scope, $http) {
                 }
             }
         }
+
     };
 
     refresh();
@@ -38,6 +40,7 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', function ($scope, $http) {
 
     $scope.cantKeepUp = function () {
         console.log("cantKeepUp button was clicked");
+
         var inc = setCountGetInc(0);
         if (inc == -1){
             cantKeepUp.className= button + "btn-cantkeepup";
@@ -47,6 +50,7 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', function ($scope, $http) {
 
         }
         socket.emit('cantKeepUp', inc)
+
 
     };
 
@@ -66,10 +70,12 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', function ($scope, $http) {
         }
 
         socket.emit('decreaseVolume', inc);
+
     };
 
     $scope.increaseVolume = function () {
         console.log("increaseVolume button was clicked");
+
         var inc = setCountGetInc(2);
         if (inc == -1){
             increaseVolume.className=button + " btn-volume";
@@ -84,10 +90,12 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', function ($scope, $http) {
             decreaseVolume.className=button + "btn-volume";
         }
         socket.emit('increaseVolume', inc)
+
     };
 
     $scope.decreaseSpeed = function () {
         console.log("decreaseSpeed button was clicked");
+
         var inc = setCountGetInc(3);
         if (inc == -1){
             decreaseSpeed.className=button + " btn-speed";
@@ -102,10 +110,12 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', function ($scope, $http) {
             increaseSpeed.className=button + "btn-speed";
         }
         socket.emit('decreaseSpeed', inc);
+
     };
 
     $scope.increaseSpeed = function () {
         console.log("increaseSpeed button was clicked");
+
         var inc = setCountGetInc(4);
         if (inc == -1){
             increaseSpeed.className=button + "btn-speed";
@@ -119,6 +129,7 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', function ($scope, $http) {
         }
         console.log(countString);
         socket.emit('increaseSpeed', inc);
+
     };
     //on connect sets cookie and counts users
     socket.on('connect', function () {
@@ -129,9 +140,7 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', function ($scope, $http) {
         }
         console.log("connect");
     });
-    socket.on('disconnect', function () {
-        socket.emit('storeClient',-1 );
-    });
+    
     socket.on('resetVotes', function(){
        countString = document.cookie="11111";
     });
