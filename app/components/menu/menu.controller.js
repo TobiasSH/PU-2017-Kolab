@@ -15,6 +15,9 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', function ($scope, $http) {
     //Clicking the same button is registered as unclicking this button
 
     var refresh = function () {
+        if (document.cookie.length<4){
+            return;
+        }
         for (var x = 0; x < 5 ;x++ ){
             if (document.cookie.charAt(x) == 0){
                 if (x<1){
