@@ -1,6 +1,13 @@
 kolabApp.controller('lecturerCtrl', ['$scope', '$http','socket', function ($scope, $http, socket) {
     console.log("Hello World from lecturer-controller");
 
+    var socket = io();
+    var max = 0;
+    var cantKeepUpHits;
+    var decreaseVolumeHits;
+    var increaseVolumeHits;
+    var decreaseSpeedHits;
+    var increaseSpeedHits;
 
     // initial retrieval of questions from the database
     var refresh = function () {
@@ -9,9 +16,17 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http','socket', function ($scop
                 $scope.kolabDBScope = response.data;
                 $scope.question = null;
             },
+
             function (error) {
                 console.log("I got ERROR");
             });
+        $http.get('/counters').then(function(response){
+            cantKeepUpHits =  response.data[0].hits
+            decreaseVolumeHits =  response.data[1].hits
+            increaseVolumeHits =  response.data[2].hits
+            decreaseSpeedHits =  response.data[3].hits
+            increaseSpeedHits =  response.data[4].hits
+        })
         console.log(socket.room);
     };
 
@@ -20,6 +35,11 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http','socket', function ($scop
     $scope.studentView = function () {
         console.log("cantKeepUp button was clicked");
     };
+    $scope.resetVotes = function() {
+        socket.emit('resetVotes');
+        console.log("votes reset")
+    }
+
 
     // remove function bound to the delete buttons in lecture view
     $scope.remove = function (index, id) {
@@ -44,4 +64,109 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http','socket', function ($scop
         $scope.$apply();
 
     });
+    socket.on('resetVotes', function(){
+        var cantKeepUpBar = document.getElementById("cantKeepUpBar");
+        var decreaseVolumeBar = document.getElementById("decreaseVolumeBar");
+        var increaseVolumeBar = document.getElementById("increaseVolumeBar");
+        var decreaseSpeedBar = document.getElementById("decreaseSpeedBar");
+        var increaseSpeedBar = document.getElementById("increaseSpeedBar");
+        cantKeepUpBar.style.width=0+'%';
+        decreaseVolumeBar.style.width=0+'%';
+        increaseVolumeBar.style.width=0+'%';
+        increaseSpeedBar.style.width=0+'%';
+        decreaseSpeedBar.style.width=0+'%';
+        cantKeepUpHits =  0
+        decreaseVolumeHits =  0
+        increaseVolumeHits =  0
+        decreaseSpeedHits =  0
+        increaseSpeedHits =  0
+
+    })
+    socket.on('incUser',function(){
+        max+=1;
+        console.log("more users")
+
+    })
+    socket.on('decUser',function(){
+        max-=1;
+
+    })
+    socket.on('cantKeepUp',function( hit){
+        cantKeepUpHits += hit;
+
+
+        console.log(cantKeepUpHits + "hit get on");
+        var percent = (cantKeepUpHits/(max))*100
+        console.log(percent +"%")
+        console.log(max+" users")
+        console.log(cantKeepUpHits + " hits")
+        console.log("cant keeep up lecture side");
+        var elem = document.getElementById("cantKeepUpBar");
+
+
+        elem.style.width=percent+'%';
+
+    });
+    socket.on('decreaseVolume', function(hit){
+        decreaseVolumeHits += hit;
+        console.log("decrease volume lecture side");
+
+        var percent = (decreaseVolumeHits/(max))*100
+        console.log(percent +"%")
+        console.log(max+" users")
+        console.log(decreaseVolumeHits + " hits")
+        console.log("decrease up lecture side");
+        var elem = document.getElementById("decreaseVolumeBar");
+
+
+        elem.style.width=percent+'%';
+    });
+    socket.on('increaseVolume', function(hit){
+        increaseVolumeHits += hit;
+        console.log("increaseses volumes lecture side");
+
+        var percent = (increaseVolumeHits/(max))*100
+        console.log(percent +"%")
+        console.log(max+" users")
+        console.log(increaseVolumeHits + " hits")
+        console.log("increase vol up lecture side");
+        var elem = document.getElementById("increaseVolumeBar");
+
+
+        elem.style.width=percent+'%';
+
+    });
+    socket.on('decreaseSpeed', function(hit){
+        decreaseSpeedHits += hit;
+        console.log("decerease speed lecture side");
+
+        var percent = (decreaseSpeedHits/(max))*100
+        console.log(percent +"%")
+        console.log(max+" users")
+        console.log(decreaseSpeedHits + " hits")
+        console.log("decrease speed lecture side");
+        var elem = document.getElementById("decreaseSpeedBar");
+
+
+        elem.style.width=percent+'%';
+
+
+    });
+    socket.on('increaseSpeed', function(hit){
+        increaseSpeedHits  += hit;
+        console.log("incerease speed lecture side");
+
+        var percent = (increaseSpeedHits/(max))*100
+        console.log(percent +"%")
+        console.log(max+" users")
+        console.log(increaseSpeedHits + " hits")
+        console.log("increase speed lecture side");
+        var elem = document.getElementById("increaseSpeedBar");
+
+
+        elem.style.width=percent+'%';
+
+
+    });
+
 }]);
