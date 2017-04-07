@@ -187,45 +187,7 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', function ($scope, $http)
         increaseSpeedHits = 0;
 
     });
-    socket.on('incUser', function () {
-        max += 1;
-        console.log("more users")
-
-    });
-    socket.on('decUser', function () {
-        max -= 1;
-
-    });
-    socket.on('cantKeepUp', function (hit) {
-        cantKeepUpHits += hit;
-
-
-        console.log(cantKeepUpHits + "hit get on");
-        var percent = (cantKeepUpHits / (max)) * 100;
-        console.log(percent + "%");
-        console.log(max + " users");
-        console.log(cantKeepUpHits + " hits");
-        console.log("cant keeep up lecture side");
-        var elem = document.getElementById("cantKeepUpBar");
-
-
-        elem.style.width = percent + '%';
-
-    });
-    socket.on('decreaseVolume', function (hit) {
-        decreaseVolumeHits += hit;
-        console.log("decrease volume lecture side");
-
-        var percent = (decreaseVolumeHits / (max)) * 100;
-        console.log(percent + "%");
-        console.log(max + " users");
-        console.log(decreaseVolumeHits + " hits");
-        console.log("decrease up lecture side");
-        var elem = document.getElementById("decreaseVolumeBar");
-
-
-        elem.style.width = percent + '%';
-    });
+    
 
 
     //Progress bars
@@ -239,6 +201,7 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', function ($scope, $http)
     socket.on('decreaseVolume', function(hit, total ){
         console.log("decrease volume")
         decreaseVolumeHits += hit;
+        console.log(decreaseVolumeHits)
         var percent = (decreaseVolumeHits/(total))*100;
         decreaseVolumeBar.style.width=percent+'%';
     });
