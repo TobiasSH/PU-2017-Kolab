@@ -24,7 +24,7 @@ io.on('connection', function (socket) {
         db.counter.update({"counter" : "userCount"}, {"$inc":{"hits": inc}});
     });
     socket.on('disconnect', function () {
-
+        socket.emit('storeClient',-1 );
     });
 
     // servers response to emitted message from controllers

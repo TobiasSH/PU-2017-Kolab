@@ -27,6 +27,16 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', function ($scope, $http) {
                 } else if (x < 5){
                     buttonList[x].className=button + "btn-speedClicked"
                 }
+            } else if(document.cookie.charAt(x) == 1){
+                console.log("hai hai")
+                if (x<1){
+                    buttonList[x].className=button + " btn-cantkeepup"
+                }else if (x <3 ){
+                    buttonList[x].className=button + " btn-volume"
+                } else if (x < 5){
+                    buttonList[x].className=button + "btn-speed"
+                }
+
             }
         }
     };
@@ -129,11 +139,10 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', function ($scope, $http) {
         }
         console.log("connect");
     });
-    socket.on('disconnect', function () {
-        socket.emit('storeClient',-1 );
-    });
+
     socket.on('resetVotes', function(){
        countString = document.cookie="11111";
+       refresh()
     });
     function setCountGetInc(x) {
         var inc;
