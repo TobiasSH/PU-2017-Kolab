@@ -2,22 +2,18 @@ var express = require('express');
 var app = express();
 var mongojs = require('mongojs');
 
-
 //var db = mongojs('mongodb://heroku_2hcp9k8k:19uocjcgsn6ce4pp7j66fe1ras@ds119020.mlab.com:19020/heroku_2hcp9k8k', ['questionsCollection', 'counter']);
 var db = mongojs('mongodb://kolabgroup:12345678@ds115110.mlab.com:15110/kolabdb', ['questionsCollection', 'counter']);
 var bodyParser = require('body-parser');
 var path = require('path');
 var userCount=0;
 
-
 app.use(express.static(__dirname));
 app.use(bodyParser.json());
-
 
 /* SOCKET IO */
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-
 
 
 // socket functions
@@ -83,8 +79,6 @@ io.on('connection', function (socket) {
         io.emit('resetVotes');
     });
 
-
-
     //servers response to emitted message to delete question from lecturer controller
     socket.on('question delete', function (index, obj) {
 
@@ -92,11 +86,7 @@ io.on('connection', function (socket) {
         //deletes the selected question from the database
         db.questionsCollection.remove({_id: mongojs.ObjectId(obj._id)});
         io.emit('question delete', index, obj);
-
-
-
     });
-
 
     //servers response to emitted message to delete question from lecturer controller
     socket.on('question delete grouped', function (rowIndex, index, obj) {
@@ -106,62 +96,6 @@ io.on('connection', function (socket) {
         db.questionsCollection.remove({_id: mongojs.ObjectId(obj._id)});
         io.emit('question delete grouped',rowIndex, index, obj);
 
-
-    });
-
-    //menu buttons
-    socket.on('cantKeepUp',function(){
-        var hits = parseInt(cookies.cantKeepUpCount);
-        db.counter.update({"counter" : "cantKeepUp"}, {"$inc":{"hits": parseInt(cookies.cantKeepUpCount)}});
-        console.log("cant keep up server"+ parseInt(cookies.cantKeepUpCount));
-
-        cookies.cantKeepUpCount=parseInt(cookies.cantKeepUpCount)*(-1);
-
-
-        io.emit('cantKeepUp',  hits )
-
-    });
-    socket.on('decreaseVolume', function(){
-        var hits = parseInt(cookies.decreaseVolumeCount)
-        db.counter.update({"counter" : "decreaseVolume"}, {"$inc":{"hits": parseInt(cookies.decreaseVolumeCount)}});
-        console.log("decrease volume " + cookies.decreaseVolumeCount);
-        cookies.decreaseVolumeCount=parseInt(cookies.decreaseVolumeCount)*(-1);
-        console.log(cookies);
-
-        io.emit('decreaseVolume', hits)
-    });
-    socket.on('increaseVolume', function(){
-        var hits = parseInt(cookies.increaseVolumeCount);
-        db.counter.update({"counter" : "increaseVolume"}, {"$inc":{"hits": parseInt(cookies.increaseVolumeCount)}});
-        console.log("increaseses volumes" + cookies.increaseVolumeCount);
-        cookies.increaseVolumeCount=parseInt(cookies.increaseVolumeCount)*(-1);
-
-        io.emit('increaseVolume', hits)
-
-    });
-    socket.on('decreaseSpeed', function(){
-        var hits = parseInt(cookies.decreaseSpeedCount);
-        db.counter.update({"counter" : "decreaseSpeed"}, {"$inc":{"hits": parseInt(cookies.decreaseSpeedCount)}});
-        console.log("decerease speed" + cookies.decreaseSpeedCount);
-        cookies.decreaseSpeedCount=parseInt(cookies.decreaseSpeedCount)*(-1);
-
-        io.emit('decreaseSpeed', hits)
-
-    });
-    socket.on('increaseSpeed', function(){
-        var hits = parseInt(cookies.increaseSpeedCount);
-        db.counter.update({"counter" : "increaseSpeed"}, {"$inc":{"hits": parseInt(cookies.increaseSpeedCount)}});
-        console.log("incerease speed"+ cookies.increaseSpeedCount);
-        cookies.increaseSpeedCount=parseInt(cookies.increaseSpeedCount)*(-1);
-
-        io.emit('increaseSpeed', hits)
-
-    });
-    socket.on('resetVotes', function(){
-        db.counter.update({},{"$set":{"hits":0}},{multi:true});
-        console.log(cookies);
-        cookies = cookie.parse('userCount = 0; cantKeepUpCount = 1; decreaseVolumeCount = 1; increaseVolumeCount = 1;decreaseSpeedCount = 1; increaseSpeedCount = 1')
-        io.emit('resetVotes');
     });
 
 });
@@ -172,7 +106,6 @@ function randomString(length, chars) {
     for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
     return result;
 }
-
 
 /* SERVER SIDE ROUTING */
 app.get('/lecturer', function (req, res) {
@@ -186,7 +119,6 @@ app.get('/student', function (req, res) {
 app.get('/questions', function (req, res) {
     res.sendFile(__dirname + '/index.html');
 });
-
 
 /* DATABASE METHODS */
 app.get('/questionsCollection', function (req, res, socket) {
@@ -210,13 +142,6 @@ app.get('/questionsCollection/:id', function (req, res) {
         res.json(doc);
     });
 });
-app.get('/counters', function(req, res){
-    db.counter.find(function(err,doc){
-        res.json(doc);
-
-    })
-})
-
 
 app.get('/counters', function(req, res){
     db.counter.find(function(err,doc){
@@ -225,6 +150,12 @@ app.get('/counters', function(req, res){
     })
 });
 
+app.get('/counters', function(req, res){
+    db.counter.find(function(err,doc){
+        res.json(doc);
+
+    })
+});
 
 var server = http.listen(process.env.PORT || 3000);
 console.log("Server running on port 3000");

@@ -3,11 +3,6 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', function ($scope, $http)
 
     var socket = io();
     var max = 0;
-    var cantKeepUpHits;
-    var decreaseVolumeHits;
-    var increaseVolumeHits;
-    var decreaseSpeedHits;
-    var increaseSpeedHits;
 
     $scope.grouped = "groupedTrue";
 
