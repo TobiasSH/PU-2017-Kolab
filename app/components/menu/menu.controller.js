@@ -58,7 +58,8 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', function ($scope, $http) {
             decreaseVolume.className=button + "btn-volumeClicked";
 
         }else if (inc == 1 && countString.charAt(2)==0){
-            setCountGetInc(2);
+            inc2 = setCountGetInc(2);
+            socket.emit('increaseVolume', inc2);
             decreaseVolume.className=button + " btn-volumeClicked";
             increaseVolume.className=button + "btn-volume";
         }
@@ -76,7 +77,8 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', function ($scope, $http) {
             increaseVolume.className=button + "btn-volumeClicked";
 
         }else if (inc == 1 && countString.charAt(1)==0){
-            setCountGetInc(1);
+            inc2 = setCountGetInc(1);
+            socket.emit('decreaseVolume', inc2);
             increaseVolume.className=button + "btn-volumeClicked";
             decreaseVolume.className=button + "btn-volume";
         }
@@ -93,7 +95,8 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', function ($scope, $http) {
             decreaseSpeed.className=button + "btn-speedClicked";
 
         }else if (inc == 1 && countString.charAt(4)==0){
-            setCountGetInc(4);
+            inc2 = setCountGetInc(4);
+            socket.emit('increaseSpeed', inc2);
             decreaseSpeed.className=button + "btn-speedClicked";
             increaseSpeed.className=button + "btn-speed";
         }
@@ -108,7 +111,8 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', function ($scope, $http) {
         } else if (inc == 1 && countString.charAt(3)==1){
             increaseSpeed.className=button + "btn-speedClicked";
         }else if (inc == 1 && countString.charAt(3)==0){
-            setCountGetInc(3);
+            inc2 = setCountGetInc(3);
+            socket.emit('decreaseSpeed', inc2);
             increaseSpeed.className=button + "btn-speedClicked";
             decreaseSpeed.className=button + "btn-speed";
         }
