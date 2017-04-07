@@ -42,6 +42,15 @@ describe("server socket", function () {
         done();
     });
 
+    describe('storeClient test', function() {
+
+      it("checks storeClient message", function (done) {
+        socket.emit("storeClient");
+        done();
+      });
+
+    });
+
     describe('question message id length', function() {
 
       it("checks question message id length", function (done) {
@@ -56,13 +65,61 @@ describe("server socket", function () {
 
     });
 
+    describe('processed message', function() {
+
+      it("checks processed message", function (done) {
+        socket.once("processed message", function (message) {
+          console.log("typeof message: " + typeof message);
+          var message_type = typeof message;
+          message_type.should.equal("object");
+          done();
+        });
+        
+        socket.emit("processed message", {_id: 112233445566112233445566, text: "something", tag: "test"});
+        done();
+      });
+
+    });
+
+    describe('question delete message', function() {
+
+      it("checks question delete message", function (done) {
+        socket.once("question delete", function (message) {
+          console.log("typeof message: " + typeof message);
+          var message_type = typeof message;
+          message_type.should.equal("object");
+          done();
+        });
+        
+        socket.emit("question delete", 1, {_id: 112233445566112233445566, text: "something", tag: "test"});
+        done();
+      });
+
+    });
+
+    describe('question delete grouped', function() {
+
+      it("checks question delete grouped message", function (done) {
+        socket.once("question delete grouped", function (message) {
+          console.log("typeof message: " + typeof message);
+          var message_type = typeof message;
+          message_type.should.equal("object");
+          done();
+        });
+        
+        socket.emit("question delete grouped", 1, 1, {_id: 112233445566112233445566, text: "something", tag: "test"});
+        done();
+      });
+
+    });
+
     describe('cantKeepUp test', function() {
 
       it("checks cantKeepUp message", function (done) {
         socket.once("cantKeepUp", function (message) {
           //console.log("typeof message: " + typeof message);
           var message_type = typeof message;
-          message_type.should.equal("number");
+          message_type.should.equal("object");
           done();
         });
         
@@ -77,7 +134,7 @@ describe("server socket", function () {
         socket.once("decreaseVolume", function (message) {
           //console.log("typeof message: " + typeof message);
           var message_type = typeof message;
-          message_type.should.equal("number");
+          message_type.should.equal("object");
           done();
         });
         
@@ -92,7 +149,7 @@ describe("server socket", function () {
         socket.once("increaseVolume", function (message) {
           //console.log("typeof message: " + typeof message);
           var message_type = typeof message;
-          message_type.should.equal("number");
+          message_type.should.equal("object");
           done();
         });
         
@@ -107,7 +164,7 @@ describe("server socket", function () {
         socket.once("decreaseSpeed", function (message) {
           //console.log("typeof message: " + typeof message);
           var message_type = typeof message;
-          message_type.should.equal("number");
+          message_type.should.equal("object");
           done();
         });
         
@@ -122,11 +179,26 @@ describe("server socket", function () {
         socket.once("increaseSpeed", function (message) {
           //console.log("typeof message: " + typeof message);
           var message_type = typeof message;
-          message_type.should.equal("number");
+          message_type.should.equal("object");
           done();
         });
         
         socket.emit("increaseSpeed");
+      });
+
+    });
+
+    describe('resetVotes test', function() {
+
+      it("checks resetVotes message", function (done) {
+        socket.once("resetVotes", function (message) {
+          console.log("typeof message: " + typeof message);
+          var message_type = typeof message;
+          message_type.should.equal("undefined");
+          done();
+        });
+        
+        socket.emit("resetVotes");
       });
 
     });

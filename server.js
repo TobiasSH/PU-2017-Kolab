@@ -150,13 +150,6 @@ app.get('/counters', function(req, res){
     })
 });
 
-app.get('/counters', function(req, res){
-    db.counter.find(function(err,doc){
-        res.json(doc);
-
-    })
-});
-
 var server = http.listen(process.env.PORT || 3000);
 console.log("Server running on port 3000");
 
