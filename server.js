@@ -3,7 +3,7 @@ var app = express();
 var mongojs = require('mongojs');
 
 //var db = mongojs('mongodb://heroku_2hcp9k8k:19uocjcgsn6ce4pp7j66fe1ras@ds119020.mlab.com:19020/heroku_2hcp9k8k', ['roomsQuestionsCollection', 'roomsCollection' 'counter']);
-var db = mongojs('mongodb://kolabgroup:12345678@ds115110.mlab.com:15110/kolabdb', ['questionsCollection', 'userCollection', 'counter']);
+var db = mongojs('mongodb://kolabgroup:12345678@ds115110.mlab.com:15110/kolabdb', ['questionsCollection', 'roomsCollection', 'userCollection', 'counter']);
 var bodyParser = require('body-parser');
 var path = require('path');
 var userCount=0;
@@ -14,7 +14,6 @@ app.use(bodyParser.json());
 /* SOCKET IO */
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-
 
 // socket functions
 io.on('connection', function (socket) {
@@ -43,13 +42,13 @@ io.on('connection', function (socket) {
 
     socket.on('new room message', function (msg, userId) {
         var rString = randomString(24, '0123456789abcdef');
-
-        db.userCollection.insert({_id: mongojs.ObjectID(rString), room: msg, creator: userId }, function (err, o) {
+        console.log("trying to save room: " + msg + " user: " + userId);
+        db.roomsCollection.insert({_id: mongojs.ObjectID(rString), room: msg, creator: userId }, function (err, o) {
             if (err) {
                 console.warn(err.message);
             }
             else {
-                console.log("userId message inserted into the db: " + userId);
+                console.log("room inserted into the db: " + msg + "by user: " + userId);
             }
         });
     })
@@ -212,7 +211,7 @@ app.get('/roomsQuestionsCollection/:id', function (req, res) {
     console.log("I received a GET request");
     var id = req.params.id;
     console.log(id);
-    console.log("Current room: " + socket.currentRoom);
+    console.log("Current room: " + socket.room);  //Current room?
     db.roomsQuestionsCollection.findOne({_id: mongojs.ObjectId(id), room: String(socket.room) }, function (err, doc) {
         res.json(doc);
     });
