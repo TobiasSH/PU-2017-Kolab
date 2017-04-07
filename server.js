@@ -2,7 +2,7 @@ var express = require('express');
 var app = express();
 var mongojs = require('mongojs');
 
-var db = mongojs('mongodb://heroku_2hcp9k8k:19uocjcgsn6ce4pp7j66fe1ras@ds119020.mlab.com:19020/heroku_2hcp9k8k', ['questionsCollection', 'roomsCollection', 'counter']);
+var db = mongojs('mongodb://heroku_2hcp9k8k:19uocjcgsn6ce4pp7j66fe1ras@ds119020.mlab.com:19020/heroku_2hcp9k8k', ['questionsCollection', 'roomsCollection', 'usercollection, ''counter']);
 var bodyParser = require('body-parser');
 var path = require('path');
 var cookie = require('cookie');
@@ -17,6 +17,9 @@ app.use(bodyParser.json());
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var userCounter = 0;
+
+
+
 
 // socket functions
 io.on('connection', function (socket) {
@@ -34,6 +37,47 @@ io.on('connection', function (socket) {
             userCounter -= 1;
             io.emit('decUser')
             cookies.userCount +=1;
+        }
+
+    });
+
+    socket.on('new user message', function (userId) {
+        var rString = randomString(24, '0123456789abcdef');
+
+        db.userCollection.insert({_id: mongojs.ObjectID(rString), user: userId }, function (err, o) {
+            if (err) {
+                console.warn(err.message);
+            }
+            else {
+                console.log("userId message inserted into the db: " + userId);
+            }
+        });
+    })
+
+    socket.on('new room message', function (msg, userId) {
+        var rString = randomString(24, '0123456789abcdef');
+
+        db.userCollection.insert({_id: mongojs.ObjectID(rString), room: msg, creator: userId }, function (err, o) {
+            if (err) {
+                console.warn(err.message);
+            }
+            else {
+                console.log("userId message inserted into the db: " + userId);
+            }
+        });
+    })
+
+
+    socket.on('room delete', function (index, id, userId) {
+
+        if ( userId != undefined &&
+            db.roomsCollecction.findOne({_Rid: mongojs.ObjectID(id)}, function (err, doc) {
+            res.creator == userId  ; }) )
+        {
+            console.log("Server received 'room delete' broadcast for id: " + id + "userId: " + userId);
+            //deletes the selected room from the database
+            db.roomsCollection.remove({_id: mongojs.ObjectId(id)});
+            io.emit('rooms delete', index, id);
         }
 
     });
@@ -127,14 +171,6 @@ io.on('connection', function (socket) {
 
     });
 
-    socket.on('room delete', function (index, id) {
-
-        console.log("Server received 'room delete' broadcast for id: "+id);
-        //deletes the selected room from the database
-        db.roomsCollection.remove({_id: mongojs.ObjectId(id)});
-        io.emit('rooms delete', index, id);
-
-    });
 });
 
 
