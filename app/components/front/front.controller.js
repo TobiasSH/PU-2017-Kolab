@@ -108,5 +108,9 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', func
 
     };
 
+    $scope.deleteRoom = function (index, id) {
+        socket.emit('room delete', index, id);
+    }
+
 
 }]);

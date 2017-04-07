@@ -2,7 +2,7 @@ var express = require('express');
 var app = express();
 var mongojs = require('mongojs');
 
-var db = mongojs('mongodb://heroku_2hcp9k8k:19uocjcgsn6ce4pp7j66fe1ras@ds119020.mlab.com:19020/heroku_2hcp9k8k', ['questionsCollection', 'counter']);
+var db = mongojs('mongodb://heroku_2hcp9k8k:19uocjcgsn6ce4pp7j66fe1ras@ds119020.mlab.com:19020/heroku_2hcp9k8k', ['questionsCollection', 'roomsCollection', 'counter']);
 var bodyParser = require('body-parser');
 var path = require('path');
 var cookie = require('cookie');
@@ -58,6 +58,9 @@ io.on('connection', function (socket) {
         console.log("QM: This is the room"+ socket.room);
         io.to(socket.room).emit('question message', {_id: mongojs.ObjectID(rString), room: String(socket.room), text: msg});
     });
+
+
+
     //menu buttons
     socket.on('cantKeepUp',function(){
         var hits = parseInt(cookies.cantKeepUpCount);
@@ -127,7 +130,7 @@ io.on('connection', function (socket) {
     socket.on('room delete', function (index, id) {
 
         console.log("Server received 'room delete' broadcast for id: "+id);
-        //deletes the selected question from the database
+        //deletes the selected room from the database
         db.roomsCollection.remove({_id: mongojs.ObjectId(id)});
         io.emit('rooms delete', index, id);
 
