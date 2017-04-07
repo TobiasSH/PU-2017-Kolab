@@ -3,7 +3,7 @@ start_time = datetime.now()
 
 
 import nltk
-nltk.data.path.append('/nltk_data/')
+nltk.data.path.append('nltk_data/')
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.stem import WordNetLemmatizer
