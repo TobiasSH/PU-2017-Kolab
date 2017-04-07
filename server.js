@@ -6,36 +6,26 @@ var mongojs = require('mongojs');
 var db = mongojs('mongodb://kolabgroup:12345678@ds115110.mlab.com:15110/kolabdb', ['questionsCollection', 'counter']);
 var bodyParser = require('body-parser');
 var path = require('path');
-var cookie = require('cookie');
-var cookies = cookie.parse('userCount = 1; cantKeepUpCount = 1; decreaseVolumeCount = 1; increaseVolumeCount = 1;decreaseSpeedCount = 1; increaseSpeedCount = 1')
+var userCount=0;
 
 app.use(express.static(__dirname));
 app.use(bodyParser.json());
 
-
 /* SOCKET IO */
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var userCounter = 0;
+
 
 // socket functions
 io.on('connection', function (socket) {
-    console.log('User ' + userCounter + ' connected.');
-    if (cookies.userCount>0){
-        userCounter += 1;
-        io.emit('incUser');
-        cookies.userCount -=1;
-    }
-
-
+    console.log('User ' + socket.id + ' connected.' + userCount);
+    socket.on('storeClient', function(inc){
+        userCount+=inc;
+        console.log(userCount+ " count");
+        db.counter.update({"counter" : "userCount"}, {"$inc":{"hits": inc}});
+    });
     socket.on('disconnect', function () {
-        console.log('a user disconnected');
-        if (cookies.userCount<1){
-            userCounter -= 1;
-            io.emit('decUser');
-            cookies.userCount +=1;
-        }
-
+        socket.emit('storeClient',-1 );
     });
 
     // servers response to emitted message from controllers
@@ -62,8 +52,32 @@ io.on('connection', function (socket) {
         // broadcasts question message to all listening sockets with the same object we insert into the database
         io.emit('question message', {_id: mongojs.ObjectID(msg._id), text: msg.text, tag: msg.tag});
     });
-
-
+    //menu buttons
+    socket.on('cantKeepUp',function(inc){
+        db.counter.update({"counter" : "cantKeepUp"}, {"$inc":{"hits": inc}});
+        io.emit('cantKeepUp',  inc, userCount );
+    });
+    socket.on('decreaseVolume', function(inc){
+        db.counter.update({"counter" : "decreaseVolume"}, {"$inc":{"hits": inc}});
+        io.emit('decreaseVolume', inc, userCount);
+    });
+    socket.on('increaseVolume', function(inc){
+        db.counter.update({"counter" : "increaseVolume"}, {"$inc":{"hits": inc}});
+        io.emit('increaseVolume', inc, userCount);
+    });
+    socket.on('decreaseSpeed', function(inc){
+        db.counter.update({"counter" : "decreaseSpeed"}, {"$inc":{"hits": inc}});
+        console.log("decerease speed" );
+        io.emit('decreaseSpeed', inc, userCount);
+    });
+    socket.on('increaseSpeed', function(inc){
+        db.counter.update({"counter" : "increaseSpeed"}, {"$inc":{"hits": inc}});
+        io.emit('increaseSpeed', inc, userCount);
+    });
+    socket.on('resetVotes', function(){
+        db.counter.update({},{"$set":{"hits":0}},{multi:true});
+        io.emit('resetVotes');
+    });
 
     //servers response to emitted message to delete question from lecturer controller
     socket.on('question delete', function (index, obj) {
@@ -72,10 +86,7 @@ io.on('connection', function (socket) {
         //deletes the selected question from the database
         db.questionsCollection.remove({_id: mongojs.ObjectId(obj._id)});
         io.emit('question delete', index, obj);
-
-
     });
-
 
     //servers response to emitted message to delete question from lecturer controller
     socket.on('question delete grouped', function (rowIndex, index, obj) {
@@ -85,62 +96,6 @@ io.on('connection', function (socket) {
         db.questionsCollection.remove({_id: mongojs.ObjectId(obj._id)});
         io.emit('question delete grouped',rowIndex, index, obj);
 
-
-    });
-
-    //menu buttons
-    socket.on('cantKeepUp',function(){
-        var hits = parseInt(cookies.cantKeepUpCount);
-        db.counter.update({"counter" : "cantKeepUp"}, {"$inc":{"hits": parseInt(cookies.cantKeepUpCount)}});
-        console.log("cant keep up server"+ parseInt(cookies.cantKeepUpCount));
-
-        cookies.cantKeepUpCount=parseInt(cookies.cantKeepUpCount)*(-1);
-
-
-        io.emit('cantKeepUp',  hits )
-
-    });
-    socket.on('decreaseVolume', function(){
-        var hits = parseInt(cookies.decreaseVolumeCount)
-        db.counter.update({"counter" : "decreaseVolume"}, {"$inc":{"hits": parseInt(cookies.decreaseVolumeCount)}});
-        console.log("decrease volume " + cookies.decreaseVolumeCount);
-        cookies.decreaseVolumeCount=parseInt(cookies.decreaseVolumeCount)*(-1);
-        console.log(cookies);
-
-        io.emit('decreaseVolume', hits)
-    });
-    socket.on('increaseVolume', function(){
-        var hits = parseInt(cookies.increaseVolumeCount);
-        db.counter.update({"counter" : "increaseVolume"}, {"$inc":{"hits": parseInt(cookies.increaseVolumeCount)}});
-        console.log("increaseses volumes" + cookies.increaseVolumeCount);
-        cookies.increaseVolumeCount=parseInt(cookies.increaseVolumeCount)*(-1);
-
-        io.emit('increaseVolume', hits)
-
-    });
-    socket.on('decreaseSpeed', function(){
-        var hits = parseInt(cookies.decreaseSpeedCount);
-        db.counter.update({"counter" : "decreaseSpeed"}, {"$inc":{"hits": parseInt(cookies.decreaseSpeedCount)}});
-        console.log("decerease speed" + cookies.decreaseSpeedCount);
-        cookies.decreaseSpeedCount=parseInt(cookies.decreaseSpeedCount)*(-1);
-
-        io.emit('decreaseSpeed', hits)
-
-    });
-    socket.on('increaseSpeed', function(){
-        var hits = parseInt(cookies.increaseSpeedCount);
-        db.counter.update({"counter" : "increaseSpeed"}, {"$inc":{"hits": parseInt(cookies.increaseSpeedCount)}});
-        console.log("incerease speed"+ cookies.increaseSpeedCount);
-        cookies.increaseSpeedCount=parseInt(cookies.increaseSpeedCount)*(-1);
-
-        io.emit('increaseSpeed', hits)
-
-    });
-    socket.on('resetVotes', function(){
-        db.counter.update({},{"$set":{"hits":0}},{multi:true});
-        console.log(cookies);
-        cookies = cookie.parse('userCount = 0; cantKeepUpCount = 1; decreaseVolumeCount = 1; increaseVolumeCount = 1;decreaseSpeedCount = 1; increaseSpeedCount = 1')
-        io.emit('resetVotes');
     });
 
 });
@@ -151,7 +106,6 @@ function randomString(length, chars) {
     for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
     return result;
 }
-
 
 /* SERVER SIDE ROUTING */
 app.get('/lecturer', function (req, res) {
@@ -165,7 +119,6 @@ app.get('/student', function (req, res) {
 app.get('/questions', function (req, res) {
     res.sendFile(__dirname + '/index.html');
 });
-
 
 /* DATABASE METHODS */
 app.get('/questionsCollection', function (req, res, socket) {
@@ -197,6 +150,12 @@ app.get('/counters', function(req, res){
     })
 });
 
+app.get('/counters', function(req, res){
+    db.counter.find(function(err,doc){
+        res.json(doc);
+
+    })
+});
 
 var server = http.listen(process.env.PORT || 3000);
 console.log("Server running on port 3000");
