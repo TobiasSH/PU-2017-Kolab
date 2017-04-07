@@ -45,7 +45,7 @@ describe("server socket", function () {
     describe('question message id length', function() {
 
       it("checks question message id length", function (done) {
-        socket.once("question message", function (message) {
+        socket.once("pp message", function (message) {
           //console.log("message._id.length: " + message._id.length);
           message._id.length.should.equal(24);
           done();
@@ -127,21 +127,6 @@ describe("server socket", function () {
         });
         
         socket.emit("increaseSpeed");
-      });
-
-    });
-
-    describe('question delete test', function() {
-
-      it("checks question delete message", function (done) {
-        socket.once("question delete", function (message) {
-          console.log("typeof message: " + typeof message);
-          var message_type = typeof message;
-          message_type.should.equal("object");
-          done();
-        });
-        
-        socket.emit("question delete");
       });
 
     });
