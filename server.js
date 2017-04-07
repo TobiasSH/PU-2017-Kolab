@@ -2,43 +2,30 @@ var express = require('express');
 var app = express();
 var mongojs = require('mongojs');
 
-var db = mongojs('mongodb://heroku_2hcp9k8k:19uocjcgsn6ce4pp7j66fe1ras@ds119020.mlab.com:19020/heroku_2hcp9k8k', ['questionsCollection', 'roomsCollection', 'usercollection, ''counter']);
+//var db = mongojs('mongodb://heroku_2hcp9k8k:19uocjcgsn6ce4pp7j66fe1ras@ds119020.mlab.com:19020/heroku_2hcp9k8k', ['roomsQuestionsCollection', 'roomsCollection' 'counter']);
+var db = mongojs('mongodb://kolabgroup:12345678@ds115110.mlab.com:15110/kolabdb', ['questionsCollection', 'userCollection', 'counter']);
 var bodyParser = require('body-parser');
 var path = require('path');
-var cookie = require('cookie');
-var cookies = cookie.parse('userCount = 1; cantKeepUpCount = 1; decreaseVolumeCount = 1; increaseVolumeCount = 1;decreaseSpeedCount = 1; increaseSpeedCount = 1')
-
+var userCount=0;
 
 app.use(express.static(__dirname));
 app.use(bodyParser.json());
 
-
 /* SOCKET IO */
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var userCounter = 0;
-
-
 
 
 // socket functions
 io.on('connection', function (socket) {
-    console.log('User ' + userCounter + ' connected.');
-    if (cookies.userCount>0){
-        userCounter += 1;
-        io.emit('incUser')
-        cookies.userCount -=1;
-    }
-
-
+    console.log('User ' + socket.id + ' connected.' + userCount);
+    socket.on('storeClient', function(inc){
+        userCount+=inc;
+        console.log(userCount+ " count");
+        db.counter.update({"counter" : "userCount"}, {"$inc":{"hits": inc}});
+    });
     socket.on('disconnect', function () {
-        console.log('a user disconnected');
-        if (cookies.userCount<1){
-            userCounter -= 1;
-            io.emit('decUser')
-            cookies.userCount +=1;
-        }
-
+        socket.emit('storeClient',-1 );
     });
 
     socket.on('new user message', function (userId) {
@@ -67,7 +54,6 @@ io.on('connection', function (socket) {
         });
     })
 
-
     socket.on('room delete', function (index, id, userId) {
 
         if ( userId != undefined &&
@@ -85,12 +71,17 @@ io.on('connection', function (socket) {
     // servers response to emitted message from controllers
     socket.on('question message', function (msg) {
         console.log('message: ' + msg);
+        var rString = randomString(24, '0123456789abcdef');
+        io.emit('pp message', {_id: mongojs.ObjectID(rString), text: msg, tag: ""});
+    });
+
+    socket.on('processed message', function (msg) {
+        console.log('message: ' + msg);
 
         //creates random string with the function outside the socket function
-        var rString = randomString(24, '0123456789abcdef');
 
         //inserting new message into mlab database
-        db.roomsQuestionsCollection.insert({_id: mongojs.ObjectID(rString), room: String(socket.room), text: msg}, function (err, o) {
+        db.roomsQuestionsCollection.insert({_id: mongojs.ObjectID(msg._id), room: String(socket.room), text: msg.text, tag: msg.tag}, function (err, o) {
             if (err) {
                 console.warn(err.message);
             }
@@ -101,81 +92,59 @@ io.on('connection', function (socket) {
         // broadcasts question message to all listening sockets with the same object we insert into the database
         console.log("QM: This is the room"+ socket.room);
         io.to(socket.room).emit('question message', {_id: mongojs.ObjectID(rString), room: String(socket.room), text: msg});
+        io.emit('question message', {_id: mongojs.ObjectID(msg._id), text: msg.text, tag: msg.tag});
     });
-
-
-
     //menu buttons
-    socket.on('cantKeepUp',function(){
-        var hits = parseInt(cookies.cantKeepUpCount);
-        db.counter.update({"counter" : "cantKeepUp"}, {"$inc":{"hits": parseInt(cookies.cantKeepUpCount)}});
-        console.log("cant keep up server"+ parseInt(cookies.cantKeepUpCount));
-
-        cookies.cantKeepUpCount=parseInt(cookies.cantKeepUpCount)*(-1);
-
-
-        io.emit('cantKeepUp',  hits )
-
+    socket.on('cantKeepUp',function(inc){
+        db.counter.update({"counter" : "cantKeepUp"}, {"$inc":{"hits": inc}});
+        io.emit('cantKeepUp',  inc, userCount );
     });
-    socket.on('decreaseVolume', function(){
-        var hits = parseInt(cookies.decreaseVolumeCount)
-        db.counter.update({"counter" : "decreaseVolume"}, {"$inc":{"hits": parseInt(cookies.decreaseVolumeCount)}});
-        console.log("decrease volume " + cookies.decreaseVolumeCount);
-        cookies.decreaseVolumeCount=parseInt(cookies.decreaseVolumeCount)*(-1);
-        console.log(cookies);
-
-        io.emit('decreaseVolume', hits)
+    socket.on('decreaseVolume', function(inc){
+        db.counter.update({"counter" : "decreaseVolume"}, {"$inc":{"hits": inc}});
+        io.emit('decreaseVolume', inc, userCount);
     });
-    socket.on('increaseVolume', function(){
-        var hits = parseInt(cookies.increaseVolumeCount)
-        db.counter.update({"counter" : "increaseVolume"}, {"$inc":{"hits": parseInt(cookies.increaseVolumeCount)}});
-        console.log("increaseses volumes" + cookies.increaseVolumeCount);
-        cookies.increaseVolumeCount=parseInt(cookies.increaseVolumeCount)*(-1);
-
-        io.emit('increaseVolume', hits)
-
+    socket.on('increaseVolume', function(inc){
+        db.counter.update({"counter" : "increaseVolume"}, {"$inc":{"hits": inc}});
+        io.emit('increaseVolume', inc, userCount);
     });
-    socket.on('decreaseSpeed', function(){
-        var hits = parseInt(cookies.decreaseSpeedCount)
-        db.counter.update({"counter" : "decreaseSpeed"}, {"$inc":{"hits": parseInt(cookies.decreaseSpeedCount)}});
-        console.log("decerease speed" + cookies.decreaseSpeedCount);
-        cookies.decreaseSpeedCount=parseInt(cookies.decreaseSpeedCount)*(-1);
-
-        io.emit('decreaseSpeed', hits)
-
+    socket.on('decreaseSpeed', function(inc){
+        db.counter.update({"counter" : "decreaseSpeed"}, {"$inc":{"hits": inc}});
+        console.log("decerease speed" );
+        io.emit('decreaseSpeed', inc, userCount);
     });
-    socket.on('increaseSpeed', function(){
-        var hits = parseInt(cookies.increaseSpeedCount)
-        db.counter.update({"counter" : "increaseSpeed"}, {"$inc":{"hits": parseInt(cookies.increaseSpeedCount)}});
-        console.log("incerease speed"+ cookies.increaseSpeedCount);
-        cookies.increaseSpeedCount=parseInt(cookies.increaseSpeedCount)*(-1);
-
-        io.emit('increaseSpeed', hits)
-
+    socket.on('increaseSpeed', function(inc){
+        db.counter.update({"counter" : "increaseSpeed"}, {"$inc":{"hits": inc}});
+        io.emit('increaseSpeed', inc, userCount);
     });
     socket.on('resetVotes', function(){
         db.counter.update({},{"$set":{"hits":0}},{multi:true});
-        console.log(cookies);
-        cookies = cookie.parse('userCount = 0; cantKeepUpCount = 1; decreaseVolumeCount = 1; increaseVolumeCount = 1;decreaseSpeedCount = 1; increaseSpeedCount = 1')
-        console.log(cookies);
         io.emit('resetVotes');
-    })
+    });
 
     //servers response to emitted message to delete question from lecturer controller
-    socket.on('question delete', function (index, id) {
+    socket.on('question delete', function (index, obj) {
 
-        console.log("Server received 'question delete' broadcast for id: "+id);
+        console.log("Server received 'question delete' broadcast for id: "+obj._id);
         //deletes the selected question from the database
         db.roomsQuestionsCollection.remove({_id: mongojs.ObjectId(id)});
         io.emit('question delete', index, id);
 
+        //TODO clean upp after merge
+        db.questionsCollection.remove({_id: mongojs.ObjectId(obj._id)});
+        io.emit('question delete', index, obj);
+    });
+
+    //servers response to emitted message to delete question from lecturer controller
+    socket.on('question delete grouped', function (rowIndex, index, obj) {
+
+        console.log("Server received 'question delete' broadcast for id: "+obj._id);
+        //deletes the selected question from the database
+        db.questionsCollection.remove({_id: mongojs.ObjectId(obj._id)});
+        io.emit('question delete grouped',rowIndex, index, obj);
+
     });
 
 });
-
-
-
-//io.sockets.in(room).emit('message' ,"hei");
 
 /* ID Generator */
 function randomString(length, chars) {
@@ -183,7 +152,6 @@ function randomString(length, chars) {
     for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
     return result;
 }
-
 
 /* SERVER SIDE ROUTING */
 app.get('/lecturer', function (req, res) {
@@ -258,43 +226,23 @@ app.get('/roomsCollection/:id', function (req, res) {
         res.json(doc);
     });
 });
+
 app.get('/counters', function(req, res){
     db.counter.find(function(err,doc){
         res.json(doc);
 
     })
-})
-app.get('/cantKeepUp', function(req, res){
-    db.counter.findOne({"counter": "cantKeepUp"}, function(err,doc){
+});
+
+app.get('/counters', function(req, res){
+    db.counter.find(function(err,doc){
         res.json(doc);
 
     })
-})
-app.get('/decreaseVolume', function(req, res){
-    db.counter.findOne({"counter": "decreaseVolume"}, function(err,doc){
-        res.json(doc);
-
-    })
-})
-app.get('/increaseVolume', function(req, res){
-    db.counter.findOne({"counter": "increaseVolume"}, function(err,doc){
-        res.json(doc);
-
-    })
-})
-app.get('/decreaseSpeed', function(req, res){
-    db.counter.findOne({"counter": "decreaseSpeed"}, function(err,doc){
-        res.json(doc);
-
-    })
-})
-app.get('/increaseSpeed', function(req, res){
-    db.counter.findOne({"counter": "increaseSpeed"}, function(err,doc) {
-        res.json(doc);
-    })
-})
+});
 
 var server = http.listen(process.env.PORT || 3000);
 console.log("Server running on port 3000");
 
 module.exports = server;
+
