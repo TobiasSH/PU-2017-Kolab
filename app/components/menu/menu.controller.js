@@ -43,6 +43,7 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', function ($scope, $http) {
             cantKeepUp.className= button + "btn-cantkeepup";
         } else if (inc == 1){
             cantKeepUp.className=button + " btn-cantkeepupClicked";
+            console.log("yo clicked")
 
         }
         socket.emit('cantKeepUp', inc)
