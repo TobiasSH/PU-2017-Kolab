@@ -69,7 +69,7 @@ h1 {
     margin: 40px 0px 0px 40px;
 }
 
-.questions-table {
+.questions-table, .questions-table-grouped {
     width: 92%;
     margin: 40px 0px 0px 40px;
 }
@@ -91,11 +91,22 @@ tbody{
     padding: 0;
     line-height: 25px;
     min-height: 200px;
+
 }
 
 .questionRows{
     border-bottom: 1px solid black;
     /*word-break: break-all;*/
+}
+
+
+.nounRows {
+    background-color: darkgray;
+    border-bottom: 1px solid black;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    border-top: 1px solid black;
+    opacity: 0.4;
 }
 
 .table td {
@@ -111,6 +122,14 @@ tbody{
     font-size: 30px;
     width: 100%;
 }
+
+.td-noun{
+    color: white;
+    opacity: 1;
+    text-shadow: -2px 2px black;
+    cursor: pointer;
+}
+
 
 .title{
     /*text-align: left;
@@ -272,3 +291,16 @@ textarea{
   width: 128px;
 }
 
+/* PROGRESSBAR */
+/********************/
+
+.progress {
+    width: 92%;
+    height: 40px;
+    margin: 10px 40px 0px 40px;
+}
+
+.progress-bar {
+    font-size: 28px;
+    line-height: 32px;
+} 

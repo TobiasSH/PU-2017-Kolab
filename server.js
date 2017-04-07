@@ -1,14 +1,15 @@
 var express = require('express');
 var app = express();
 var mongojs = require('mongojs');
-var db = mongojs('mongodb://heroku_2hcp9k8k:19uocjcgsn6ce4pp7j66fe1ras@ds119020.mlab.com:19020/heroku_2hcp9k8k', ['questionsCollection', 'counter']);
+
+//var db = mongojs('mongodb://heroku_2hcp9k8k:19uocjcgsn6ce4pp7j66fe1ras@ds119020.mlab.com:19020/heroku_2hcp9k8k', ['questionsCollection', 'counter']);
+var db = mongojs('mongodb://kolabgroup:12345678@ds115110.mlab.com:15110/kolabdb', ['questionsCollection', 'counter']);
 var bodyParser = require('body-parser');
 var path = require('path');
 var userCount=0;
 
 app.use(express.static(__dirname));
 app.use(bodyParser.json());
-
 
 /* SOCKET IO */
 var http = require('http').Server(app);
@@ -30,12 +31,17 @@ io.on('connection', function (socket) {
     // servers response to emitted message from controllers
     socket.on('question message', function (msg) {
         console.log('message: ' + msg);
+        var rString = randomString(24, '0123456789abcdef');
+        io.emit('pp message', {_id: mongojs.ObjectID(rString), text: msg, tag: ""});
+    });
+
+    socket.on('processed message', function (msg) {
+        console.log('message: ' + msg);
 
         //creates random string with the function outside the socket function
-        var rString = randomString(24, '0123456789abcdef');
 
         //inserting new message into mlab database
-        db.questionsCollection.insert({_id: mongojs.ObjectID(rString), text: msg}, function (err, o) {
+        db.questionsCollection.insert({_id: mongojs.ObjectID(msg._id), text: msg.text, tag: msg.tag}, function (err, o) {
             if (err) {
                 console.warn(err.message);
             }
@@ -44,7 +50,7 @@ io.on('connection', function (socket) {
             }
         });
         // broadcasts question message to all listening sockets with the same object we insert into the database
-        io.emit('question message', {_id: mongojs.ObjectID(rString), text: msg});
+        io.emit('question message', {_id: mongojs.ObjectID(msg._id), text: msg.text, tag: msg.tag});
     });
     //menu buttons
     socket.on('cantKeepUp',function(inc){
@@ -74,15 +80,24 @@ io.on('connection', function (socket) {
     });
 
     //servers response to emitted message to delete question from lecturer controller
-    socket.on('question delete', function (index, id) {
+    socket.on('question delete', function (index, obj) {
 
-        console.log("Server received 'question delete' broadcast for id: "+id);
+        console.log("Server received 'question delete' broadcast for id: "+obj._id);
         //deletes the selected question from the database
-        db.questionsCollection.remove({_id: mongojs.ObjectId(id)});
-        io.emit('question delete', index, id);
+        db.questionsCollection.remove({_id: mongojs.ObjectId(obj._id)});
+        io.emit('question delete', index, obj);
+    });
 
+    //servers response to emitted message to delete question from lecturer controller
+    socket.on('question delete grouped', function (rowIndex, index, obj) {
+
+        console.log("Server received 'question delete' broadcast for id: "+obj._id);
+        //deletes the selected question from the database
+        db.questionsCollection.remove({_id: mongojs.ObjectId(obj._id)});
+        io.emit('question delete grouped',rowIndex, index, obj);
 
     });
+
 });
 
 /* ID Generator */
@@ -91,7 +106,6 @@ function randomString(length, chars) {
     for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
     return result;
 }
-
 
 /* SERVER SIDE ROUTING */
 app.get('/lecturer', function (req, res) {
@@ -105,7 +119,6 @@ app.get('/student', function (req, res) {
 app.get('/questions', function (req, res) {
     res.sendFile(__dirname + '/index.html');
 });
-
 
 /* DATABASE METHODS */
 app.get('/questionsCollection', function (req, res, socket) {
@@ -121,21 +134,6 @@ app.get('/questionsCollection', function (req, res, socket) {
     });
 });
 
-/*app.post('/questionsCollection', function (req, res) {
-    console.log("I received a POST request");
-    console.log(req.body);
-    db.questionsCollection.insert(req.body, function (err, doc) {
-        res.json(doc);
-    });
-});
-
-app.delete('/questionsCollection/:id', function (req, res) {
-    console.log("Server received a DELETE request for ID: " + req.params.id);
-    var id = req.params.id;
-    console.log(typeof id);
-    db.questionsCollection.remove({_id: mongojs.ObjectId(id)});
-});*/
-
 app.get('/questionsCollection/:id', function (req, res) {
     console.log("I received a GET request");
     var id = req.params.id;
@@ -144,13 +142,23 @@ app.get('/questionsCollection/:id', function (req, res) {
         res.json(doc);
     });
 });
+
 app.get('/counters', function(req, res){
     db.counter.find(function(err,doc){
         res.json(doc);
 
     })
-})
+});
 
+app.get('/counters', function(req, res){
+    db.counter.find(function(err,doc){
+        res.json(doc);
 
-http.listen(process.env.PORT || 3000);
+    })
+});
+
+var server = http.listen(process.env.PORT || 3000);
 console.log("Server running on port 3000");
+
+module.exports = server;
+
