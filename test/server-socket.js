@@ -75,7 +75,7 @@ describe("server socket", function () {
           done();
         });
         
-        socket.emit("processed message", {_id: 112233445566112233445566, text: "something", tag: "test"});
+        socket.emit("processed message", {_id: 112233445566112233445566, text: "testing\n", tag: "testing "});
         done();
       });
 
@@ -91,7 +91,7 @@ describe("server socket", function () {
           done();
         });
         
-        socket.emit("question delete", 1, {_id: 112233445566112233445566, text: "something", tag: "test"});
+        socket.emit("question delete", 1, {_id: 112233445566112233445566, text: "testing\n", tag: "testing "});
         done();
       });
 
@@ -107,7 +107,7 @@ describe("server socket", function () {
           done();
         });
         
-        socket.emit("question delete grouped", 1, 1, {_id: 112233445566112233445566, text: "something", tag: "test"});
+        socket.emit("question delete grouped", 1, 1, {_id: 112233445566112233445566, text: "testing\n", tag: "testing "});
         done();
       });
 
