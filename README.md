@@ -1,5 +1,5 @@
 # Kolab
-The Kolab App
+[![Build Status](https://travis-ci.com/TobiasSH/PU-2017-Kolab.svg?token=XPoxJGAcCUwTmyc9W9ea&branch=develop)](https://travis-ci.com/TobiasSH/PU-2017-Kolab)
 
 ### [Screenshots](/screenshots/screenshots.md)
 
