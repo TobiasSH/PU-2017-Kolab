@@ -5,7 +5,7 @@ Kolab is a student project in the subject TDT4145 - Software development at NTNU
 The team has developed a real-time web application which aims at engaging students during classes. With the application you can ask questions during the lecture and give various feedback, such as: "We're moving too quickly", "I fell off", "Speak louder" and so on.
 Lecturers are able to make a "room" for their lectures, and the students can join the specific room. The lecturer will be able to see the percentage of students who have given the aforementioned feedback as well as the questions. The application utilizes a separate natural language processing script which makes us able to group questions based on their subject.
 
-The project was developed using MEAN stack with socketIO and a separate python script using NLTK and socketIO.
+The project was developed using MEAN stack with socketIO and a separate python script using NLTK and socketIO. Styling was done with CSS and Bootstrap. Publication was done through Heroku and MLab, and testing was done with TravisCI, Coveralls, Mocha and Chai.
 <br></br>
 <a href="http://mongodb.com/"><img src="http://amartam.com/wp-content/uploads/2016/11/mongodb1.png" title="MongoDB" align="left" height="48" width="48" ></a>
 <a href="http://expressjs.com/"><img src="http://nodejs-cloud.com/img/128px/expressjs.png" title="ExpressJS" align="left" height="48" width="48" ></a>
