@@ -1,5 +1,12 @@
 [![Build Status](https://travis-ci.com/TobiasSH/PU-2017-Kolab.svg?token=XPoxJGAcCUwTmyc9W9ea&branch=develop)](https://travis-ci.com/TobiasSH/PU-2017-Kolab) [![Coverage Status](https://coveralls.io/repos/github/TobiasSH/PU-2017-Kolab/badge.svg?branch=develop)](https://coveralls.io/github/TobiasSH/PU-2017-Kolab?branch=develop)
 
+# Kolab
+Kolab is a student project in the subject TDT4145 - Software development at NTNU.
+The team has developed a real-time web application which aims at engaging students during classes. With the application you can ask questions during the lecture and give various feedback, such as: "We're moving too quickly", "I fell off", "Speak louder" and so on.
+Lecturers are able to make a "room" for their lectures, and the students can join the specific room. The lecturer will be able to see the percentage of students who have given the aforementioned feedback as well as the questions. The application utilizes a separate natural language processing script which makes us able to group questions based on their subject.
+
+The project was developed using MEAN stack with socketIO and a separate python script using NLTK and socketIO.
+<br></br>
 <a href="http://mongodb.com/"><img src="http://amartam.com/wp-content/uploads/2016/11/mongodb1.png" title="MongoDB" align="left" height="48" width="48" ></a>
 <a href="http://expressjs.com/"><img src="http://nodejs-cloud.com/img/128px/expressjs.png" title="ExpressJS" align="left" height="48" width="48" ></a>
 <a href="https://angularjs.org/"><img src="http://ericsaupe.com/wp-content/uploads/2014/01/square-300x300.png" title="AngularJS" align="left" height="48" width="48" ></a>
@@ -10,14 +17,7 @@
 <a href="https://travis-ci.org/"><img src="https://cdn.worldvectorlogo.com/logos/travis-ci-icon.svg" title="TravisCI" align="left" height="48" width="48" ></a>
 <a href="https://mochajs.org/"><img src="https://cldup.com/xFVFxOioAU.svg" title="MochaJS" align="left" height="48" width="48" ></a>
 <a href="https://chaijs.com/"><img src="https://cdn.tutsplus.com/net/uploads/2014/01/nodejs-testing-chai-retina-preview.png" title="Chai" align="left" height="48" width="48" ></a>
-<br>
-<br>
-# Kolab
-Kolab is a student project in the subject TDT4145 - Software development at NTNU.
-The team has developed a real-time web application which aims at engaging students during classes. With the application you can ask questions during the lecture and give various feedback, such as: "We're moving too quickly", "I fell off", "Speak louder" and so on.
-Lecturers are able to make a "room" for their lectures, and the students can join the specific room. The lecturer will be able to see the percentage of students who have given the aforementioned feedback as well as the questions. The application utilizes a separate natural language processing script which makes us able to group questions based on their subject.
-
-The project was developed using MEAN stack with socketIO and a separate python script using NLTK and socketIO.
+<br></br>
 
 ### [Screenshots](/screenshots/screenshots.md)
 
