@@ -1,5 +1,17 @@
 [![Build Status](https://travis-ci.com/TobiasSH/PU-2017-Kolab.svg?token=XPoxJGAcCUwTmyc9W9ea&branch=develop)](https://travis-ci.com/TobiasSH/PU-2017-Kolab) [![Coverage Status](https://coveralls.io/repos/github/TobiasSH/PU-2017-Kolab/badge.svg?branch=develop)](https://coveralls.io/github/TobiasSH/PU-2017-Kolab?branch=develop)
 
+<a href="http://mongodb.com/"><img src="http://amartam.com/wp-content/uploads/2016/11/mongodb1.png" title="MongoDB" align="left" height="48" width="48" ></a>
+<a href="http://expressjs.com/"><img src="http://nodejs-cloud.com/img/128px/expressjs.png" title="ExpressJS" align="left" height="48" width="48" ></a>
+<a href="https://angularjs.org/"><img src="http://ericsaupe.com/wp-content/uploads/2014/01/square-300x300.png" title="AngularJS" align="left" height="48" width="48" ></a>
+<a href="http://nodejs.org/"><img src="http://ecodile.com/wp-content/uploads/2015/10/node_icon2.png" title="NodeJS" align="left" height="48" width="48" ></a>
+<a href="http://getbootstrap.com/"><img src="http://www.rsiconcepts.com/blog/wp-content/uploads/2015/04/bootstrap-and-responsive-web-designing-logo-e1430044801154.png" title="Bootstrap" align="left" height="48" width="48" ></a>
+<a href="https://socket.io/"><img src="https://www.pubnub.com/wp-content/uploads/2014/07/SOCKETIOICON.gif" title="SocketIO" align="left" height="48" width="48" ></a>
+<a href="http://heroku.com/"><img src="https://maxcdn.icons8.com/Color/PNG/512/Logos/heroku-512.png" title="Heroku" align="left" height="48" width="48" ></a>
+<a href="https://travis-ci.org/"><img src="https://cdn.worldvectorlogo.com/logos/travis-ci-icon.svg" title="TravisCI" align="left" height="48" width="48" ></a>
+<a href="https://mochajs.org/"><img src="https://cldup.com/xFVFxOioAU.svg" title="MochaJS" align="left" height="48" width="48" ></a>
+<a href="https://chaijs.com/"><img src="https://cdn.tutsplus.com/net/uploads/2014/01/nodejs-testing-chai-retina-preview.png" title="Chai" align="left" height="48" width="48" ></a>
+<br>
+<br>
 # Kolab
 Kolab is a student project in the subject TDT4145 - Software development at NTNU.
 The team has developed a real-time web application which aims at engaging students during classes. With the application you can ask questions during the lecture and give various feedback, such as: "We're moving too quickly", "I fell off", "Speak louder" and so on.
