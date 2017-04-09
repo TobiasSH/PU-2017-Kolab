@@ -9,17 +9,17 @@
                               ng-keyup="$event.keyCode == 13 ? createRoom() : null"></textarea>
                 </td>
                 <td>
-                        <button class="btn btn-primary btn-lg btn-block btn-send" ng-click="createRoom()">Create room
-                        </button>
+                    <button class="btn btn-primary btn-lg btn-block btn-send" ng-click="createRoom()">Create room
+                    </button>
                 </td>
             </tr>
             <tr>
-                    <td> <textarea id="textareaJoinRoom" maxlength="140" size="80" class="form-control"
-                                   ng-model="joinRoom.text"
-                                   ng-keyup="$event.keyCode == 13 ? joinRoom() : null"></textarea></td>
-                    <td>
-                        <button class="btn btn-primary btn-lg btn-block btn-send" ng-click="joinRoom()">Join room
-                        </button>
+                <td> <textarea id="textareaJoinRoom" maxlength="140" size="80" class="form-control"
+                               ng-model="joinRoom.text"
+                               ng-keyup="$event.keyCode == 13 ? joinRoom() : null"></textarea></td>
+                <td>
+                    <button class="btn btn-primary btn-lg btn-block btn-send" ng-click="joinRoom()">Join room
+                    </button>
                 </td>
 
 
@@ -29,19 +29,19 @@
                         <!--<td>{{question.number}}</td>-->
                         <td class="td-room">{{room.text}}</td>
                         <th>
-                            <button class="btn btn-danger btn-lg btn-block btn-remove" ng-click="deleteRoom($index, room.text )">Delete
+                            <button class="btn btn-danger btn-lg btn-block btn-remove"
+                                    ng-click="deleteRoom($index, room.text )">Delete
                             </button>
                         </th>
                         <th>
-                            <button class="btn btn-danger btn-lg btn-block btn-remove" ng-click="joinExistingRoom($index, room.text )">Join
+                            <button class="btn btn-danger btn-lg btn-block btn-remove"
+                                    ng-click="joinExistingRoom($index, room.text )">Join
                             </button>
                         </th>
                     </tr>
 
 
-
                 </table>
-
 
 
                 <table id="roomsTable" class="table">
@@ -50,11 +50,11 @@
                         <!--<td>{{question.number}}</td>-->
                         <td class="td-room">{{room.text}}</td>
                         <td>
-                            <button class="btn btn-danger btn-lg btn-block btn-remove" ng-click="joinExistingRoom($index, room.text )">Join
+                            <button class="btn btn-danger btn-lg btn-block btn-remove"
+                                    ng-click="joinExistingRoom($index, room.text )">Join
                             </button>
                         </td>
                     </tr>
-
 
 
                 </table>

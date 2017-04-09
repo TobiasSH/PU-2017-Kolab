@@ -1,16 +1,16 @@
 kolabApp.controller('questionsCtrl', ['$scope', '$http','socket', function ($scope, $http, socket) {
     console.log("Hello World from questions-controller");
 
-    var socket = io();
-
     $scope.grouped = "groupedTrue";
+
+    console.log("This is the cookie: ", document.cookie);
 
     // initial retrieval of questions from the database
     var refresh = function () {
         $http.get('/roomsQuestionsCollection').then(function (response) {
                 console.log("I got the data I requested, questions-controller");
                 console.log("This is the pure response object:" + response.text);
-                $scope.kolabDBScope = response.data; //kolabdbscope is deprecated if newtags works
+                $scope.kolabDBScope = response.data; //kolabdbscope is used in the non-grouped view
                 $scope.question = null;
                 //Used to identify the different tags, aka nouns
                 $scope.newTags = {};
@@ -34,7 +34,7 @@ kolabApp.controller('questionsCtrl', ['$scope', '$http','socket', function ($sco
     // remove function bound to the delete buttons in lecture view
     $scope.sendQuestion = function () {
         if ($scope.question != null && $scope.question.text.trim().length) {
-            socket.emit('question message', $('#textareaQ').val(), socket.currentRoom);
+            socket.emit('question message', $('#textareaQ').val(), document.cookie.slice(20));
             $('#textareaQ').val('');
             return false;
         }
@@ -53,7 +53,7 @@ kolabApp.controller('questionsCtrl', ['$scope', '$http','socket', function ($sco
         console.log("Trying to delete message (SOCKET) with ID: " + obj._id);
 
         for (var i = 0; i < $scope.newTags[obj.tag].length; i++){
-            if ($scope.newTags[obj.tag][i]._id=== obj._id){
+            if ($scope.newTags[obj.tag][i]._id === obj._id){
                 $scope.newTags[obj.tag].splice(i,1);
             }
         }

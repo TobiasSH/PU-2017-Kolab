@@ -123,7 +123,7 @@ def processNew(newmessage):  # Used when a new question arrives
 
         print ("This is the document at the end", str(newmessage))
         #db.questionsCollection.update({'_id': newmessage['_id']}, {"$set": {'tag': nouns}}, upsert=False)
-        msg = {'_id': newmessage['_id'], 'text': newmessage['text'], 'tag': nouns }
+        msg = {'_id': newmessage['_id'],'room': newmessage['room'], 'text': newmessage['text'], 'tag': nouns}
         print ("This is the message: ",msg)
         socketIO.emit('processed message', msg)
         print ("Processed question: " + str(filtered_sentence))  # This is the processed question
@@ -153,7 +153,7 @@ class Namespace(BaseNamespace):
         processNew(message)
 
 print ("Connecting to socketIO.. Port is: ", 80)
-socketIO = SocketIO('kolab-group.herokuapp.com', 80, Namespace)
+socketIO = SocketIO('localhost', 3000, Namespace)
 socketIO.wait() #waits forever
 
 

@@ -1,6 +1,7 @@
 var kolabApp = angular.module('kolabApp', ['ngRoute', 'angular.filter', 'treeGrid']);
 
-kolabApp.config(function ($routeProvider, $locationProvider) {
+
+kolabApp.config(function ($routeProvider, $locationProvider, $httpProvider) {
     $routeProvider
 
         .when('/', {
@@ -30,4 +31,7 @@ kolabApp.config(function ($routeProvider, $locationProvider) {
 
     // use the HTML5 History API
     $locationProvider.html5Mode(true);
+    //allows cookies in the header of http requests
+    $httpProvider.defaults.withCredentials = true;
+
 });
