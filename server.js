@@ -101,7 +101,7 @@ io.on('connection', function (socket) {
         });
         // broadcasts question message to all listening sockets with the same object we insert into the database
         console.log("QM: This is the room");
-        io.to(socket.room).emit('question message', {
+        io.to(obj.room).emit('question message', {
             _id: mongojs.ObjectID(obj._id),
             room: String(obj.room),
             text: obj.text

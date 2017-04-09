@@ -1,9 +1,12 @@
-kolabApp.controller('questionsCtrl', ['$scope', '$http','socket', function ($scope, $http, socket) {
+kolabApp.controller('questionsCtrl', ['$scope', '$http','$location', 'socket', function ($scope, $http, $location, socket) {
     console.log("Hello World from questions-controller");
 
     $scope.grouped = "groupedTrue";
 
-    console.log("This is the cookie: ", document.cookie);
+    console.log(document.cookie);
+    $scope.go = function (path) {
+        $location.path(path);
+    };
 
     // initial retrieval of questions from the database
     var refresh = function () {
@@ -27,6 +30,15 @@ kolabApp.controller('questionsCtrl', ['$scope', '$http','socket', function ($sco
             function (error) {
                 console.log("I got ERROR", error);
             });
+        //if user doesnt have a room, we return them to the front-page
+        var roomName = document.cookie;
+        if (roomName.length <= 21) {
+            console.log("New user, returning to start");
+            $location.path('/');
+        } else {//we join the socket we're supposed to be on, based on our room
+            socket.emit('join room', roomName);
+        }
+
     };
     refresh();
 
@@ -52,9 +64,9 @@ kolabApp.controller('questionsCtrl', ['$scope', '$http','socket', function ($sco
     socket.on('question delete', function (index, obj) {
         console.log("Trying to delete message (SOCKET) with ID: " + obj._id);
 
-        for (var i = 0; i < $scope.newTags[obj.tag].length; i++){
-            if ($scope.newTags[obj.tag][i]._id === obj._id){
-                $scope.newTags[obj.tag].splice(i,1);
+        for (var i = 0; i < $scope.newTags[obj.tag].length; i++) {
+            if ($scope.newTags[obj.tag][i]._id === obj._id) {
+                $scope.newTags[obj.tag].splice(i, 1);
             }
         }
 
@@ -65,12 +77,12 @@ kolabApp.controller('questionsCtrl', ['$scope', '$http','socket', function ($sco
 
     //delete function from grouped view
     socket.on('question delete grouped', function (rowIndex, index, obj) {
-        console.log("Grouped: Trying to delete message with ID: " + obj._id + ", and rowIndex: "+rowIndex+ ", and normal index: "+index);
+        console.log("Grouped: Trying to delete message with ID: " + obj._id + ", and rowIndex: " + rowIndex + ", and normal index: " + index);
         $scope.newTags[obj.tag].splice(index, 1);
-        console.log("Current state of scope: "+ $scope.kolabDBScope);
-        for (var i = 0; i < $scope.kolabDBScope.length; i++){
+        console.log("Current state of scope: " + $scope.kolabDBScope);
+        for (var i = 0; i < $scope.kolabDBScope.length; i++) {
             console.log($scope.kolabDBScope[i]);
-            if ($scope.kolabDBScope[i]._id == obj._id){
+            if ($scope.kolabDBScope[i]._id == obj._id) {
                 $scope.kolabDBScope.splice(i, 1);
                 $scope.$apply();
                 break;

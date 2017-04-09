@@ -1,4 +1,4 @@
-kolabApp.controller('menuCtrl', ['$scope', '$http', 'socket', function ($scope, $http, socket ) {
+kolabApp.controller('menuCtrl', ['$scope', '$http','$location', 'socket', function ($scope, $http, $location, socket ) {
     console.log("Hello World from menu-controller, cookie is now: ", document.cookie);
 
 
@@ -15,6 +15,10 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', 'socket', function ($scope, 
     //When a button is clicked the the corresponding digit is set to 0
     //Clicking the same button is registered as unclicking this button
 
+
+    $scope.go = function (path) {
+        $location.path(path);
+    };
 
     var refresh = function () {
         if (document.cookie.length < 4) {
@@ -40,6 +44,14 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', 'socket', function ($scope, 
                 }
 
             }
+        }
+        //if user doesnt have a room, we return them to the front-page
+        var roomName = document.cookie;
+        if (roomName.length <= 21) {
+            console.log("New user, returning to start");
+            $location.path('/');
+        } else {//we join the socket we're supposed to be on, based on our room
+            socket.emit('join room', roomName);
         }
 
     };
