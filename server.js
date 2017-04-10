@@ -188,7 +188,7 @@ app.get('/front', function (req, res) {
 app.get('/roomsQuestionsCollection', function (req, res) {
     console.log("RQ: I received a GET request");
     var roomName = cookieParse(req.headers.cookie);//this becomes the socket???
-    console.log("current room: ");
+    console.log("current room: ", roomName);
     db.roomsQuestionsCollection.find({room: roomName}, function (err, docs) {
         if (err) {
             console.warn(err.message);
@@ -253,9 +253,16 @@ app.get('/counters', function (req, res) {
 });
 
 function cookieParse (cookie) {
-    string = cookie.replace(/io=\s*(.*?)\s*;/,'' ); //regex to remove io= .... ;
-    console.log("This is the processed string: ",string);
-    var tempVar = string.slice(20); //remove the non-room parts
+    //needs an if to see if io is first
+    console.log("This is the pre-processed cookie", cookie);
+    if (cookie.indexOf("io=")==0 ) {
+        console.log("This procs now?");
+        cookie = cookie.replace(/io=\s*(.*?)\s*; /, ''); //regex to remove io= .... ;
+        return cookie.slice(20);
+    }
+
+    var tempVar = cookie.slice(20); //remove the non-room parts
+    console.log("This is the processed string: ", tempVar.substring(0, tempVar.indexOf(';')));
     return( tempVar.substring(0, tempVar.indexOf(';'))); //remove the last semicolon
 }
 
