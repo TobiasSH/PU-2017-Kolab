@@ -45,7 +45,8 @@
 
 
                 <table id="roomsTable" class="table">
-                    <h1> Available rooms</h1>
+                    <h1 ng-show="kolabDBScope.length <= 0"> No rooms, make one!</h1>
+                    <h1 ng-show="kolabDBScope.length > 0"> Available rooms</h1>
                     <tr ng-repeat="room in kolabDBScope" class="roomRows">
                         <!--<td>{{question.number}}</td>-->
                         <td class="td-room">{{room.room}}</td>
