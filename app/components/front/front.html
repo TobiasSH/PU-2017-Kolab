@@ -23,19 +23,19 @@
                 </td>
 
 
-                <table id="roomsTable" class="table">
+                <table id="myRoomsTable" class="table">
                     <h1> Your rooms</h1>
                     <tr ng-repeat="room in kolabDBScope" class="roomRows">
                         <!--<td>{{question.number}}</td>-->
-                        <td class="td-room">{{room.text}}</td>
+                        <td class="td-room">{{room.room}}</td>
                         <th>
                             <button class="btn btn-danger btn-lg btn-block btn-remove"
-                                    ng-click="deleteRoom($index, room.text )">Delete
+                                    ng-click="deleteRoom($index, room.room )">Delete
                             </button>
                         </th>
                         <th>
                             <button class="btn btn-danger btn-lg btn-block btn-remove"
-                                    ng-click="joinExistingRoom($index, room.text )">Join
+                                    ng-click="joinExistingRoom($index, room.room )">Join
                             </button>
                         </th>
                     </tr>
@@ -48,10 +48,10 @@
                     <h1> Available rooms</h1>
                     <tr ng-repeat="room in kolabDBScope" class="roomRows">
                         <!--<td>{{question.number}}</td>-->
-                        <td class="td-room">{{room.text}}</td>
+                        <td class="td-room">{{room.room}}</td>
                         <td>
                             <button class="btn btn-danger btn-lg btn-block btn-remove"
-                                    ng-click="joinExistingRoom($index, room.text )">Join
+                                    ng-click="joinExistingRoom($index, room.room )">Join
                             </button>
                         </td>
                     </tr>

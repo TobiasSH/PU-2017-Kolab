@@ -84,7 +84,7 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', func
         // And newroom not in scope
         if ($scope.newRoom != null && $scope.newRoom.text.trim().length) {
 
-            socket.emit('new room message', $('#textareaNewRoom').val());
+            socket.emit('new room message', $('#textareaNewRoom').val(), document.cookie.slice(4,20));
             $('#textareaNewRoom').val('');
             console.log("attempt at go lecturer ");
             $location.path('/lecturer');
