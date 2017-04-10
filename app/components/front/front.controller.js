@@ -49,33 +49,46 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', func
         console.log("method new room called");
         // And newroom not in scope
         if ($scope.newRoom != null && $scope.newRoom.text.trim().length) {
+            for (var i = 0; i < $scope.kolabDBScope.length; i++) {
+                if ($scope.kolabDBScope[i].room === $('#textareaNewRoom').val()) {
 
-            socket.emit('new room message', $('#textareaNewRoom').val(), document.cookie.slice(4, 20));
-            $('#textareaNewRoom').val('');
-            console.log("attempt at go lecturer ");
-            $location.path('/lecturer');
-            return false;
-        } else {
+                    document.cookie = document.cookie.substring(0, 20);
+                    document.cookie += $('#textareaNewRoom').val();
 
+                    socket.emit('new room message', $('#textareaNewRoom').val(), document.cookie.slice(4, 20));
+                    socket.emit('join room', $('#textareaNewRoom').val());
+
+                    $('#textareaNewRoom').val('');
+                    $location.path('/lecturer');
+                    return false;
+                }else{
+                    alert("That room already exists!");
+                    break;
+                }
+            }
+
+        }else{
+            console.log("Invalid string");
         }
+
     };
 
 
-    $scope.joinRoom = function () {
-        console.log("method join room called", $scope.kolabDBScope.text);
-        //If is not functional, need to be able to see if the room exists, best if the rooms were properties of the scope
-        if ($scope.joinRoom != null && $('#textareaJoinRoom').val().length && ($('#textareaJoinRoom').val() in $scope.kolabDBScope.text)) {
-            socket.join($('#textareaJoinRoom').val());
-            document.cookie = document.cookie.substring(0, 20);
-            document.cookie += text;
-            //socket.emit('join room message', $('#textareaJoinRoom').val());
-            $('#textareaJoinRoom').val('');
-            socket.emit('join message', $('#textareaJoinRoom').val());
-            console.log("attempt at go student ");
-            $location.path('/student');
-            return false;
-        } else {
+    $scope.joinRoom = function () {//really unfinished, same with createroom, needs functioning if sentence
+        console.log("method join room called", $scope.kolabDBScope[0].room);
+        if ($scope.joinRoom != null && $('#textareaJoinRoom').val().length) {
+            for (var i = 0; i < $scope.kolabDBScope.length; i++) {
+                if ($scope.kolabDBScope[i].room === $('#textareaJoinRoom').val()) {
 
+                    document.cookie = document.cookie.substring(0, 20);
+                    document.cookie += $('#textareaJoinRoom').val();
+                    socket.emit('join room', $('#textareaJoinRoom').val());
+
+                    $('#textareaJoinRoom').val('');
+                    $location.path('/student');
+                    return false;
+                }
+            }
         }
     };
     $scope.joinExistingRoom = function (index, text) {
@@ -86,7 +99,7 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', func
         $location.path('/student');
     };
 
-    $scope.joinMyRoom = function (room){
+    $scope.joinMyRoom = function (room) {
         socket.emit('join room', room);
         $location.path('/lecturer');
     };
