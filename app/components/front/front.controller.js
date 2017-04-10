@@ -37,7 +37,7 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', func
     function checkCookie() {
         var user = document.cookie;
         if (user != "") {
-            console.log("Old user, "+ document.cookie+ ", Welcome back");
+            console.log("Old user, " + document.cookie + ", Welcome back");
         } else {
             document.cookie = "11111" + randomString(16, '0123456789abcdef');
         }
@@ -48,25 +48,29 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', func
     var refresh = function () {
         checkCookie();
         console.log("Early refresh ck: " + document.cookie);
+        $scope.myRooms = [];
 
         $http.get('/roomsCollection').then(function (response) {
-                console.log("I got the data I requested");
+                console.log("I got the data I requested", response.data);
                 $scope.kolabDBScope = response.data;
                 //$scope.room = null;
+
+                for (var i = 0; i < $scope.kolabDBScope.length; i++) {
+                    console.log('Looping through kolabDBScope', $scope.kolabDBScope[i].creator);
+                    var userID = document.cookie.slice(4, 20);
+                    if ($scope.kolabDBScope[i].creator === userID) {
+                        console.log("Adding room because we created it",$scope.kolabDBScope[i].room);
+                        $scope.myRooms.push($scope.kolabDBScope[i]);
+                    }
+
+                }
+
             },
             function (error) {
                 console.log("I got ERROR", error);
             });
 
-        //Second get functions to retrieve your own rooms, based on the user ID on the room
-        /*$http.get('/roomsCollection/:id').then(function (response) {
-                console.log("I got the data I requested");
-                $scope.myRooms = response.data;
-                //$scope.room = null;
-            },
-            function (error) {
-                console.log("I got ERROR", error);
-            });*/
+
     };
     refresh();
 
@@ -84,7 +88,7 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', func
         // And newroom not in scope
         if ($scope.newRoom != null && $scope.newRoom.text.trim().length) {
 
-            socket.emit('new room message', $('#textareaNewRoom').val(), document.cookie.slice(4,20));
+            socket.emit('new room message', $('#textareaNewRoom').val(), document.cookie.slice(4, 20));
             $('#textareaNewRoom').val('');
             console.log("attempt at go lecturer ");
             $location.path('/lecturer');
@@ -100,7 +104,7 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', func
         //If is not functional, need to be able to see if the room exists, best if the rooms were properties of the scope
         if ($scope.joinRoom != null && $('#textareaJoinRoom').val().length && ($('#textareaJoinRoom').val() in $scope.kolabDBScope.text)) {
             socket.join($('#textareaJoinRoom').val());
-            document.cookie = document.cookie.substring(0,20);
+            document.cookie = document.cookie.substring(0, 20);
             document.cookie += text;
             //socket.emit('join room message', $('#textareaJoinRoom').val());
             $('#textareaJoinRoom').val('');
@@ -113,7 +117,7 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', func
         }
     };
     $scope.joinExistingRoom = function (index, text) {
-        document.cookie = document.cookie.substring(0,20);
+        document.cookie = document.cookie.substring(0, 20);
         document.cookie += text;
         console.log("This is the index of the room we're trying to join: " + index + "\n and this is the text: " + text);
         socket.emit('join room', text);

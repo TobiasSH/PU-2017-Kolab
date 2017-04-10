@@ -3,7 +3,7 @@ var app = express();
 var mongojs = require('mongojs');
 //'mongodb://heroku_2hcp9k8k:19uocjcgsn6ce4pp7j66fe1ras@ds119020.mlab.com:19020/heroku_2hcp9k8k'
 //var db = mongojs('mongodb://heroku_2hcp9k8k:19uocjcgsn6ce4pp7j66fe1ras@ds119020.mlab.com:19020/heroku_2hcp9k8k', ['roomsQuestionsCollection', 'roomsCollection' 'counter']);
-var db = mongojs('mongodb://heroku_2hcp9k8k:19uocjcgsn6ce4pp7j66fe1ras@ds119020.mlab.com:19020/heroku_2hcp9k8k', ['roomsQuestionsCollection', 'roomsCollection', 'userCollection', 'counter']);
+var db = mongojs('mongodb://heroku_2hcp9k8k:19uocjcgsn6ce4pp7j66fe1ras@ds119020.mlab.com:19020/heroku_2hcp9k8k', ['roomsQuestionsCollection', 'roomsCollection', 'counter']);
 var bodyParser = require('body-parser');
 var path = require('path');
 var userCount = 0;
@@ -203,8 +203,19 @@ app.get('/roomsQuestionsCollection', function (req, res) {
 //Which one are we using
 app.get('/roomsCollection', function (req, res) {
     console.log("R: I received a GET request");
-    var roomName = cookieParse(req.headers.cookie);
-    console.log("current room: ", roomName);
+    db.roomsCollection.find(function (err, docs) {
+        if (err) {
+            console.warn(err.message);
+        }
+        else {
+            //console.log(docs);
+            res.json(docs);
+        }
+    })
+});
+
+app.get('/roomsCollection/:id', function (req, res) {
+    console.log("RID: I received a GET request");
     db.roomsCollection.find(function (err, docs) {
         if (err) {
             console.warn(err.message);
@@ -229,8 +240,7 @@ app.get('/roomsQuestionsCollection/:id', function (req, res) {
     var roomName = cookieParse(req.headers.cookie);
     console.log("Q: I received a GET request", roomName);
     var id = req.params.id;
-
-    console.log("Current room: ", roomName );  //Current room?
+    console.log("Current room: ", roomName );
     db.roomsQuestionsCollection.findOne({_id: mongojs.ObjectId(id), room: String(roomName)}, function (err, doc) {
         res.json(doc);
     });
