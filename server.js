@@ -58,6 +58,7 @@ io.on('connection', function (socket) {
                 console.log("room inserted into the db: " + msg + "by user: " + userId);
             }
         });
+       io.emit('new room broadcast',{_id: mongojs.ObjectID(rString), room: msg, creator: userId});
     });
 
     socket.on('room delete', function (index, obj, userId) {

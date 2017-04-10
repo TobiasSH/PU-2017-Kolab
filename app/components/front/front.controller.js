@@ -2,38 +2,7 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', func
     $scope.go = function (path) {
         $location.path(path);
     };
-    /*
-     // COOKIE STUFF FOR TESTING UNIQUE COOKIES
-     function getCname() {
-     return "hans";
-     }
 
-
-
-     function setCookie(cname, cvalue, exdays) {
-     var d = new Date();
-     d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-     var expires = "expires="+d.toUTCString();
-     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-     }
-
-
-     function getCookie(cname) {
-     var name = cname + "=";
-     var ca = document.cookie.split(';');
-     for(var i = 0; i < ca.length; i++) {
-     var c = ca[i];
-     while (c.charAt(0) == ' ') {
-     c = c.substring(1);
-     }
-     if (c.indexOf(name) == 0) {
-     return c.substring(name.length, c.length);
-     }
-     }
-     return "";
-     }
-     */
-    // ??
     function checkCookie() {
         var user = document.cookie;
         if (user != "") {
@@ -59,7 +28,7 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', func
                     console.log('Looping through kolabDBScope', $scope.kolabDBScope[i].creator);
                     var userID = document.cookie.slice(4, 20);
                     if ($scope.kolabDBScope[i].creator === userID) {
-                        console.log("Adding room because we created it",$scope.kolabDBScope[i].room);
+                        console.log("Adding room because we created it", $scope.kolabDBScope[i].room);
                         $scope.myRooms.push($scope.kolabDBScope[i]);
                     }
 
@@ -73,8 +42,6 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', func
 
     };
     refresh();
-
-
 
 
     //Create a new room
@@ -119,12 +86,19 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', func
         $location.path('/student');
     };
 
+    $scope.joinMyRoom = function (room){
+        socket.emit('join room', room);
+        $location.path('/lecturer');
+    };
+
     $scope.deleteRoom = function (index, obj) {
-        socket.emit('room delete', index, obj, document.cookie.slice(4,20));
+        socket.emit('room delete', index, obj, document.cookie.slice(4, 20));
+        $scope.myRooms.splice(index, 1);
+        $scope.$apply();
     };
 
     // Socket listeners
-    socket.on('room message', function (room) {
+    socket.on('new room broadcast', function (room) {
         console.log('A new room was created:  ', room);
         $scope.kolabDBScope.push(room);
         $scope.$apply();
@@ -135,7 +109,6 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', func
         $scope.kolabDBScope.splice(index, 1);
         $scope.$apply();
     });
-
 
 
     // Function for making user ID
