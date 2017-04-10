@@ -75,11 +75,6 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', func
     refresh();
 
 
-    socket.on('room message', function (room) {
-        console.log('A new room was created:  ', room);
-        $scope.kolabDBScope.push(room);
-        $scope.$apply();
-    });
 
 
     //Create a new room
@@ -124,9 +119,24 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', func
         $location.path('/student');
     };
 
-    $scope.deleteRoom = function (index, id) {
-        socket.emit('room delete', index, id);
+    $scope.deleteRoom = function (index, obj) {
+        socket.emit('room delete', index, obj, document.cookie.slice(4,20));
     };
+
+    // Socket listeners
+    socket.on('room message', function (room) {
+        console.log('A new room was created:  ', room);
+        $scope.kolabDBScope.push(room);
+        $scope.$apply();
+    });
+
+    socket.on('delete room broadcast', function (index, room) {
+        console.log('A room was deleted:  ', room);
+        $scope.kolabDBScope.splice(index, 1);
+        $scope.$apply();
+    });
+
+
 
     // Function for making user ID
     function randomString(length, chars) {

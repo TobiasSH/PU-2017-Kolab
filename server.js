@@ -30,19 +30,19 @@ io.on('connection', function (socket) {
 
     // Hvilket formål har dette??
     /*socket.on('new user message', function (userId) {
-        var rString = randomString(24, '0123456789abcdef');
+     var rString = randomString(24, '0123456789abcdef');
 
-        db.userCollection.insert({_id: mongojs.ObjectID(rString), user: userId}, function (err, o) {
-            if (err) {
-                console.warn(err.message);
-            }
-            else {
-                console.log("userId message inserted into the db: " + userId);
-            }
-        });
-    });*/
+     db.userCollection.insert({_id: mongojs.ObjectID(rString), user: userId}, function (err, o) {
+     if (err) {
+     console.warn(err.message);
+     }
+     else {
+     console.log("userId message inserted into the db: " + userId);
+     }
+     });
+     });*/
 
-    socket.on('join room', function (roomName){
+    socket.on('join room', function (roomName) {
         socket.join(roomName);
     });
 
@@ -60,16 +60,21 @@ io.on('connection', function (socket) {
         });
     });
 
-    socket.on('room delete', function (index, id, userId) {
+    socket.on('room delete', function (index, obj, userId) {
+        //retrieve the room
+        console.log(obj._id);
 
-        if (userId != undefined && db.roomsCollecction.findOne({_Rid: mongojs.ObjectID(id)}, function (err, doc) {
-                res.creator = userId;
-            })) {
-            console.log("Server received 'room delete' broadcast for id: " + id + "userId: " + userId);
-            //deletes the selected room from the database
-            db.roomsCollection.remove({_id: mongojs.ObjectId(id)});
-            io.emit('rooms delete', index, id);
-        }
+        db.roomsCollection.find({_id: mongojs.ObjectId(obj._id)}, function (err, docs) {
+            //check if the room's creator is the same as the one trying to delete it
+            if (docs[0].creator === obj.creator) {
+                console.log("Server received 'room delete' message for id: " + obj._id + " and userId: " + userId);
+                //deletes the selected room from the database
+                db.roomsCollection.remove({_id: mongojs.ObjectId(obj._id)});
+
+                io.emit('delete room broadcast', index, obj._id);
+            }
+        });
+
 
     });
 
@@ -77,7 +82,7 @@ io.on('connection', function (socket) {
     socket.on('question message', function (msg, roomName) {
         console.log('roomname: ' + roomName);
         var rString = randomString(24, '0123456789abcdef');
-        io.emit('pp message', {_id: mongojs.ObjectID(rString),room: roomName,  text: msg, tag: ""});
+        io.emit('pp message', {_id: mongojs.ObjectID(rString), room: roomName, text: msg, tag: ""});
     });
 
     socket.on('processed message', function (obj) {
@@ -142,7 +147,6 @@ io.on('connection', function (socket) {
 
         console.log("Server received 'question delete' broadcast for id: " + obj._id);
 
-        //TODO clean upp after merge
         db.roomsQuestionsCollection.remove({_id: mongojs.ObjectId(obj._id)});
         io.emit('question delete', index, obj);
     });
@@ -152,7 +156,7 @@ io.on('connection', function (socket) {
 
         console.log("Server received 'question delete' broadcast for id: " + obj._id);
         //deletes the selected question from the database
-        db.questionsCollection.remove({_id: mongojs.ObjectId(obj._id)});
+        db.roomQuestionsCollection.remove({_id: mongojs.ObjectId(obj._id)});
         io.emit('question delete grouped', rowIndex, index, obj);
 
     });
@@ -240,7 +244,7 @@ app.get('/roomsQuestionsCollection/:id', function (req, res) {
     var roomName = cookieParse(req.headers.cookie);
     console.log("Q: I received a GET request", roomName);
     var id = req.params.id;
-    console.log("Current room: ", roomName );
+    console.log("Current room: ", roomName);
     db.roomsQuestionsCollection.findOne({_id: mongojs.ObjectId(id), room: String(roomName)}, function (err, doc) {
         res.json(doc);
     });
@@ -248,12 +252,12 @@ app.get('/roomsQuestionsCollection/:id', function (req, res) {
 
 //Old
 /*app.get('/roomsCollection/:id', function (req, res) {
-    console.log("I received a GET request", req.headers.cookie);
-    var id = req.params.id;
-    db.roomsCollection.findOne({_Rid: mongojs.ObjectID(id)}, function (err, doc) {
-        res.json(doc);
-    });
-});*/
+ console.log("I received a GET request", req.headers.cookie);
+ var id = req.params.id;
+ db.roomsCollection.findOne({_Rid: mongojs.ObjectID(id)}, function (err, doc) {
+ res.json(doc);
+ });
+ });*/
 
 app.get('/counters', function (req, res) {
     db.counter.find(function (err, doc) {
@@ -262,15 +266,15 @@ app.get('/counters', function (req, res) {
     })
 });
 
-function cookieParse (cookie) {//Removes everything about the cookie which is not about room
-    if (cookie.indexOf("io=")==0 ) {//checks to see if io is first
+function cookieParse(cookie) {//Removes everything about the cookie which is not about room
+    if (cookie.indexOf("io=") == 0) {//checks to see if io is first
         cookie = cookie.replace(/io=\s*(.*?)\s*; /, ''); //regex to remove io= .... ;
-        return cookie.slice(20);
+        return cookie.slice(20); //removes the UID and click counters
     }
 
     var tempVar = cookie.slice(20); //remove the non-room parts
     console.log("This is the processed string: ", tempVar.substring(0, tempVar.indexOf(';')));
-    return( tempVar.substring(0, tempVar.indexOf(';'))); //remove the last semicolon
+    return ( tempVar.substring(0, tempVar.indexOf(';'))); //remove the last semicolon
 }
 
 var server = http.listen(process.env.PORT || 3000);
