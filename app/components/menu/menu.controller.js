@@ -15,6 +15,7 @@ kolabApp.controller('menuCtrl', ['$scope', '$http','$location', 'socket', functi
     //When a button is clicked the the corresponding digit is set to 0
     //Clicking the same button is registered as unclicking this button
 
+    console.log("M: Current cookie, ", document.cookie);
 
     $scope.go = function (path) {
         $location.path(path);

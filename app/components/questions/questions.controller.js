@@ -3,7 +3,9 @@ kolabApp.controller('questionsCtrl', ['$scope', '$http','$location', 'socket', f
 
     $scope.grouped = "groupedTrue";
 
-    console.log(document.cookie);
+    console.log("Q: Current cookie, ", document.cookie);
+
+
     $scope.go = function (path) {
         $location.path(path);
     };
@@ -38,7 +40,7 @@ kolabApp.controller('questionsCtrl', ['$scope', '$http','$location', 'socket', f
         } else {//we join the socket we're supposed to be on, based on our room
             socket.emit('join room', roomName);
         }
-
+        console.log("Current room, from end of refresh()", String(socket.room));
     };
     refresh();
 

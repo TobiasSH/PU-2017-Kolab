@@ -100,11 +100,12 @@ io.on('connection', function (socket) {
             }
         });
         // broadcasts question message to all listening sockets with the same object we insert into the database
-        console.log("QM: This is the room");
+        console.log("QM: This is the room", obj.room);
         io.to(obj.room).emit('question message', {
             _id: mongojs.ObjectID(obj._id),
             room: String(obj.room),
-            text: obj.text
+            text: obj.text,
+            tag: obj.tag
         });
         // Old emit to all message
         //io.emit('question message', {_id: mongojs.ObjectID(msg._id), text: msg.text, tag: msg.tag});
@@ -186,8 +187,8 @@ app.get('/front', function (req, res) {
 /* DATABASE METHODS */
 app.get('/roomsQuestionsCollection', function (req, res) {
     console.log("RQ: I received a GET request");
-    var roomName = cookieParse(req.headers.cookie);
-    console.log("current room: ", roomName);
+    var roomName = cookieParse(req.headers.cookie);//this becomes the socket???
+    console.log("current room: ");
     db.roomsQuestionsCollection.find({room: roomName}, function (err, docs) {
         if (err) {
             console.warn(err.message);
@@ -252,8 +253,10 @@ app.get('/counters', function (req, res) {
 });
 
 function cookieParse (cookie) {
-    var tempVar = cookie.slice(20);
-    return( tempVar.substring(0, tempVar.indexOf(';')));
+    string = cookie.replace(/io=\s*(.*?)\s*;/,'' ); //regex to remove io= .... ;
+    console.log("This is the processed string: ",string);
+    var tempVar = string.slice(20); //remove the non-room parts
+    return( tempVar.substring(0, tempVar.indexOf(';'))); //remove the last semicolon
 }
 
 var server = http.listen(process.env.PORT || 3000);

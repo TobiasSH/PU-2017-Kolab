@@ -37,7 +37,7 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', func
     function checkCookie() {
         var user = document.cookie;
         if (user != "") {
-            console.log("New user, setting cookie");
+            console.log("Old user, "+ document.cookie+ ", Welcome back");
         } else {
             document.cookie = "11111" + randomString(16, '0123456789abcdef');
         }
@@ -57,6 +57,16 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', func
             function (error) {
                 console.log("I got ERROR", error);
             });
+
+        //Second get functions to retrieve your own rooms, based on the user ID on the room
+        /*$http.get('/roomsCollection/:id').then(function (response) {
+                console.log("I got the data I requested");
+                $scope.myRooms = response.data;
+                //$scope.room = null;
+            },
+            function (error) {
+                console.log("I got ERROR", error);
+            });*/
     };
     refresh();
 
@@ -71,7 +81,9 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', func
     //Create a new room
     $scope.createRoom = function () {
         console.log("method new room called");
+        // And newroom not in scope
         if ($scope.newRoom != null && $scope.newRoom.text.trim().length) {
+
             socket.emit('new room message', $('#textareaNewRoom').val());
             $('#textareaNewRoom').val('');
             console.log("attempt at go lecturer ");
