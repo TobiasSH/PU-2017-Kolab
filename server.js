@@ -252,11 +252,8 @@ app.get('/counters', function (req, res) {
     })
 });
 
-function cookieParse (cookie) {
-    //needs an if to see if io is first
-    console.log("This is the pre-processed cookie", cookie);
-    if (cookie.indexOf("io=")==0 ) {
-        console.log("This procs now?");
+function cookieParse (cookie) {//Removes everything about the cookie which is not about room
+    if (cookie.indexOf("io=")==0 ) {//checks to see if io is first
         cookie = cookie.replace(/io=\s*(.*?)\s*; /, ''); //regex to remove io= .... ;
         return cookie.slice(20);
     }

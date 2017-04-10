@@ -17,6 +17,8 @@ kolabApp.controller('menuCtrl', ['$scope', '$http','$location', 'socket', functi
 
     console.log("M: Current cookie, ", document.cookie);
 
+
+    $scope.roomCookie = document.cookie.slice(20);
     $scope.go = function (path) {
         $location.path(path);
     };

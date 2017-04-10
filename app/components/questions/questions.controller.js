@@ -6,6 +6,8 @@ kolabApp.controller('questionsCtrl', ['$scope', '$http','$location', 'socket', f
     console.log("Q: Current cookie, ", document.cookie);
 
 
+    $scope.roomCookie = document.cookie.slice(20);
+
     $scope.go = function (path) {
         $location.path(path);
     };
