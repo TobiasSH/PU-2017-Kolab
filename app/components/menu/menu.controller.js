@@ -54,7 +54,7 @@ kolabApp.controller('menuCtrl', ['$scope', '$http','$location', 'socket', functi
             console.log("New user, returning to start");
             $location.path('/');
         } else {//we join the socket we're supposed to be on, based on our room
-            socket.emit('join room', roomName);
+            socket.emit('join room', roomName.slice(20));
         }
 
     };

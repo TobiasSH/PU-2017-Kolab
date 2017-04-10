@@ -40,7 +40,8 @@ kolabApp.controller('questionsCtrl', ['$scope', '$http','$location', 'socket', f
             console.log("New user, returning to start");
             $location.path('/');
         } else {//we join the socket we're supposed to be on, based on our room
-            socket.emit('join room', roomName);
+
+            socket.emit('join room', roomName.slice(20));
         }
         console.log("Current room, from end of refresh()", String(socket.room));
     };
