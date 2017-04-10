@@ -24,7 +24,7 @@
 
 
                 <table id="myRoomsTable" class="table">
-                    <h1> Your rooms</h1>
+                    <h1 ng-show="myRooms.length > 0"> Your rooms</h1>
                     <tr ng-repeat="room in myRooms" class="roomRows">
                         <!--<td>{{question.number}}</td>-->
                         <td class="td-room">{{room.room}}</td>

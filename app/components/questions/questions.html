@@ -43,7 +43,7 @@
 
                 <table id="questionsTableGrouped" class="table questions-table">
                     <tbody class="nounhead" ng-repeat="noun in newTags track by $index"
-                           ng-init="$rowIndex = $index">
+                           ng-init="$rowIndex = $index" ng-show="noun.length > 0">
 
                     <tr class="nounRows" ng-init="toggle[$rowIndex] = true" ng-click="toggle[$index] = !toggle[$rowIndex]">
                         <td class="td-noun">

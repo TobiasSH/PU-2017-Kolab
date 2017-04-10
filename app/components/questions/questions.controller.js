@@ -74,8 +74,6 @@ kolabApp.controller('questionsCtrl', ['$scope', '$http','$location', 'socket', f
                 $scope.newTags[obj.tag].splice(i, 1);
             }
         }
-
-
         $scope.kolabDBScope.splice(index, 1);
         $scope.$apply();
     });
