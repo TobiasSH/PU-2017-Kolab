@@ -17,7 +17,7 @@ var io = require('socket.io')(http);
 
 
 var userCount = 0;
-var clickList = ['cantKeepUp','decreaseVolume', 'increaseVolume', 'decreaseSpeed', 'increaseSpeed'];
+var clickList = ['cantKeepUp', 'decreaseVolume', 'increaseVolume', 'decreaseSpeed', 'increaseSpeed'];
 
 // socket functions
 io.on('connection', function (socket) {
@@ -30,30 +30,46 @@ io.on('connection', function (socket) {
     });
 
 
-    socket.on('disconnect', function () {// 10101 , cku, decVol, incVol, decSpeed, incSpeed
+    socket.on('disconnect', function () {// 11111 , cku, decVol, incVol, decSpeed, incSpeed
+        if (socket.handshake.headers.cookie == undefined) {
+            setTimeout(function () {
+                socket.leave(currentRoomID);
+                return false;
+            }, 10000);
 
-        console.log(socket.handshake.headers.cookie);
-        var clicks = cookieParseCounter(socket.handshake.headers.cookie); //socket header is not updated regularly enough for this to work i dont think
+        } else {
+            console.log(socket.handshake.headers.cookie);
+            var clicks = cookieParseCounter(socket.handshake.headers.cookie); //socket header is not updated regularly enough for this to work i dont think
 
 
-        for (var i = 0; i < 5; ++i){//trying to remove the clicks the user has done
-            if(clicks[i]==0){       //looping through the user's cookie
-                io.to(currentRoomID).emit(clickList[i], -1); //emitting the appropriate message to the lecturer view of the user's room
-                clicks[i] = -1; //this is used so that we can update the database accordingly
-            }else{
-                clicks[i] = 0;
+            for (var i = 0; i < 5; ++i) {//trying to remove the clicks the user has done
+                if (clicks[i] == 0) {       //looping through the user's cookie
+                    io.to(currentRoomID).emit(clickList[i], -1); //emitting the appropriate message to the lecturer view of the user's room
+                    clicks[i] = -1; //this is used so that we can update the database accordingly
+                } else {
+                    clicks[i] = 0;
+                }
             }
-        }
-        //database updates to restore the changes the user has done
-        db.counter.update({room: currentRoomID}, {$inc: {cantKeepUp: clicks[0], decreaseVolume: clicks[1], increaseVolume: clicks[2], decreaseSpeed: clicks[3], increaseSpeed: clicks[4], userCount: -1}});
+            //database updates to restore the changes the user has done
+            db.counter.update({room: currentRoomID}, {
+                $inc: {
+                    cantKeepUp: clicks[0],
+                    decreaseVolume: clicks[1],
+                    increaseVolume: clicks[2],
+                    decreaseSpeed: clicks[3],
+                    increaseSpeed: clicks[4],
+                    userCount: -1
+                }
+            });
 
-        socket.leave(currentRoomID);
+            socket.leave(currentRoomID);
+        }
     });
 
     socket.on('join room', function (roomName) {
 
         //Checks if the user is already connected to the room socket
-        if(socket.rooms[roomName]) {
+        if (socket.rooms[roomName]) {
             console.log("User already connected to room");
             return false;
         } else {
@@ -67,20 +83,29 @@ io.on('connection', function (socket) {
 
     socket.on('leave room', function (cookie) {
         console.log(cookie);
-        var clicks = cookie.substring(0,5);
+        var clicks = cookie.substring(0, 5);
 
         console.log("This is clicks before = ", clicks);
         var moddedClicks = [];
-        for (var i = 0; i < 5; ++i){//trying to remove the clicks the user has done
-            if(clicks[i]==0){       //looping through the user's cookie
+        for (var i = 0; i < 5; ++i) {//trying to remove the clicks the user has done
+            if (clicks[i] == 0) {       //looping through the user's cookie
                 io.to(currentRoomID).emit(clickList[i], -1); //emitting the appropriate message to the lecturer view of the user's room
                 moddedClicks.push(-1); //this is used so that we can update the database accordingly
-            }else{
+            } else {
                 moddedClicks.push(0);
             }
         }
         //database updates to restore the changes the user has done
-        db.counter.update({room: currentRoomID}, {$inc: {cantKeepUp: moddedClicks[0], decreaseVolume: moddedClicks[1], increaseVolume: moddedClicks[2], decreaseSpeed: moddedClicks[3], increaseSpeed: moddedClicks[4], userCount: -1}});
+        db.counter.update({room: currentRoomID}, {
+            $inc: {
+                cantKeepUp: moddedClicks[0],
+                decreaseVolume: moddedClicks[1],
+                increaseVolume: moddedClicks[2],
+                decreaseSpeed: moddedClicks[3],
+                increaseSpeed: moddedClicks[4],
+                userCount: -1
+            }
+        });
         socket.leave(currentRoomID);
         io.to(currentRoomID).emit('storeClient', -1);
 
@@ -196,7 +221,15 @@ io.on('connection', function (socket) {
         io.to(room).emit('increaseSpeed', inc, userCount);
     });
     socket.on('resetVotes', function (room) {
-        db.counter.update({room: room}, {$set: {cantKeepUp: 0, decreaseVolume: 0, increaseVolume: 0, decreaseSpeed: 0, increaseSpeed: 0}});
+        db.counter.update({room: room}, {
+            $set: {
+                cantKeepUp: 0,
+                decreaseVolume: 0,
+                increaseVolume: 0,
+                decreaseSpeed: 0,
+                increaseSpeed: 0
+            }
+        });
         io.to(room).emit('resetVotes');
     });
 
@@ -325,10 +358,10 @@ function cookieParseRoom(cookie) {//Removes everything about the cookie which is
 function cookieParseCounter(cookie) {//Removes everything about the cookie which is not about room
     if (cookie.indexOf("io=") == 0) {//checks to see if io is first
         cookie = cookie.replace(/io=\s*(.*?)\s*; /, ''); //regex to remove io= .... ;
-        return cookie.substring(0,5); //removes the UID and click counters
+        return cookie.substring(0, 5); //removes the UID and click counters
     }
 
-    return cookie.substring(0,5); //remove the non-room parts
+    return cookie.substring(0, 5); //remove the non-room parts
 }
 
 var server = http.listen(process.env.PORT || 3000);
