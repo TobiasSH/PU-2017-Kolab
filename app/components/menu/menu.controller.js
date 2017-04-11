@@ -1,4 +1,5 @@
 kolabApp.controller('menuCtrl', ['$scope', '$http','$location', 'socket', function ($scope, $http, $location, socket ) {
+
     console.log("Hello World from menu-controller, cookie is now: ", document.cookie);
 
 
@@ -14,9 +15,6 @@ kolabApp.controller('menuCtrl', ['$scope', '$http','$location', 'socket', functi
     //it consist of 5 digits, initially all ones 11111
     //When a button is clicked the the corresponding digit is set to 0
     //Clicking the same button is registered as unclicking this button
-
-    console.log("M: Current cookie, ", document.cookie);
-
 
     $scope.roomCookie = document.cookie.slice(20);
     $scope.go = function (path) {
@@ -180,6 +178,7 @@ kolabApp.controller('menuCtrl', ['$scope', '$http','$location', 'socket', functi
         }
         console.log("connect");
     });
+
 
     //doesnt this have to be in all the controllers?
     socket.on('resetVotes', function () {

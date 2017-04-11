@@ -32,7 +32,9 @@ io.on('connection', function (socket) {
 
     socket.on('disconnect', function () {// 10101 , cku, decVol, incVol, decSpeed, incSpeed
 
-        var clicks = socket.handshake.headers.cookie;
+        console.log(socket.handshake.headers.cookie);
+        var clicks = cookieParseCounter(socket.handshake.headers.cookie); //socket header is not updated regularly enough for this to work i dont think
+
 
         for (var i = 0; i < 5; ++i){//trying to remove the clicks the user has done
             if(clicks[i]==0){       //looping through the user's cookie
@@ -168,26 +170,29 @@ io.on('connection', function (socket) {
 
     });
     //menu buttons
-    socket.on('cantKeepUp', function (inc, room) {
-        console.log("Received cantkeepup message, ",room);
+    socket.on('cantKeepUp', function (inc, room, cookie) {
         db.counter.update({room: room}, {$inc: {cantKeepUp: inc}});
+        socket.handshake.headers.cookie = cookie;
         io.to(room).emit('cantKeepUp', inc);
     });
-    socket.on('decreaseVolume', function (inc, room) {
+    socket.on('decreaseVolume', function (inc, room, cookie) {
         db.counter.update({room: room}, {$inc: {decreaseVolume: inc}});
+        socket.handshake.headers.cookie = cookie;
         io.to(room).emit('decreaseVolume', inc, userCount);
     });
-    socket.on('increaseVolume', function (inc, room) {
+    socket.on('increaseVolume', function (inc, room, cookie) {
         db.counter.update({room: room}, {$inc: {increaseVolume: inc}});
+        socket.handshake.headers.cookie = cookie;
         io.to(room).emit('increaseVolume', inc, userCount);
     });
-    socket.on('decreaseSpeed', function (inc, room) {
+    socket.on('decreaseSpeed', function (inc, room, cookie) {
         db.counter.update({room: room}, {$inc: {decreaseSpeed: inc}});
-        console.log("decerease speed");
+        socket.handshake.headers.cookie = cookie;
         io.to(room).emit('decreaseSpeed', inc, userCount);
     });
-    socket.on('increaseSpeed', function (inc, room) {
+    socket.on('increaseSpeed', function (inc, room, cookie) {
         db.counter.update({room: room}, {$inc: {increaseSpeed: inc}});
+        socket.handshake.headers.cookie = cookie;
         io.to(room).emit('increaseSpeed', inc, userCount);
     });
     socket.on('resetVotes', function (room) {
