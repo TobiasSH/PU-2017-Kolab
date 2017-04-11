@@ -168,12 +168,9 @@ kolabApp.controller('menuCtrl', ['$scope', '$http','$location', 'socket', functi
 
 
     $scope.leaveRoom = function() {
-        socket.emit('leave room');
-        console.log("Cookie before leaving ", document.cookie);
+        socket.emit('leave room', document.cookie);
         userid = document.cookie.substring(5,20);
-        console.log(userid);
         document.cookie = '11111'+userid;
-        console.log("Cookie after leaving ",document.cookie);
         $location.path('/');
     };
     //on connect sets cookie and counts users

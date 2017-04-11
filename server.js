@@ -63,23 +63,22 @@ io.on('connection', function (socket) {
         }
     });
 
-    socket.on('leave room', function () {
+    socket.on('leave room', function (cookie) {
+        console.log(cookie);
+        var clicks = cookie.substring(0,5);
 
-        console.log("This is clicks before = ", socket);
-        var clicks = socket.handshake.headers.cookie;
+        console.log("This is clicks before = ", clicks);
         var moddedClicks = [];
         for (var i = 0; i < 5; ++i){//trying to remove the clicks the user has done
-            if(clicks[i]===0){       //looping through the user's cookie
+            if(clicks[i]==0){       //looping through the user's cookie
                 io.to(currentRoomID).emit(clickList[i], -1); //emitting the appropriate message to the lecturer view of the user's room
                 moddedClicks.push(-1); //this is used so that we can update the database accordingly
             }else{
                 moddedClicks.push(0);
             }
         }
-        console.log("Clicks after, ",moddedClicks);
         //database updates to restore the changes the user has done
-        db.counter.update({room: currentRoomID}, {$inc: {cantKeepUp: clicks[0], decreaseVolume: clicks[1], increaseVolume: clicks[2], decreaseSpeed: clicks[3], increaseSpeed: clicks[4], userCount: -1}});
-        console.log("Does this even run????");
+        db.counter.update({room: currentRoomID}, {$inc: {cantKeepUp: moddedClicks[0], decreaseVolume: moddedClicks[1], increaseVolume: moddedClicks[2], decreaseSpeed: moddedClicks[3], increaseSpeed: moddedClicks[4], userCount: -1}});
         socket.leave(currentRoomID);
         io.to(currentRoomID).emit('storeClient', -1);
 
@@ -245,7 +244,7 @@ app.get('/front', function (req, res) {
 /* DATABASE METHODS */
 app.get('/roomsQuestionsCollection', function (req, res) {
     console.log("RQ: I received a GET request");
-    var roomName = cookieParse(req.headers.cookie);//this becomes the socket???
+    var roomName = cookieParseRoom(req.headers.cookie);//this becomes the socket???
     console.log("current room: ", roomName);
     db.roomsQuestionsCollection.find({room: roomName}, function (err, docs) {
         if (err) {
@@ -289,7 +288,7 @@ app.get('/roomsCollection/:id', function (req, res) {
 
 
 app.get('/roomsQuestionsCollection/:id', function (req, res) {
-    var roomName = cookieParse(req.headers.cookie);
+    var roomName = cookieParseRoom(req.headers.cookie);
     console.log("Q: I received a GET request", roomName);
     var id = req.params.id;
     console.log("Current room: ", roomName);
@@ -300,14 +299,14 @@ app.get('/roomsQuestionsCollection/:id', function (req, res) {
 
 
 app.get('/counters', function (req, res) {
-    var roomName = cookieParse(req.headers.cookie);
+    var roomName = cookieParseRoom(req.headers.cookie);
     console.log("Q: I received a GET request", roomName);
     db.counter.find({room: roomName}, function (err, doc) {
         res.json(doc);
     })
 });
 
-function cookieParse(cookie) {//Removes everything about the cookie which is not about room
+function cookieParseRoom(cookie) {//Removes everything about the cookie which is not about room
     if (cookie.indexOf("io=") == 0) {//checks to see if io is first
         cookie = cookie.replace(/io=\s*(.*?)\s*; /, ''); //regex to remove io= .... ;
         return cookie.slice(20); //removes the UID and click counters
@@ -316,6 +315,15 @@ function cookieParse(cookie) {//Removes everything about the cookie which is not
     var tempVar = cookie.slice(20); //remove the non-room parts
     console.log("This is the processed string: ", tempVar.substring(0, tempVar.indexOf(';')));
     return ( tempVar.substring(0, tempVar.indexOf(';'))); //remove the last semicolon
+}
+
+function cookieParseCounter(cookie) {//Removes everything about the cookie which is not about room
+    if (cookie.indexOf("io=") == 0) {//checks to see if io is first
+        cookie = cookie.replace(/io=\s*(.*?)\s*; /, ''); //regex to remove io= .... ;
+        return cookie.substring(0,5); //removes the UID and click counters
+    }
+
+    return cookie.substring(0,5); //remove the non-room parts
 }
 
 var server = http.listen(process.env.PORT || 3000);
