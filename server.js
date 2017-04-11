@@ -29,16 +29,23 @@ io.on('connection', function (socket) {
     });
 
     socket.on('join room', function (roomName) {
-        socket.join(roomName);
-        currentRoomID = roomName;
-        io.to(roomName).emit('storeClient', 1);
-        db.counter.update({room: currentRoomID}, {$inc: {userCount: 1}});
+        console.log("Join room message,socket.room is : ", socket.rooms);
+        if(socket.rooms[roomName]) {
+            console.log("User already connected to room");
+            return false;
+        } else {
+            socket.join(roomName);
+            console.log("socket.rooms after, ", socket.rooms);
+            currentRoomID = roomName;
+            io.to(roomName).emit('storeClient', 1);
+            db.counter.update({room: currentRoomID}, {$inc: {userCount: 1}});
+        }
     });
 
     socket.on('leave room', function () {
+        console.log("Socket.rooms before leaving room: ", socket.rooms);
         io.to(currentRoomID).emit('storeClient', -1);
         db.counter.update({room: currentRoomID}, {$inc: {userCount: -1}});
-
         socket.leave(currentRoomID);
 
     });

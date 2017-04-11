@@ -65,6 +65,12 @@ kolabApp.controller('menuCtrl', ['$scope', '$http','$location', 'socket', functi
 
     //Button clicks
 
+    $scope.questions = function() {
+        //TODO need to decrement or not increment when joining questions-view
+        $location.path('/questions');
+
+    };
+
     $scope.cantKeepUp = function () {
         console.log("cantKeepUp button was clicked");
 

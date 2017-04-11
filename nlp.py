@@ -97,7 +97,7 @@ print ("NLTK processing: ", str(datetime.now() - nltk_start))
 def processNew(newmessage):  # Used when a new question arrives
     try:
         #print ("maymes", newmessage['tag'])
-        print ("This it the newmessage",newmessage)
+        print ("This is the newmessage",newmessage)
         print ("Original question: ", str(newmessage['text']), end='')  # This is the original question
 
         lowercasedoc = newmessage['text'].lower()  # lowercase so that the stop words can be compared
