@@ -7,19 +7,20 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', 'socket', function ($sco
 
     $scope.roomCookie = document.cookie.slice(20);
 
-    $scope.userCount = 0;
-
-    var cantKeepUpHits;
-    var decreaseVolumeHits;
-    var increaseVolumeHits;
-    var decreaseSpeedHits;
-    var increaseSpeedHits;
-    var total;
-    var cantKeepUpBar = document.getElementById("cantKeepUpBar");
-    var decreaseVolumeBar = document.getElementById("decreaseVolumeBar");
-    var increaseVolumeBar = document.getElementById("increaseVolumeBar");
-    var decreaseSpeedBar = document.getElementById("decreaseSpeedBar");
-    var increaseSpeedBar = document.getElementById("increaseSpeedBar");
+    /*
+     $scope.userCount = 0;
+     $scope.cantKeepUpHits = 0;
+     $scope.decreaseVolumeHits = 0;
+     $scope.increaseVolumeHits = 0;
+     $scope.decreaseSpeedHits = 0;
+     $scope.increaseSpeedHits = 0;
+     */
+    /*
+     var cantKeepUpBar = document.getElementById("cantKeepUpBar");
+     var decreaseVolumeBar = document.getElementById("decreaseVolumeBar");
+     var increaseVolumeBar = document.getElementById("increaseVolumeBar");
+     var decreaseSpeedBar = document.getElementById("decreaseSpeedBar");
+     var increaseSpeedBar = document.getElementById("increaseSpeedBar");*/
 
 
     // initial retrieval of questions from the database
@@ -55,26 +56,27 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', 'socket', function ($sco
         }
 
         $http.get('/counters').then(function (response) {
-            cantKeepUpHits = response.data[0].hits;
-            decreaseVolumeHits = response.data[1].hits;
-            increaseVolumeHits = response.data[2].hits;
-            decreaseSpeedHits = response.data[3].hits;
-            increaseSpeedHits = response.data[4].hits;
-            total = response.data[5].hits;
-            $scope.userCount = total;
 
-            console.log(total + " kn");
-            var percent = (cantKeepUpHits / (total)) * 100;
-            cantKeepUpBar.style.width = percent + '%';
-            var percent = (decreaseVolumeHits / (total)) * 100;
-            decreaseVolumeBar.style.width = percent + '%';
-            var percent = (increaseVolumeHits / (total)) * 100;
-            increaseVolumeBar.style.width = percent + '%';
-            var percent = (decreaseSpeedHits / (total)) * 100;
-            decreaseSpeedBar.style.width = percent + '%';
-            var percent = (increaseSpeedHits / (total)) * 100;
-            increaseSpeedBar.style.width = percent + '%';
+            $scope.cantKeepUpHits = response.data[0].cantKeepUp;
+            $scope.decreaseVolumeHits = response.data[0].decreaseVolume;
+            $scope.increaseVolumeHits = response.data[0].increaseVolume;
+            $scope.decreaseSpeedHits = response.data[0].decreaseSpeed;
+            $scope.increaseSpeedHits = response.data[0].increaseSpeed;
+            $scope.userCount = response.data[0].userCount;
 
+            /*
+             console.log(total + " kn");
+             var percent = (cantKeepUpHits / (total)) * 100;
+             cantKeepUpBar.style.width = percent + '%';
+             var percent = (decreaseVolumeHits / (total)) * 100;
+             decreaseVolumeBar.style.width = percent + '%';
+             var percent = (increaseVolumeHits / (total)) * 100;
+             increaseVolumeBar.style.width = percent + '%';
+             var percent = (decreaseSpeedHits / (total)) * 100;
+             decreaseSpeedBar.style.width = percent + '%';
+             var percent = (increaseSpeedHits / (total)) * 100;
+             increaseSpeedBar.style.width = percent + '%';
+             */
         })
 
     };
@@ -94,16 +96,16 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', 'socket', function ($sco
     };
 
     $scope.resetVotes = function () {
-        cantKeepUpBar.style.width = 0 + '%';
-        decreaseVolumeBar.style.width = 0 + '%';
-        increaseVolumeBar.style.width = 0 + '%';
-        increaseSpeedBar.style.width = 0 + '%';
-        decreaseSpeedBar.style.width = 0 + '%';
-        cantKeepUpHits = 0;
-        decreaseVolumeHits = 0;
-        increaseVolumeHits = 0;
-        decreaseSpeedHits = 0;
-        increaseSpeedHits = 0;
+        /*cantKeepUpBar.style.width = 0 + '%';
+         decreaseVolumeBar.style.width = 0 + '%';
+         increaseVolumeBar.style.width = 0 + '%';
+         increaseSpeedBar.style.width = 0 + '%';
+         decreaseSpeedBar.style.width = 0 + '%';*/
+        $scope.cantKeepUpHits = 0;
+        $scope.decreaseVolumeHits = 0;
+        $scope.increaseVolumeHits = 0;
+        $scope.decreaseSpeedHits = 0;
+        $scope.increaseSpeedHits = 0;
 
 
         socket.emit('resetVotes', $scope.roomCookie);
@@ -183,16 +185,16 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', 'socket', function ($sco
     });
 
     socket.on('resetVotes', function () {
-        var cantKeepUpBar = document.getElementById("cantKeepUpBar");
-        var decreaseVolumeBar = document.getElementById("decreaseVolumeBar");
-        var increaseVolumeBar = document.getElementById("increaseVolumeBar");
-        var decreaseSpeedBar = document.getElementById("decreaseSpeedBar");
-        var increaseSpeedBar = document.getElementById("increaseSpeedBar");
-        cantKeepUpBar.style.width = 0 + '%';
-        decreaseVolumeBar.style.width = 0 + '%';
-        increaseVolumeBar.style.width = 0 + '%';
-        increaseSpeedBar.style.width = 0 + '%';
-        decreaseSpeedBar.style.width = 0 + '%';
+        /*var cantKeepUpBar = document.getElementById("cantKeepUpBar");
+         var decreaseVolumeBar = document.getElementById("decreaseVolumeBar");
+         var increaseVolumeBar = document.getElementById("increaseVolumeBar");
+         var decreaseSpeedBar = document.getElementById("decreaseSpeedBar");
+         var increaseSpeedBar = document.getElementById("increaseSpeedBar");
+         cantKeepUpBar.style.width = 0 + '%';
+         decreaseVolumeBar.style.width = 0 + '%';
+         increaseVolumeBar.style.width = 0 + '%';
+         increaseSpeedBar.style.width = 0 + '%';
+         decreaseSpeedBar.style.width = 0 + '%'; */
         cantKeepUpHits = 0;
         decreaseVolumeHits = 0;
         increaseVolumeHits = 0;
@@ -203,41 +205,60 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', 'socket', function ($sco
 
 
     //Progress bars
-    socket.on('cantKeepUp', function (hit, total) {//total is not being sent?
-        console.log("cantkeepUp");
-        cantKeepUpHits += hit;
-        var percent = (cantKeepUpHits / (total)) * 100;
-        cantKeepUpBar.style.width = percent + '%';
+    socket.on('cantKeepUp', function (mod, total) {//total is not being sent?
+        /*
+         console.log("cantkeepUp");
+         cantKeepUpHits += hit;
+         var percent = (cantKeepUpHits / (total)) * 100;
+         cantKeepUpBar.style.width = percent + '%';
+         */
+        $scope.cantKeepUpHits += mod;
+        $scope.$apply();
 
     });
-    socket.on('decreaseVolume', function (hit, total) {
-        console.log("decrease volume");
-        decreaseVolumeHits += hit;
-        console.log(decreaseVolumeHits);
-        var percent = (decreaseVolumeHits / (total)) * 100;
-        decreaseVolumeBar.style.width = percent + '%';
+    socket.on('decreaseVolume', function (mod, total) {
+        /*
+         console.log("decrease volume");
+         decreaseVolumeHits += hit;
+         console.log(decreaseVolumeHits);
+         var percent = (decreaseVolumeHits / (total)) * 100;
+         decreaseVolumeBar.style.width = percent + '%';
+         */
+        $scope.decreaseVolumeHits += mod;
+        $scope.$apply();
     });
-    socket.on('increaseVolume', function (hit, total) {
-        console.log("inc volume");
-        increaseVolumeHits += hit;
-        var percent = (increaseVolumeHits / (total)) * 100;
-        increaseVolumeBar.style.width = percent + '%';
+    socket.on('increaseVolume', function (mod, total) {
+        /*
+         console.log("inc volume");
+         increaseVolumeHits += hit;
+         var percent = (increaseVolumeHits / (total)) * 100;
+         increaseVolumeBar.style.width = percent + '%';
+         */
+        $scope.increaseVolumeHits += mod;
+        $scope.$apply();
+    });
+    socket.on('decreaseSpeed', function (mod, total) {
+        /*
+         console.log("decrease speed");
+         decreaseSpeedHits += hit;
+         var percent = (decreaseSpeedHits / (total)) * 100;
+         decreaseSpeedBar.style.width = percent + '%';
+         */
+        $scope.decreaseSpeedHits += mod;
+        $scope.$apply();
+    });
+    socket.on('increaseSpeed', function (mod, total) {
+        /*
+         console.log("increase speed");
+         increaseSpeedHits += hit;
+         var percent = (increaseSpeedHits / (total)) * 100;
+         increaseSpeedBar.style.width = percent + '%';
+         */
+        $scope.increaseSpeedHits += mod;
+        $scope.$apply();
+    });
 
-    });
-    socket.on('decreaseSpeed', function (hit, total) {
-        console.log("decrease speed");
-        decreaseSpeedHits += hit;
-        var percent = (decreaseSpeedHits / (total)) * 100;
-        decreaseSpeedBar.style.width = percent + '%';
-    });
-    socket.on('increaseSpeed', function (hit, total) {
-        console.log("increase speed");
-        increaseSpeedHits += hit;
-        var percent = (increaseSpeedHits / (total)) * 100;
-        increaseSpeedBar.style.width = percent + '%';
-    });
-
-    socket.on('storeClient', function (modifier){
+    socket.on('storeClient', function (modifier) {
         console.log("New user joined ", $scope.userCount);
         $scope.userCount += modifier;
         $scope.$apply();

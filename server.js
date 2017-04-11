@@ -21,10 +21,6 @@ io.on('connection', function (socket) {
     console.log('User ' + socket.id + ' connected.' + userCount);
 
     var currentRoomID;
-    /*socket.on('storeClient', function (inc) {
-        userCount += inc;
-        console.log(userCount + " count");
-    });*/
 
     socket.on('disconnect', function () {
         io.to(currentRoomID).emit('storeClient', -1);
@@ -34,12 +30,12 @@ io.on('connection', function (socket) {
         socket.join(roomName);
         currentRoomID = roomName;
         io.to(roomName).emit('storeClient', 1);
-        db.counter.update({"counter": "userCount"},{room: currentRoomID} , {"$inc": {"hits": 1}});
+        db.counter.update({"counter": "userCount"}, {room: currentRoomID}, {"$inc": {"hits": 1}});
     });
 
-    socket.on('leave room', function (){
+    socket.on('leave room', function () {
         io.to(currentRoomID).emit('storeClient', -1);
-        db.counter.update({"counter": "userCount"},{room: currentRoomID} , {"$inc": {"hits": -1}});
+        db.counter.update({"counter": "userCount"}, {room: currentRoomID}, {"$inc": {"hits": -1}});
 
         socket.leave(currentRoomID);
 
@@ -58,12 +54,10 @@ io.on('connection', function (socket) {
             }
         });
         //Create counters for the new room, unspecified ID, we use roomname to retrieve
-        var clickCounterDocument =  [{  room: msg,  "counter": "cantKeepUp", "hits" : 0},
-            {  room: msg,  "counter": "decreaseVolume", "hits" : 0},
-            {  room: msg,  "counter": "increaseVolume", "hits" : 0},
-            {  room: msg,  "counter": "decreaseSpeed", "hits" : 0},
-            {  room: msg,  "counter": "increaseSpeed", "hits" : 0},
-            {  room: msg,  "counter": "userCount", "hits" : 0}];
+        var clickCounterDocument = [{
+            room: msg, "cantKeepUp": 0, "decreaseVolume": 0, "increaseVolume": 0,
+            "decreaseSpeed": 0, "increaseSpeed": 0, "userCount": 0
+        }];
 
         db.counter.insert(clickCounterDocument, function (err, o) {
             if (err) {
@@ -73,7 +67,7 @@ io.on('connection', function (socket) {
                 console.log("room inserted into the db: " + msg + "by user: " + userId);
             }
         });
-       io.emit('new room broadcast',{_id: mongojs.ObjectID(rString), room: msg, creator: userId});
+        io.emit('new room broadcast', {_id: mongojs.ObjectID(rString), room: msg, creator: userId});
     });
 
     socket.on('room delete', function (index, obj, userId) {
@@ -128,13 +122,12 @@ io.on('connection', function (socket) {
             text: obj.text,
             tag: obj.tag
         });
-        // Old emit to all message
-        //io.emit('question message', {_id: mongojs.ObjectID(msg._id), text: msg.text, tag: msg.tag});
+
     });
     //menu buttons
     socket.on('cantKeepUp', function (inc, room) {
         db.counter.update({"counter": "cantKeepUp"}, {"$inc": {"hits": inc}});
-        io.to(room).emit('cantKeepUp', inc, userCount);
+        io.to(room).emit('cantKeepUp', inc);
     });
     socket.on('decreaseVolume', function (inc, room) {
         db.counter.update({"counter": "decreaseVolume"}, {"$inc": {"hits": inc}});
@@ -150,7 +143,7 @@ io.on('connection', function (socket) {
         io.to(room).emit('decreaseSpeed', inc, userCount);
     });
     socket.on('increaseSpeed', function (inc, room) {
-        db.counter.update({"counter": "increaseSpeed"},{room: room} , {"$inc": {"hits": inc}});
+        db.counter.update({"counter": "increaseSpeed"}, {room: room}, {"$inc": {"hits": inc}});
         io.to(room).emit('increaseSpeed', inc, userCount);
     });
     socket.on('resetVotes', function (room) {
@@ -249,12 +242,6 @@ app.get('/roomsCollection/:id', function (req, res) {
 
 });
 
-/*app.delete('/roomsQuestionsCollection/:id', function (req, res) {
- console.log("Server received a DELETE request for ID: " + req.params.id);
- var id = req.params.id;
- console.log(typeof id);
- db.roomQuestionsCollection.remove({_id: mongojs.ObjectId(id)});
- });*/
 
 app.get('/roomsQuestionsCollection/:id', function (req, res) {
     var roomName = cookieParse(req.headers.cookie);
@@ -266,19 +253,12 @@ app.get('/roomsQuestionsCollection/:id', function (req, res) {
     });
 });
 
-//Old
-/*app.get('/roomsCollection/:id', function (req, res) {
- console.log("I received a GET request", req.headers.cookie);
- var id = req.params.id;
- db.roomsCollection.findOne({_Rid: mongojs.ObjectID(id)}, function (err, doc) {
- res.json(doc);
- });
- });*/
 
 app.get('/counters', function (req, res) {
-    db.counter.find(function (err, doc) {
+    var roomName = cookieParse(req.headers.cookie);
+    console.log("Q: I received a GET request", roomName);
+    db.counter.find({room: roomName}, function (err, doc) {
         res.json(doc);
-
     })
 });
 
