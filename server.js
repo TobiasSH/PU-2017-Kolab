@@ -34,7 +34,15 @@ io.on('connection', function (socket) {
         socket.join(roomName);
         currentRoomID = roomName;
         io.to(roomName).emit('storeClient', 1);
-        db.counter.update({"counter": "userCount"},{room: roomName} , {"$inc": {"hits": 1}});
+        db.counter.update({"counter": "userCount"},{room: currentRoomID} , {"$inc": {"hits": 1}});
+    });
+
+    socket.on('leave room', function (){
+        io.to(currentRoomID).emit('storeClient', -1);
+        db.counter.update({"counter": "userCount"},{room: currentRoomID} , {"$inc": {"hits": -1}});
+
+        socket.leave(currentRoomID);
+
     });
 
 

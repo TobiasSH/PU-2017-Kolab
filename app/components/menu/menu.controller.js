@@ -140,6 +140,8 @@ kolabApp.controller('menuCtrl', ['$scope', '$http','$location', 'socket', functi
 
     };
 
+
+
     $scope.increaseSpeed = function () {
         console.log("increaseSpeed button was clicked");
 
@@ -157,6 +159,12 @@ kolabApp.controller('menuCtrl', ['$scope', '$http','$location', 'socket', functi
         console.log(countString);
         socket.emit('increaseSpeed', inc, $scope.roomCookie);
 
+    };
+
+
+    $scope.leaveRoom = function() {
+        socket.emit('leave room');
+        $location.path('/');
     };
     //on connect sets cookie and counts users
     socket.on('connect', function () {
