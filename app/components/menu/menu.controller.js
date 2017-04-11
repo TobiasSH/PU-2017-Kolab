@@ -91,7 +91,7 @@ kolabApp.controller('menuCtrl', ['$scope', '$http','$location', 'socket', functi
 
         } else if (inc == 1 && countString.charAt(2) == 0) {
             inc2 = setCountGetInc(2);
-            socket.emit('increaseVolume', inc2);
+            socket.emit('increaseVolume', inc2, $scope.roomCookie);
             decreaseVolume.className = button + " btn-volumeClicked";
             increaseVolume.className = button + "btn-volume";
         }
@@ -112,11 +112,11 @@ kolabApp.controller('menuCtrl', ['$scope', '$http','$location', 'socket', functi
 
         } else if (inc == 1 && countString.charAt(1) == 0) {
             inc2 = setCountGetInc(1);
-            socket.emit('decreaseVolume', inc2);
+            socket.emit('decreaseVolume', inc2, $scope.roomCookie);
             increaseVolume.className = button + "btn-volumeClicked";
             decreaseVolume.className = button + "btn-volume";
         }
-        socket.emit('increaseVolume', inc, $scope.roomCookie)
+        socket.emit('increaseVolume', inc, $scope.roomCookie); //Needs opposite message for the other button
 
     };
 
@@ -132,7 +132,7 @@ kolabApp.controller('menuCtrl', ['$scope', '$http','$location', 'socket', functi
 
         } else if (inc == 1 && countString.charAt(4) == 0) {
             inc2 = setCountGetInc(4);
-            socket.emit('increaseSpeed', inc2);
+            socket.emit('increaseSpeed', inc2, $scope.roomCookie);
             decreaseSpeed.className = button + "btn-speedClicked";
             increaseSpeed.className = button + "btn-speed";
         }
@@ -152,7 +152,7 @@ kolabApp.controller('menuCtrl', ['$scope', '$http','$location', 'socket', functi
             increaseSpeed.className = button + "btn-speedClicked";
         } else if (inc == 1 && countString.charAt(3) == 0) {
             inc2 = setCountGetInc(3);
-            socket.emit('decreaseSpeed', inc2);
+            socket.emit('decreaseSpeed', inc2, $scope.roomCookie);
             increaseSpeed.className = button + "btn-speedClicked";
             decreaseSpeed.className = button + "btn-speed";
         }
@@ -164,22 +164,23 @@ kolabApp.controller('menuCtrl', ['$scope', '$http','$location', 'socket', functi
 
     $scope.leaveRoom = function() {
         socket.emit('leave room');
+        userid = document.cookie.substring(4,20);
+        document.cookie = '11111'+userid;
         $location.path('/');
     };
     //on connect sets cookie and counts users
     socket.on('connect', function () {
         if (document.cookie == "") {// This really should not happen now
-            countString = document.cookie = "11111";
             console.log("This should never run unless you're in incognito and refresh or something");
-
         }
         console.log("connect");
     });
 
     //doesnt this have to be in all the controllers?
     socket.on('resetVotes', function () {
-        countString = document.cookie = "11111";
-        refresh()
+        userid = document.cookie.substring(4,20);
+        document.cookie = '11111'+ userid;
+        refresh();
     });
     function setCountGetInc(x) {
         var inc;

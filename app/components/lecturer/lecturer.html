@@ -20,19 +20,26 @@
         <table>
             <tr>
                 <td>
-                    {{cantKeepUpHits}}
+                    Cant keep up: {{cantKeepUpHits}}
                 </td>
+            <tr>
                 <td>
-                    {{increaseSpeedHits}}
+                    Increase Speed: {{increaseSpeedHits}}
                 </td>
+            </tr>
+            <tr>
                 <td>
-                    {{decreaseSpeedHits}}
+                    Decrease Speed: {{decreaseSpeedHits}}
                 </td>
+            </tr>
+            <tr>
                 <td>
-                    {{increaseVolumeHits}}
+                    Increase Volume: {{increaseVolumeHits}}
                 </td>
+            </tr>
+            <tr>
                 <td>
-                    {{decreaseVolumeHits}}
+                    Decrease Volume: {{decreaseVolumeHits}}
                 </td>
             </tr>
         </table>
@@ -84,7 +91,8 @@
                         <td width="80%" class="td-question">{{question.text}}</td>
                         <td width="20%">
                             <button class="btn btn-lg btn-block btn-remove" ng-click="remove($index, question)">
-                                <img class="lecturer-button-icon" src="../../../assets/img/icons/remove.svg" onerror="this.onerror=null; this.src='../../../assets/img/icons/remove.png'">
+                                <img class="lecturer-button-icon" src="../../../assets/img/icons/remove.svg"
+                                     onerror="this.onerror=null; this.src='../../../assets/img/icons/remove.png'">
                             </button>
                         </td>
                     </tr>
@@ -109,8 +117,10 @@
                         <!--<td>{{question.number}}</td>-->
                         <td width="80%" class="td-question">{{question.text}}</td>
                         <td width="20%">
-                            <button class="btn btn-lg btn-block btn-remove" ng-click="removeGrouped($rowIndex, $index, question)">
-                                <img class="lecturer-button-icon" src="../../../assets/img/icons/remove.svg" onerror="this.onerror=null; this.src='../../../assets/img/icons/remove.png'">
+                            <button class="btn btn-lg btn-block btn-remove"
+                                    ng-click="removeGrouped($rowIndex, $index, question)">
+                                <img class="lecturer-button-icon" src="../../../assets/img/icons/remove.svg"
+                                     onerror="this.onerror=null; this.src='../../../assets/img/icons/remove.png'">
                             </button>
                         </td>
                     </tr>
