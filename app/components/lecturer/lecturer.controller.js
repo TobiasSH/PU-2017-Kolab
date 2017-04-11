@@ -103,7 +103,7 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', 'socket', function ($sco
         increaseSpeedHits = 0;
 
 
-        socket.emit('resetVotes');
+        socket.emit('resetVotes', $scope.roomCookie);
         console.log("votes reset");
     };
 
@@ -200,7 +200,7 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', 'socket', function ($sco
 
 
     //Progress bars
-    socket.on('cantKeepUp', function (hit, total) {
+    socket.on('cantKeepUp', function (hit, total) {//total is not being sent?
         console.log("cantkeepUp");
         cantKeepUpHits += hit;
         var percent = (cantKeepUpHits / (total)) * 100;

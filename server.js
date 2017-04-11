@@ -117,30 +117,30 @@ io.on('connection', function (socket) {
         //io.emit('question message', {_id: mongojs.ObjectID(msg._id), text: msg.text, tag: msg.tag});
     });
     //menu buttons
-    socket.on('cantKeepUp', function (inc) {
+    socket.on('cantKeepUp', function (inc, room) {
         db.counter.update({"counter": "cantKeepUp"}, {"$inc": {"hits": inc}});
-        io.emit('cantKeepUp', inc, userCount);
+        io.to(room).emit('cantKeepUp', inc, userCount);
     });
-    socket.on('decreaseVolume', function (inc) {
+    socket.on('decreaseVolume', function (inc, room) {
         db.counter.update({"counter": "decreaseVolume"}, {"$inc": {"hits": inc}});
-        io.emit('decreaseVolume', inc, userCount);
+        io.to(room).emit('decreaseVolume', inc, userCount);
     });
-    socket.on('increaseVolume', function (inc) {
+    socket.on('increaseVolume', function (inc, room) {
         db.counter.update({"counter": "increaseVolume"}, {"$inc": {"hits": inc}});
-        io.emit('increaseVolume', inc, userCount);
+        io.to(room).emit('increaseVolume', inc, userCount);
     });
-    socket.on('decreaseSpeed', function (inc) {
+    socket.on('decreaseSpeed', function (inc, room) {
         db.counter.update({"counter": "decreaseSpeed"}, {"$inc": {"hits": inc}});
         console.log("decerease speed");
-        io.emit('decreaseSpeed', inc, userCount);
+        io.to(room).emit('decreaseSpeed', inc, userCount);
     });
-    socket.on('increaseSpeed', function (inc) {
+    socket.on('increaseSpeed', function (inc, room) {
         db.counter.update({"counter": "increaseSpeed"}, {"$inc": {"hits": inc}});
-        io.emit('increaseSpeed', inc, userCount);
+        io.to(room).emit('increaseSpeed', inc, userCount);
     });
-    socket.on('resetVotes', function () {
+    socket.on('resetVotes', function (room) {
         db.counter.update({}, {"$set": {"hits": 0}}, {multi: true});
-        io.emit('resetVotes');
+        io.to(room).emit('resetVotes');
     });
 
     //servers response to emitted message to delete question from lecturer controller
