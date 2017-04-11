@@ -24,18 +24,20 @@ io.on('connection', function (socket) {
 
     socket.on('disconnect', function () {
         io.to(currentRoomID).emit('storeClient', -1);
+        db.counter.update({room: currentRoomID}, {$inc: {userCount: -1}});
+        socket.leave(currentRoomID);
     });
 
     socket.on('join room', function (roomName) {
         socket.join(roomName);
         currentRoomID = roomName;
         io.to(roomName).emit('storeClient', 1);
-        db.counter.update({"counter": "userCount"}, {room: currentRoomID}, {"$inc": {"hits": 1}});
+        db.counter.update({room: currentRoomID}, {$inc: {userCount: 1}});
     });
 
     socket.on('leave room', function () {
         io.to(currentRoomID).emit('storeClient', -1);
-        db.counter.update({"counter": "userCount"}, {room: currentRoomID}, {"$inc": {"hits": -1}});
+        db.counter.update({room: currentRoomID}, {$inc: {userCount: -1}});
 
         socket.leave(currentRoomID);
 
