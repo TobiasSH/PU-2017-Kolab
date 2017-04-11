@@ -1,7 +1,6 @@
 kolabApp.controller('lecturerCtrl', ['$scope', '$http', 'socket', function ($scope, $http, socket) {
     console.log("Hello World from lecturer-controller");
 
-    var socket = io();
     var max = 0;
 
     $scope.grouped = "groupedTrue";
@@ -26,7 +25,7 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', 'socket', function ($sco
         $http.get('/roomsQuestionsCollection').then(function (response) {
                 console.log("I got the data I requested, questions-controller");
                 console.log("This is the pure response object:" + response.text);
-                $scope.kolabDBScope = response.data; //kolabdbscope is deprecated if newtags works
+                $scope.kolabDBScope = response.data;
                 $scope.question = null;
                 //Used to identify the different tags, aka nouns
                 $scope.newTags = {};

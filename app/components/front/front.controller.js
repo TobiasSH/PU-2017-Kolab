@@ -3,6 +3,23 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', func
         $location.path(path);
     };
 
+    $('#textareaNewRoom').keydown(function (e) {
+        // Enter was pressed without shift key
+        if (e.keyCode == 13 && !e.shiftKey) {
+            // prevent default behavior
+            e.preventDefault();
+        }
+    });
+
+
+    $('#textareaJoinRoom').keydown(function (e) {
+        // Enter was pressed without shift key
+        if (e.keyCode == 13 && !e.shiftKey) {
+            // prevent default behavior
+            e.preventDefault();
+        }
+    });
+
     function checkCookie() {
         var user = document.cookie;
         if (user != "") {
@@ -47,27 +64,33 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', func
     //Create a new room
     $scope.createRoom = function () {
         console.log("method new room called");
+        var availRoom = true;
         // And newroom not in scope
         if ($scope.newRoom != null && $scope.newRoom.text.trim().length) {
             for (var i = 0; i < $scope.kolabDBScope.length; i++) {
                 if ($scope.kolabDBScope[i].room === $('#textareaNewRoom').val()) {
-
-                    document.cookie = document.cookie.substring(0, 20);
-                    document.cookie += $('#textareaNewRoom').val();
-
-                    socket.emit('new room message', $('#textareaNewRoom').val(), document.cookie.slice(4, 20));
-                    socket.emit('join room', $('#textareaNewRoom').val());
-
-                    $('#textareaNewRoom').val('');
-                    $location.path('/lecturer');
-                    return false;
-                }else{
-                    alert("That room already exists!");
-                    break;
+                    availRoom = false;
+                    console.log("How often does this happen");
                 }
             }
+            if (availRoom) {
 
-        }else{
+                document.cookie = document.cookie.substring(0, 20);
+                document.cookie += $('#textareaNewRoom').val();
+
+                socket.emit('new room message', $('#textareaNewRoom').val(), document.cookie.slice(4, 20));
+                socket.emit('join room', $('#textareaNewRoom').val());
+
+                $('#textareaNewRoom').val('');
+                $location.path('/lecturer');
+                return false;
+            } else {
+                alert("That room already exists!");
+            }
+        }
+
+
+        else {
             console.log("Invalid string");
         }
 
@@ -75,11 +98,11 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', func
 
 
     $scope.joinRoom = function () {//really unfinished, same with createroom, needs functioning if sentence
-        console.log("method join room called", $scope.kolabDBScope[0].room);
+        console.log("method join room called", $scope.kolabDBScope);
         if ($scope.joinRoom != null && $('#textareaJoinRoom').val().length) {
             for (var i = 0; i < $scope.kolabDBScope.length; i++) {
                 if ($scope.kolabDBScope[i].room === $('#textareaJoinRoom').val()) {
-
+                    console.log("Trying to join room ", $('#textareaJoinRoom').val());
                     document.cookie = document.cookie.substring(0, 20);
                     document.cookie += $('#textareaJoinRoom').val();
                     socket.emit('join room', $('#textareaJoinRoom').val());
@@ -101,16 +124,17 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', func
 
     $scope.joinMyRoom = function (room) {
         socket.emit('join room', room);
+        document.cookie = document.cookie.substring(0, 20);//removes old room if there is one
+        document.cookie += room;
         $location.path('/lecturer');
     };
 
     $scope.deleteRoom = function (index, obj) {
         socket.emit('room delete', index, obj, document.cookie.slice(4, 20));
         $scope.myRooms.splice(index, 1);
-        $scope.$apply();
     };
 
-    // Socket listeners
+// Socket listeners
     socket.on('new room broadcast', function (room) {
         console.log('A new room was created:  ', room);
         $scope.kolabDBScope.push(room);
@@ -124,11 +148,12 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', func
     });
 
 
-    // Function for making user ID
+// Function for making user ID
     function randomString(length, chars) {
         var result = '';
         for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
         return result;
     }
 
-}]);
+}])
+;

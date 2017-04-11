@@ -58,6 +58,22 @@ io.on('connection', function (socket) {
                 console.log("room inserted into the db: " + msg + "by user: " + userId);
             }
         });
+        //Create counters for the new room, unspecified ID, we use roomname to retrieve
+        var clickCounterDocument =  [{  room: msg,  "counter": "cantKeepUp", "hits" : 0},
+            {  room: msg,  "counter": "decreaseVolume", "hits" : 0},
+            {  room: msg,  "counter": "increaseVolume", "hits" : 0},
+            {  room: msg,  "counter": "decreaseSpeed", "hits" : 0},
+            {  room: msg,  "counter": "increaseSpeed", "hits" : 0},
+            {  room: msg,  "counter": "userCount", "hits" : 0}];
+
+        db.counter.insert(clickCounterDocument, function (err, o) {
+            if (err) {
+                console.warn(err.message);
+            }
+            else {
+                console.log("room inserted into the db: " + msg + "by user: " + userId);
+            }
+        });
        io.emit('new room broadcast',{_id: mongojs.ObjectID(rString), room: msg, creator: userId});
     });
 
@@ -135,7 +151,7 @@ io.on('connection', function (socket) {
         io.to(room).emit('decreaseSpeed', inc, userCount);
     });
     socket.on('increaseSpeed', function (inc, room) {
-        db.counter.update({"counter": "increaseSpeed"}, {"$inc": {"hits": inc}});
+        db.counter.update({"counter": "increaseSpeed"},{room: room} , {"$inc": {"hits": inc}});
         io.to(room).emit('increaseSpeed', inc, userCount);
     });
     socket.on('resetVotes', function (room) {
