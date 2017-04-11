@@ -238,8 +238,9 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', 'socket', function ($sco
     });
 
     socket.on('storeClient', function (modifier){
-        console.log("New user joined");
+        console.log("New user joined ", $scope.userCount);
         $scope.userCount += modifier;
+        $scope.$apply();
     });
 
 }]);

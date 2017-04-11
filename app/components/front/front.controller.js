@@ -113,16 +113,14 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', func
             }
         }
     };
-    $scope.joinExistingRoom = function (index, text) {
+    $scope.joinExistingRoom = function (room) {
         document.cookie = document.cookie.substring(0, 20);
-        document.cookie += text;
-        console.log("This is the index of the room we're trying to join: " + index + "\n and this is the text: " + text);
-        //socket.emit('join room', text);
+        document.cookie += room;
+        console.log("This is the name of the room: " + room);
         $location.path('/student');
     };
 
     $scope.joinMyRoom = function (room) {
-        //socket.emit('join room', room);
         document.cookie = document.cookie.substring(0, 20);//removes old room if there is one
         document.cookie += room;
         $location.path('/lecturer');
@@ -135,7 +133,7 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', func
 
 // Socket listeners
     socket.on('new room broadcast', function (room) {
-        console.log('A new room was created:  ', room);
+        console.log('A new room was created: ', room);
         $scope.kolabDBScope.push(room);
         $scope.$apply();
     });

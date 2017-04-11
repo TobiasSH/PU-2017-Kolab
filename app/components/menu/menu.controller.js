@@ -56,6 +56,7 @@ kolabApp.controller('menuCtrl', ['$scope', '$http','$location', 'socket', functi
         } else {
             socket.emit('join room', roomName.slice(20)); //we join the socket we're supposed to be on, based on our room
         }
+        countString = document.cookie;
 
     };
 
@@ -159,7 +160,6 @@ kolabApp.controller('menuCtrl', ['$scope', '$http','$location', 'socket', functi
     };
     //on connect sets cookie and counts users
     socket.on('connect', function () {
-        countString = document.cookie;
         if (document.cookie == "") {// This really should not happen now
             countString = document.cookie = "11111";
             console.log("This should never run unless you're in incognito and refresh or something");
