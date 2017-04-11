@@ -82,7 +82,6 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', func
                 document.cookie += $('#textareaNewRoom').val();
 
                 socket.emit('new room message', $('#textareaNewRoom').val(), document.cookie.slice(4, 20));
-                //socket.emit('join room', $('#textareaNewRoom').val());
 
                 $('#textareaNewRoom').val('');
                 $location.path('/lecturer');

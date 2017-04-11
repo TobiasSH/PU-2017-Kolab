@@ -31,7 +31,7 @@ io.on('connection', function (socket) {
 
 
     socket.on('disconnect', function () {// 10101 , cku, decVol, incVol, decSpeed, incSpeed
-        //console.log("This is the socket = ", socket.handshake.headers.cookie[0]);
+
         var clicks = socket.handshake.headers.cookie;
 
         for (var i = 0; i < 5; ++i){//trying to remove the clicks the user has done
@@ -66,8 +66,7 @@ io.on('connection', function (socket) {
     socket.on('leave room', function () {
 
         console.log("This is clicks before = ", socket);
-        var tempString = socket.handshake.headers.cookie;
-        var clicks = tempString.replace(/\s+/g, '');
+        var clicks = socket.handshake.headers.cookie;
         var moddedClicks = [];
         for (var i = 0; i < 5; ++i){//trying to remove the clicks the user has done
             if(clicks[i]===0){       //looping through the user's cookie

@@ -170,7 +170,7 @@ kolabApp.controller('menuCtrl', ['$scope', '$http','$location', 'socket', functi
     $scope.leaveRoom = function() {
         socket.emit('leave room');
         console.log("Cookie before leaving ", document.cookie);
-        userid = document.cookie.substring(4,20);
+        userid = document.cookie.substring(5,20);
         console.log(userid);
         document.cookie = '11111'+userid;
         console.log("Cookie after leaving ",document.cookie);
