@@ -39,9 +39,9 @@ kolabApp.controller('questionsCtrl', ['$scope', '$http','$location', 'socket', f
         if (roomName.length <= 21) {
             console.log("New user, returning to start");
             $location.path('/');
-        } else {//we join the socket we're supposed to be on, based on our room
-
-            socket.emit('join room', roomName.slice(20));
+        } else {
+            socket.emit('join room', roomName.slice(20)); //we join the socket we're supposed to be on, based on our room
+            socket.emit('storeClient', 1, roomName.slice(20)); //tell the lecturer we've joined
         }
         console.log("Current room, from end of refresh()", String(socket.room));
     };

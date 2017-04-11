@@ -1,11 +1,13 @@
 kolabApp.controller('lecturerCtrl', ['$scope', '$http', 'socket', function ($scope, $http, socket) {
     console.log("Hello World from lecturer-controller");
 
-    var max = 0;
+    var max = 0; //unused?
 
     $scope.grouped = "groupedTrue";
 
     $scope.roomCookie = document.cookie.slice(20);
+
+    $scope.userCount = 0;
 
     var cantKeepUpHits;
     var decreaseVolumeHits;
@@ -45,7 +47,7 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', 'socket', function ($sco
             });
         //if user doesnt have a room, we return them to the front-page
         var roomName = document.cookie;
-        if (roomName.length <= 21) {
+        if (roomName.length <= 21) { //TODO NEEDS CHECK FOR USERID VS CREATOR OF ROOM
             console.log("New user, returning to start");
             $location.path('/');
         } else {//we join the socket we're supposed to be on, based on our room
@@ -59,6 +61,8 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', 'socket', function ($sco
             decreaseSpeedHits = response.data[3].hits;
             increaseSpeedHits = response.data[4].hits;
             total = response.data[5].hits;
+            $scope.userCount = total;
+
             console.log(total + " kn");
             var percent = (cantKeepUpHits / (total)) * 100;
             cantKeepUpBar.style.width = percent + '%';
@@ -221,7 +225,7 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', 'socket', function ($sco
 
     });
     socket.on('decreaseSpeed', function (hit, total) {
-        console.log("decrease spped");
+        console.log("decrease speed");
         decreaseSpeedHits += hit;
         var percent = (decreaseSpeedHits / (total)) * 100;
         decreaseSpeedBar.style.width = percent + '%';
@@ -231,6 +235,11 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', 'socket', function ($sco
         increaseSpeedHits += hit;
         var percent = (increaseSpeedHits / (total)) * 100;
         increaseSpeedBar.style.width = percent + '%';
+    });
+
+    socket.on('storeClient', function (modifier){
+        console.log("New user joined");
+        $scope.userCount += modifier;
     });
 
 }]);

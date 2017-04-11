@@ -53,8 +53,8 @@ kolabApp.controller('menuCtrl', ['$scope', '$http','$location', 'socket', functi
         if (roomName.length <= 21) {
             console.log("New user, returning to start");
             $location.path('/');
-        } else {//we join the socket we're supposed to be on, based on our room
-            socket.emit('join room', roomName.slice(20));
+        } else {
+            socket.emit('join room', roomName.slice(20)); //we join the socket we're supposed to be on, based on our room
         }
 
     };
@@ -163,7 +163,7 @@ kolabApp.controller('menuCtrl', ['$scope', '$http','$location', 'socket', functi
         if (document.cookie == "") {// This really should not happen now
             countString = document.cookie = "11111";
             console.log("This should never run unless you're in incognito and refresh or something");
-            socket.emit('storeClient', 1);
+
         }
         console.log("connect");
     });

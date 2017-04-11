@@ -19,31 +19,22 @@ var io = require('socket.io')(http);
 // socket functions
 io.on('connection', function (socket) {
     console.log('User ' + socket.id + ' connected.' + userCount);
-    socket.on('storeClient', function (inc) {
+
+    var currentRoomID;
+    /*socket.on('storeClient', function (inc) {
         userCount += inc;
         console.log(userCount + " count");
-        db.counter.update({"counter": "userCount"}, {"$inc": {"hits": inc}});
-    });
+    });*/
+
     socket.on('disconnect', function () {
-        socket.emit('storeClient', -1);
+        io.to(currentRoomID).emit('storeClient', -1);
     });
-
-    // Hvilket formål har dette??
-    /*socket.on('new user message', function (userId) {
-     var rString = randomString(24, '0123456789abcdef');
-
-     db.userCollection.insert({_id: mongojs.ObjectID(rString), user: userId}, function (err, o) {
-     if (err) {
-     console.warn(err.message);
-     }
-     else {
-     console.log("userId message inserted into the db: " + userId);
-     }
-     });
-     });*/
 
     socket.on('join room', function (roomName) {
         socket.join(roomName);
+        currentRoomID = roomName;
+        io.to(roomName).emit('storeClient', 1);
+        db.counter.update({"counter": "userCount"},{room: roomName} , {"$inc": {"hits": 1}});
     });
 
 

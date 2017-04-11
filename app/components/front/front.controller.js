@@ -79,7 +79,7 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', func
                 document.cookie += $('#textareaNewRoom').val();
 
                 socket.emit('new room message', $('#textareaNewRoom').val(), document.cookie.slice(4, 20));
-                socket.emit('join room', $('#textareaNewRoom').val());
+                //socket.emit('join room', $('#textareaNewRoom').val());
 
                 $('#textareaNewRoom').val('');
                 $location.path('/lecturer');
@@ -105,7 +105,6 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', func
                     console.log("Trying to join room ", $('#textareaJoinRoom').val());
                     document.cookie = document.cookie.substring(0, 20);
                     document.cookie += $('#textareaJoinRoom').val();
-                    socket.emit('join room', $('#textareaJoinRoom').val());
 
                     $('#textareaJoinRoom').val('');
                     $location.path('/student');
@@ -118,12 +117,12 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', func
         document.cookie = document.cookie.substring(0, 20);
         document.cookie += text;
         console.log("This is the index of the room we're trying to join: " + index + "\n and this is the text: " + text);
-        socket.emit('join room', text);
+        //socket.emit('join room', text);
         $location.path('/student');
     };
 
     $scope.joinMyRoom = function (room) {
-        socket.emit('join room', room);
+        //socket.emit('join room', room);
         document.cookie = document.cookie.substring(0, 20);//removes old room if there is one
         document.cookie += room;
         $location.path('/lecturer');
