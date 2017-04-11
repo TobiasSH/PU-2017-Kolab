@@ -26,6 +26,9 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', func
             console.log("Old user, " + document.cookie + ", Welcome back");
         } else {
             document.cookie = "11111" + randomString(16, '0123456789abcdef');
+            socket.emit('cookie initialize', document.cookie);
+            //socket.handshake.headers.cookie = document.cookie;
+
         }
     }
 

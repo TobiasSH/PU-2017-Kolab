@@ -37,7 +37,6 @@ kolabApp.controller('menuCtrl', ['$scope', '$http','$location', 'socket', functi
                     buttonList[x].className = button + "btn-speedClicked"
                 }
             } else if (document.cookie.charAt(x) == 1) {
-                console.log("hai hai");
                 if (x < 1) {
                     buttonList[x].className = button + " btn-cantkeepup"
                 } else if (x < 3) {
@@ -170,8 +169,11 @@ kolabApp.controller('menuCtrl', ['$scope', '$http','$location', 'socket', functi
 
     $scope.leaveRoom = function() {
         socket.emit('leave room');
+        console.log("Cookie before leaving ", document.cookie);
         userid = document.cookie.substring(4,20);
+        console.log(userid);
         document.cookie = '11111'+userid;
+        console.log("Cookie after leaving ",document.cookie);
         $location.path('/');
     };
     //on connect sets cookie and counts users
