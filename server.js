@@ -184,10 +184,13 @@ io.on('connection', function (socket) {
         db.roomsCollection.find({_id: mongojs.ObjectId(obj._id)}, function (err, docs) {
             //check if the room's creator is the same as the one trying to delete it
             if (docs[0].creator === obj.creator) {
-                console.log("Server received 'room delete' message for id: " + obj._id + " and userId: " + userId);
-                //deletes the selected room from the database
+                console.log("Server received 'room delete' message for id: " + obj.room + " and userId: " + userId);
+                //deletes the selected room and its counter from the database
                 db.roomsCollection.remove({_id: mongojs.ObjectId(obj._id)});
+                db.counter.remove({room: obj.room});
+                db.roomsQuestionsCollection.remove({room : obj.room});
                 io.emit('delete room broadcast', index, obj._id);
+                io.to(obj.room).emit('delete current room');
             }
         });
 

@@ -1,4 +1,4 @@
-kolabApp.controller('lecturerCtrl', ['$scope', '$http', 'socket', function ($scope, $http, socket) {
+kolabApp.controller('lecturerCtrl', ['$scope', '$http','$location', 'socket', function ($scope, $http,$location, socket) {
     console.log("Hello World from lecturer-controller");
 
     var max = 0; //unused?
@@ -6,6 +6,10 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', 'socket', function ($sco
     $scope.grouped = "groupedTrue";
 
     $scope.roomCookie = document.cookie.slice(20);
+
+    $scope.go = function (path) {
+        $location.path(path);
+    };
 
     /*
      $scope.userCount = 0;
@@ -262,6 +266,12 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', 'socket', function ($sco
         console.log("New user joined ", $scope.userCount);
         $scope.userCount += modifier;
         $scope.$apply();
+    });
+
+    //On the even rarer occassion a room is being deleted while the lecturer is still in it, can be multi-tab
+    socket.on('delete current room', function () {
+        console.log('Your room was deleted, returning to front-page');
+        $location.path('/');
     });
 
 }]);

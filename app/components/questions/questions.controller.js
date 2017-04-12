@@ -129,4 +129,10 @@ kolabApp.controller('questionsCtrl', ['$scope', '$http','$location', 'socket', f
 
     });
 
+    // On the rare occassion a room is delete while the user is in it
+    socket.on('delete current room', function () {
+        console.log('Your room was deleted, returning to front-page');
+        $location.path('/');
+    });
+
 }]);
