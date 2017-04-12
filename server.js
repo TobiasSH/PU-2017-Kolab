@@ -189,7 +189,7 @@ io.on('connection', function (socket) {
                 db.roomsCollection.remove({_id: mongojs.ObjectId(obj._id)});
                 db.counter.remove({room: obj.room});
                 db.roomsQuestionsCollection.remove({room : obj.room});
-                io.emit('delete room broadcast', index, obj._id);
+                io.emit('delete room broadcast', index, obj.room);
                 io.to(obj.room).emit('delete current room');
             }
         });
