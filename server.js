@@ -34,6 +34,7 @@ io.on('connection', function (socket) {
         if (socket.handshake.headers.cookie == undefined) {
             setTimeout(function () {
                 socket.leave(currentRoomID);
+                io.to(currentRoomID).emit('storeClient', -1);
                 return false;
             }, 10000);
 
@@ -41,45 +42,76 @@ io.on('connection', function (socket) {
             console.log(socket.handshake.headers.cookie);
             var clicks = cookieParseCounter(socket.handshake.headers.cookie); //socket header is not updated regularly enough for this to work i dont think
 
-
+            var moddedClicks = [];
             for (var i = 0; i < 5; ++i) {//trying to remove the clicks the user has done
                 if (clicks[i] == 0) {       //looping through the user's cookie
                     io.to(currentRoomID).emit(clickList[i], -1); //emitting the appropriate message to the lecturer view of the user's room
-                    clicks[i] = -1; //this is used so that we can update the database accordingly
+                    moddedClicks.push(-1); //this is used so that we can update the database accordingly
                 } else {
-                    clicks[i] = 0;
+                    moddedClicks.push(0);
                 }
             }
             //database updates to restore the changes the user has done
             db.counter.update({room: currentRoomID}, {
                 $inc: {
-                    cantKeepUp: clicks[0],
-                    decreaseVolume: clicks[1],
-                    increaseVolume: clicks[2],
-                    decreaseSpeed: clicks[3],
-                    increaseSpeed: clicks[4],
+                    cantKeepUp: moddedClicks[0],
+                    decreaseVolume: moddedClicks[1],
+                    increaseVolume: moddedClicks[2],
+                    decreaseSpeed: moddedClicks[3],
+                    increaseSpeed: moddedClicks[4],
                     userCount: -1
                 }
             });
 
             socket.leave(currentRoomID);
-        }
-    });
-
-    socket.on('join room', function (roomName) {
-
-        //Checks if the user is already connected to the room socket
-        if (socket.rooms[roomName]) {
-            console.log("User already connected to room");
+            io.to(currentRoomID).emit('storeClient', -1);
+            console.log("Disconnect : ending");
             return false;
-        } else {
-            socket.join(roomName);
-            console.log("socket.rooms after, ", socket.rooms);
-            currentRoomID = roomName;
-            io.to(roomName).emit('storeClient', 1);
-            db.counter.update({room: currentRoomID}, {$inc: {userCount: 1}});
+
         }
     });
+
+    socket.on('join room', function (roomName, cookie) {
+
+            //Checks if the user is already connected to the room socket
+            if (socket.rooms[roomName]) {
+                console.log("User already connected to room");
+                return false;
+            } else { // We connect the user and checks their cookie to see if we need to increment some counters
+                socket.join(roomName);
+                console.log("socket.rooms after, ", cookie);
+                currentRoomID = roomName;
+                io.to(roomName).emit('storeClient', 1);
+                if (cookie != undefined) { //Checks if we're sending the cookie or not
+                    var modified = false;
+                    var moddedClicks = [];
+                    for (var i = 0; i < 5; ++i) {//trying to remove the clicks the user has done
+                        if (cookie[i] == 0) {       //looping through the user's cookie
+                            io.to(currentRoomID).emit(clickList[i], 1); //emitting the appropriate message to the lecturer view of the user's room
+                            moddedClicks.push(1); //this is used so that we can update the database accordingly
+                            modified = true;      //Makes us update the database
+                        } else {
+                            moddedClicks.push(0);
+                        }
+                    }
+                    if (modified) {//trying not to pester the DB needlessly
+                        db.counter.update({room: currentRoomID}, {
+                            $inc: {
+                                cantKeepUp: moddedClicks[0],
+                                decreaseVolume: moddedClicks[1],
+                                increaseVolume: moddedClicks[2],
+                                decreaseSpeed: moddedClicks[3],
+                                increaseSpeed: moddedClicks[4],
+                                userCount: 1
+                            }
+                        });
+                    }
+                } else {
+                    db.counter.update({room: currentRoomID}, {$inc: {userCount: 1}});
+                }
+            }
+        }
+    );
 
     socket.on('leave room', function (cookie) {
         console.log(cookie);
