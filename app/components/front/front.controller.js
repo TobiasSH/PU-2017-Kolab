@@ -143,13 +143,13 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', func
     socket.on('delete room broadcast', function (index, roomName) {
         console.log('A room was deleted:  ', roomName);
         for (var i = 0; i < $scope.kolabDBScope.length; i++){
-            console.log($scope.kolabDBScope[i].room);
             if ($scope.kolabDBScope[i].room == roomName){
-                console.log("It tried deleting");
                 $scope.kolabDBScope.splice(i, 1);
+                $scope.$apply();
+                break;
             }
         }
-        $scope.$apply();
+
     });
 
 

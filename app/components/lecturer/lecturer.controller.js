@@ -95,6 +95,13 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http','$location', 'socket', fu
         }
     };
 
+    $scope.leaveRoom = function() {
+        socket.emit('leave room', document.cookie);
+        userid = document.cookie.substring(5,20);
+        document.cookie = '11111'+userid;
+        $location.path('/');
+    };
+
     $scope.studentView = function () {
         console.log("cantKeepUp button was clicked");
     };
