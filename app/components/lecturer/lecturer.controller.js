@@ -96,7 +96,7 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http','$location', 'socket', fu
     };
 
     $scope.leaveRoom = function() {
-        socket.emit('leave room', document.cookie);
+        socket.emit('leave room lecturer', document.cookie.slice(20));
         userid = document.cookie.substring(5,20);
         document.cookie = '11111'+userid;
         $location.path('/');

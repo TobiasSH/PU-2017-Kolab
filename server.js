@@ -115,6 +115,13 @@ io.on('connection', function (socket) {
         }
     );
 
+    socket.on('leave room lecturer', function (room) {
+        console.log("Lecturer leaving room: ", room);
+        db.counter.update({room: currentRoomID}, {$inc: {userCount: -1}});
+        io.to(currentRoomID).emit('storeClient', -1);
+        socket.leave(room);
+    });
+
     socket.on('leave room', function (cookie) {
 
         var clicks = cookie.substring(0, 5); // We remove everything but the clicks, first five
@@ -188,7 +195,7 @@ io.on('connection', function (socket) {
                 //deletes the selected room and its counter from the database
                 db.roomsCollection.remove({_id: mongojs.ObjectId(obj._id)});
                 db.counter.remove({room: obj.room});
-                db.roomsQuestionsCollection.remove({room : obj.room});
+                db.roomsQuestionsCollection.remove({room: obj.room});
                 io.emit('delete room broadcast', index, obj.room);
                 io.to(obj.room).emit('delete current room');
             }
