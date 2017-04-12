@@ -15,6 +15,7 @@ The project was developed using MEAN stack with socketIO and a separate python s
 <a href="https://socket.io/"><img src="https://www.pubnub.com/wp-content/uploads/2014/07/SOCKETIOICON.gif" title="SocketIO" align="left" height="48" width="48" ></a>
 <a href="www.nltk.org"><img src="/assets/img/nltk_logo.png" title="NLTK" align="left" height="48" width="48" ></a>
 <a href="http://heroku.com/"><img src="https://maxcdn.icons8.com/Color/PNG/512/Logos/heroku-512.png" title="Heroku" align="left" height="48" width="48" ></a>
+<a href="http://mlab.com/"><img src="https://help.fortrabbit.com/media/mlab-mark.png" title="MLab" align="left" height="48" width="48" ></a>
 <a href="https://travis-ci.org/"><img src="https://cdn.worldvectorlogo.com/logos/travis-ci-icon.svg" title="TravisCI" align="left" height="48" width="48" ></a>
 <a href="https://mochajs.org/"><img src="https://cldup.com/xFVFxOioAU.svg" title="MochaJS" align="left" height="48" width="48" ></a>
 <a href="https://chaijs.com/"><img src="https://cdn.tutsplus.com/net/uploads/2014/01/nodejs-testing-chai-retina-preview.png" title="Chai" align="left" height="48" width="48" ></a>
