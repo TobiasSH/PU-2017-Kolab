@@ -182,13 +182,16 @@ kolabApp.controller('menuCtrl', ['$scope', '$http','$location', 'socket', functi
 
     //doesnt this have to be in all the controllers?
     socket.on('resetVotes', function () {
-        userid = document.cookie.substring(4,20);
+        userid = document.cookie.substring(5,20);
         document.cookie = '11111'+ userid;
         refresh();
     });
+
+
+    // Function checking whether we should increment or decrement based on current value of click
     function setCountGetInc(x) {
         var inc;
-        var hits = parseInt(countString.charAt(x));//this is crashing
+        var hits = parseInt(countString.charAt(x));
         if (hits == 1) {
             var newString = countString.slice(0, x) + 0 + countString.slice(x + 1);
             countString = document.cookie = newString;

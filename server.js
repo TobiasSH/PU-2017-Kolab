@@ -1,8 +1,6 @@
 var express = require('express');
 var app = express();
 var mongojs = require('mongojs');
-//'mongodb://heroku_2hcp9k8k:19uocjcgsn6ce4pp7j66fe1ras@ds119020.mlab.com:19020/heroku_2hcp9k8k'
-//var db = mongojs('mongodb://heroku_2hcp9k8k:19uocjcgsn6ce4pp7j66fe1ras@ds119020.mlab.com:19020/heroku_2hcp9k8k', ['roomsQuestionsCollection', 'roomsCollection' 'counter']);
 var db = mongojs('mongodb://heroku_2hcp9k8k:19uocjcgsn6ce4pp7j66fe1ras@ds119020.mlab.com:19020/heroku_2hcp9k8k', ['roomsQuestionsCollection', 'roomsCollection', 'counter']);
 var bodyParser = require('body-parser');
 var path = require('path');
@@ -17,6 +15,8 @@ var io = require('socket.io')(http);
 
 
 var userCount = 0;
+
+// Used when cycling through cookie-clicks to send the appropriate socket messages
 var clickList = ['cantKeepUp', 'decreaseVolume', 'increaseVolume', 'decreaseSpeed', 'increaseSpeed'];
 
 // socket functions
@@ -26,46 +26,48 @@ io.on('connection', function (socket) {
     var currentRoomID;
 
     socket.on('cookie initialize', function (cookie) {
-        socket.handshake.headers.cookie = cookie;
+        socket.handshake.headers.cookie = cookie; //sets the socket header to the cookie
     });
 
 
     socket.on('disconnect', function () {// 11111 , cku, decVol, incVol, decSpeed, incSpeed
-        if (socket.handshake.headers.cookie == undefined) {
-            setTimeout(function () {
-                socket.leave(currentRoomID);
-                io.to(currentRoomID).emit('storeClient', -1);
-                return false;
-            }, 10000);
+        if (socket.handshake.headers.cookie == undefined) { //If the cookie is not set in the socket-header, should not happen
+
+            socket.leave(currentRoomID);
+            io.to(currentRoomID).emit('storeClient', -1);
+            return false;
 
         } else {
-            console.log(socket.handshake.headers.cookie);
+
             var clicks = cookieParseCounter(socket.handshake.headers.cookie); //socket header is not updated regularly enough for this to work i dont think
 
-            var moddedClicks = [];
+            var moddedClicks = [];  // This is used so that we can update the database accordingly
+            var modified = false;   // Tells us if the cookie has been altered
             for (var i = 0; i < 5; ++i) {//trying to remove the clicks the user has done
                 if (clicks[i] == 0) {       //looping through the user's cookie
                     io.to(currentRoomID).emit(clickList[i], -1); //emitting the appropriate message to the lecturer view of the user's room
-                    moddedClicks.push(-1); //this is used so that we can update the database accordingly
+                    moddedClicks.push(-1);
+                    modified = true;
                 } else {
                     moddedClicks.push(0);
                 }
             }
-            //database updates to restore the changes the user has done
-            db.counter.update({room: currentRoomID}, {
-                $inc: {
-                    cantKeepUp: moddedClicks[0],
-                    decreaseVolume: moddedClicks[1],
-                    increaseVolume: moddedClicks[2],
-                    decreaseSpeed: moddedClicks[3],
-                    increaseSpeed: moddedClicks[4],
-                    userCount: -1
-                }
-            });
+            if (modified) { // If the cookie has been modified
+                //database updates to restore the changes the user has done
+                db.counter.update({room: currentRoomID}, {
+                    $inc: {
+                        cantKeepUp: moddedClicks[0],
+                        decreaseVolume: moddedClicks[1],
+                        increaseVolume: moddedClicks[2],
+                        decreaseSpeed: moddedClicks[3],
+                        increaseSpeed: moddedClicks[4],
+                        userCount: -1
+                    }
+                });
+            }
 
             socket.leave(currentRoomID);
             io.to(currentRoomID).emit('storeClient', -1);
-            console.log("Disconnect : ending");
             return false;
 
         }
@@ -114,30 +116,34 @@ io.on('connection', function (socket) {
     );
 
     socket.on('leave room', function (cookie) {
-        console.log(cookie);
-        var clicks = cookie.substring(0, 5);
 
-        console.log("This is clicks before = ", clicks);
+        var clicks = cookie.substring(0, 5); // We remove everything but the clicks, first five
+
         var moddedClicks = [];
+        var modified = false;
+
         for (var i = 0; i < 5; ++i) {//trying to remove the clicks the user has done
             if (clicks[i] == 0) {       //looping through the user's cookie
                 io.to(currentRoomID).emit(clickList[i], -1); //emitting the appropriate message to the lecturer view of the user's room
                 moddedClicks.push(-1); //this is used so that we can update the database accordingly
+                modified = true;
             } else {
                 moddedClicks.push(0);
             }
         }
-        //database updates to restore the changes the user has done
-        db.counter.update({room: currentRoomID}, {
-            $inc: {
-                cantKeepUp: moddedClicks[0],
-                decreaseVolume: moddedClicks[1],
-                increaseVolume: moddedClicks[2],
-                decreaseSpeed: moddedClicks[3],
-                increaseSpeed: moddedClicks[4],
-                userCount: -1
-            }
-        });
+        if (modified) {
+            //database updates to restore the changes the user has done
+            db.counter.update({room: currentRoomID}, {
+                $inc: {
+                    cantKeepUp: moddedClicks[0],
+                    decreaseVolume: moddedClicks[1],
+                    increaseVolume: moddedClicks[2],
+                    decreaseSpeed: moddedClicks[3],
+                    increaseSpeed: moddedClicks[4],
+                    userCount: -1
+                }
+            });
+        }
         socket.leave(currentRoomID);
         io.to(currentRoomID).emit('storeClient', -1);
 
@@ -169,20 +175,18 @@ io.on('connection', function (socket) {
                 console.log("room inserted into the db: " + msg + "by user: " + userId);
             }
         });
+        //Sends the new room to all users on the front-page
         io.emit('new room broadcast', {_id: mongojs.ObjectID(rString), room: msg, creator: userId});
     });
 
     socket.on('room delete', function (index, obj, userId) {
         //retrieve the room
-        console.log(obj._id);
-
         db.roomsCollection.find({_id: mongojs.ObjectId(obj._id)}, function (err, docs) {
             //check if the room's creator is the same as the one trying to delete it
             if (docs[0].creator === obj.creator) {
                 console.log("Server received 'room delete' message for id: " + obj._id + " and userId: " + userId);
                 //deletes the selected room from the database
                 db.roomsCollection.remove({_id: mongojs.ObjectId(obj._id)});
-
                 io.emit('delete room broadcast', index, obj._id);
             }
         });
@@ -197,10 +201,10 @@ io.on('connection', function (socket) {
         io.emit('pp message', {_id: mongojs.ObjectID(rString), room: roomName, text: msg, tag: ""});
     });
 
+    //server receives processed message from the python script and sends it to all users in the room
     socket.on('processed message', function (obj) {
         console.log('message: ' + obj.text);
 
-        //creates random string with the function outside the socket function
 
         //inserting new message into mlab database
         db.roomsQuestionsCollection.insert({
@@ -217,7 +221,6 @@ io.on('connection', function (socket) {
             }
         });
         // broadcasts question message to all listening sockets with the same object we insert into the database
-        console.log("QM: This is the room", obj.room);
         io.to(obj.room).emit('question message', {
             _id: mongojs.ObjectID(obj._id),
             room: String(obj.room),
@@ -226,7 +229,7 @@ io.on('connection', function (socket) {
         });
 
     });
-    //menu buttons
+    //menu buttons, updating socket header for each click
     socket.on('cantKeepUp', function (inc, room, cookie) {
         db.counter.update({room: room}, {$inc: {cantKeepUp: inc}});
         socket.handshake.headers.cookie = cookie;
@@ -262,7 +265,7 @@ io.on('connection', function (socket) {
                 increaseSpeed: 0
             }
         });
-        io.to(room).emit('resetVotes');
+        io.to(room).emit('resetVotes'); // TODO this might not do anything in the connected menu-controllers??
     });
 
     //servers response to emitted message to delete question from lecturer controller
