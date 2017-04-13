@@ -1,4 +1,4 @@
-kolabApp.controller('menuCtrl', ['$scope', '$http','$location', 'socket', function ($scope, $http, $location, socket ) {
+kolabApp.controller('menuCtrl', ['$scope', '$http', '$location', 'socket', function ($scope, $http, $location, socket) {
 
     console.log("Hello World from menu-controller, cookie is now: ", document.cookie);
 
@@ -63,7 +63,7 @@ kolabApp.controller('menuCtrl', ['$scope', '$http','$location', 'socket', functi
 
     //Button clicks
 
-    $scope.questions = function() {
+    $scope.questions = function () {
 
         $location.path('/questions');
 
@@ -145,7 +145,6 @@ kolabApp.controller('menuCtrl', ['$scope', '$http','$location', 'socket', functi
     };
 
 
-
     $scope.increaseSpeed = function () {
         console.log("increaseSpeed button was clicked");
 
@@ -166,10 +165,10 @@ kolabApp.controller('menuCtrl', ['$scope', '$http','$location', 'socket', functi
     };
 
 
-    $scope.leaveRoom = function() {
+    $scope.leaveRoom = function () {
         socket.emit('leave room', document.cookie);
-        userid = document.cookie.substring(5,20);
-        document.cookie = '11111'+userid;
+        userid = document.cookie.substring(5, 20);
+        document.cookie = '11111' + userid;
         $location.path('/');
     };
     //on connect sets cookie and counts users
@@ -183,8 +182,8 @@ kolabApp.controller('menuCtrl', ['$scope', '$http','$location', 'socket', functi
 
     //doesnt this have to be in all the controllers?
     socket.on('resetVotes', function () {
-        userid = document.cookie.substring(5,20);
-        document.cookie = '11111'+ userid;
+        userid = document.cookie.substring(5, 20);
+        document.cookie = '11111' + userid;
         refresh();
     });
 

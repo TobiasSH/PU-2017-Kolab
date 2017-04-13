@@ -1,4 +1,4 @@
-kolabApp.controller('lecturerCtrl', ['$scope', '$http','$location', 'socket', function ($scope, $http,$location, socket) {
+kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket', function ($scope, $http, $location, socket) {
     console.log("Hello World from lecturer-controller");
 
     var max = 0; //unused?
@@ -95,10 +95,10 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http','$location', 'socket', fu
         }
     };
 
-    $scope.leaveRoom = function() {
+    $scope.leaveRoom = function () {
         socket.emit('leave room lecturer', document.cookie.slice(20));
-        userid = document.cookie.substring(5,20);
-        document.cookie = '11111'+userid;
+        userid = document.cookie.substring(5, 20);
+        document.cookie = '11111' + userid;
         $location.path('/');
     };
 
