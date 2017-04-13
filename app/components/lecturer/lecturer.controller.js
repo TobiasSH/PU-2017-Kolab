@@ -277,8 +277,8 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http','$location', 'socket', fu
 
     //On the even rarer occassion a room is being deleted while the lecturer is still in it, can be multi-tab
     socket.on('delete current room', function () {
-        console.log('Your room was deleted, returning to front-page');
         $location.path('/');
+        $scope.$apply();
     });
 
 }]);

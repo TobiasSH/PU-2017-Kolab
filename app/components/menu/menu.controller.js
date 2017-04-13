@@ -190,8 +190,8 @@ kolabApp.controller('menuCtrl', ['$scope', '$http','$location', 'socket', functi
 
     // On the rare occassion a room is delete while the user is in it
     socket.on('delete current room', function () {
-        console.log('Your room was deleted, returning to front-page');
-        $location.path('/'); // TODO Make this work properly, it is not currently for some reason, same in questions.controller
+        $location.path('/');
+        $scope.$apply();
     });
 
     // Function checking whether we should increment or decrement based on current value of click
