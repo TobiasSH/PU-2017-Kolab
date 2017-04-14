@@ -115,10 +115,13 @@ io.on('connection', function (socket) {
         }
     );
 
+
+    socket.on('join room lecturer', function (roomName, cookie) {
+        socket.join(roomName);
+    });
+
     socket.on('leave room lecturer', function (room) {
         console.log("Lecturer leaving room: ", room);
-        db.counter.update({room: currentRoomID}, {$inc: {userCount: -1}});
-        io.to(currentRoomID).emit('storeClient', -1);
         socket.leave(room);
     });
 
