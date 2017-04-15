@@ -45,16 +45,68 @@ body{
 
 /* MEDIA SPECIFICATIONS */
 
-@media (min-width: 1000px) {
+
+
+@media (max-width: 1000px) {/* MOBILES */
+
+    td.td-room.ng-binding {
+        padding-top: 4%;
+    }
+
     .vertical-center {
         max-height:100%;
+        align-content: center;
+    }
+
+    .front.horizontal-center{
+        width: 73.5%;
+        left: 13.251%;
+    }
+    .horizontal-center {
+        width: 100%;
+        left: 0;
+    }
+
+    .h1, h1 {
+        font-size: 64px;
+    }
+
+    .bn-square {
+        font-size: 45px !important;
+    }
+}
+
+
+@media (min-width: 1300px) {/* LARGE DESKTOPS */
+    .vertical-center {
+        max-height:75%;
+        align-content: center;
+    }
+
+    .horizontal-center{
+        width: 30%;
+        left: 33%;
+
+    }
+
+}
+
+@media (min-width: 1000px) { /* MEDIUM DESKTOPS */
+    .vertical-center {
+        max-height:100%;
+        height: 100%;
         align-content: center;
     }
 
     .horizontal-center{
         width: 50%;
         left:25%;
+        height: inherit;
     }
+}
+
+td.td-room.ng-binding {
+    padding-top: 7%;
 }
 
 
@@ -77,23 +129,23 @@ h1 {
 .menu-table {
     /*table-layout: fixed;*/
     width: 98%;
-    margin: 10px 0px -60px 10px;
+    margin: 10px 0 -60px 10px;
     /*border: 1px solid green;*/
 }
 
 .front-table {
     width: 92%;
-    margin: 40px 0px 0px 40px;
+    margin: 40px 0 0 40px;
 }
 
 .lecturer-table {
     width: 92%;
-    margin: 40px 0px 0px 40px;
+    margin: 40px 0 0 40px;
 }
 
 .questions-table, .questions-table-grouped {
     width: 92%;
-    margin: 40px 0px 0px 40px;
+    margin: 40px 0 0 40px;
 }
 
 .table th {
@@ -116,6 +168,13 @@ tbody{
 
 }
 
+/*.roomRows{
+    border: 1px solid black;
+    background: darkgray;
+
+
+}*/
+
 .questionRows{
     border-bottom: 1px solid black;
     /*word-break: break-all;*/
@@ -132,7 +191,7 @@ tbody{
 }
 
 th{
-    border: 0px !important;
+    border: 0 !important;
     font-size: 38px;
     min-height: inherit;
     height: 100%;
@@ -143,7 +202,7 @@ th{
 
 
 .table td {
-    border: 0px !important;
+    border: 0 !important;
     /*border: 1px solid black;*/
     font-size: 38px;
     min-height: inherit;
@@ -168,10 +227,10 @@ th{
     /*text-align: left;
     table-layout: fixed;*/
     width: 92%;
-    margin: 40px 40px 0px 40px;
+    margin: 40px 40px 0 40px;
     background: rgba(204,204,204,0.05);
     /*border: 1px solid black;*/
-    border-radius: 0px 128px 128px 0px;
+    border-radius: 0 128px 128px 0;
 }
 .title h1 {
     margin-left: 20px;
@@ -209,8 +268,14 @@ textarea{
     left:50%;
 }
 
+
+.joinMyRoom {
+    position: relative;
+    left:36%;
+}
+
 .btn {
-    border-radius: 0px;
+    border-radius: 0;
 }
 
 
@@ -221,7 +286,7 @@ textarea{
     min-width: 150px;
     background: #99DDEE;
     color: #555555;
-    border-radius: 0px 128px 128px 0px;
+    border-radius: 0 128px 128px 0;
 }
 
 .btn-remove{
@@ -232,7 +297,7 @@ textarea{
     min-width: 100px;
     background: #FFCCCC;
     border-radius: 50px;
-    margin: 10px 0px 10px 0px; 
+    margin: 10px 0 10px 0;
 }
 
 
@@ -339,7 +404,7 @@ textarea{
 .progress {
     width: 92%;
     height: 40px;
-    margin: 10px 40px 0px 40px;
+    margin: 10px 40px 0 40px;
 }
 
 .progress-bar {
