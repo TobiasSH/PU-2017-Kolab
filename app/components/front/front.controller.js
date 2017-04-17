@@ -153,6 +153,7 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', func
     });
 
 
+
 // Function for making user ID
     function randomString(length, chars) {
         var result = '';

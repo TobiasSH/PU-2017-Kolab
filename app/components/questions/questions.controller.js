@@ -14,6 +14,7 @@ kolabApp.controller('questionsCtrl', ['$scope', '$http','$location', 'socket', f
 
     // initial retrieval of questions from the database
     var refresh = function () {
+        socket.emit('cookie initialize', document.cookie);
         $http.get('/roomsQuestionsCollection').then(function (response) {
                 console.log("I got the data I requested, questions-controller");
                 console.log("This is the pure response object:" + response.text);

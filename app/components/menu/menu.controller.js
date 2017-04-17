@@ -23,6 +23,7 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', '$location', 'socket', funct
     };
 
     var refresh = function () {
+        socket.emit('cookie initialize', document.cookie);
         if (document.cookie.length < 4) {
             return;
         }
@@ -70,7 +71,6 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', '$location', 'socket', funct
     };
 
     $scope.cantKeepUp = function () {
-        console.log("cantKeepUp button was clicked");
 
         var inc = setCountGetInc(0);
         if (inc == -1) {
@@ -80,7 +80,9 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', '$location', 'socket', funct
             console.log("yo clicked")
 
         }
-        socket.emit('cantKeepUp', inc, $scope.roomCookie)
+        socket.emit('cantKeepUp', inc, $scope.roomCookie);
+        console.log("cantKeepUp button was clicked, cookie is: ",document.cookie);
+
 
 
     };
