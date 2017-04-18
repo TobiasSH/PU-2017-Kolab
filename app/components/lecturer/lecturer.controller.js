@@ -1,4 +1,4 @@
-kolabApp.controller('lecturerCtrl', ['$scope', '$http', 'socket', function ($scope, $http, socket) {
+kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket', function ($scope, $http, $location, socket) {
     console.log("Hello World from lecturer-controller");
 
 
@@ -7,7 +7,18 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', 'socket', function ($sco
 
     $scope.roomCookie = document.cookie.slice(20);
 
+    $scope.go = function (path) {
+        $location.path(path);
+    };
 
+    /*
+     $scope.userCount = 0;
+     $scope.cantKeepUpHits = 0;
+     $scope.decreaseVolumeHits = 0;
+     $scope.increaseVolumeHits = 0;
+     $scope.decreaseSpeedHits = 0;
+     $scope.increaseSpeedHits = 0;
+     */
 
      var cantKeepUpBar = document.getElementById("cantKeepUpBar");
      var decreaseVolumeBar = document.getElementById("decreaseVolumeBar");
@@ -18,6 +29,7 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', 'socket', function ($sco
 
     // initial retrieval of questions from the database
     var refresh = function () {
+        socket.emit('cookie initialize', document.cookie);
         $http.get('/roomsQuestionsCollection').then(function (response) {
                 console.log("I got the data I requested, questions-controller");
                 console.log("This is the pure response object:" + response.text);
@@ -45,7 +57,7 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', 'socket', function ($sco
             console.log("New user, returning to start");
             $location.path('/');
         } else {//we join the socket we're supposed to be on, based on our room
-            socket.emit('join room', roomName.slice(20));
+            socket.emit('join room lecturer', roomName.slice(20));
         }
 
         $http.get('/counters').then(function (response) {
@@ -68,19 +80,7 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', 'socket', function ($sco
 
 
 
-            /*
-             console.log(total + " kn");
-             var percent = (cantKeepUpHits / (total)) * 100;
-             cantKeepUpBar.style.width = percent + '%';
-             var percent = (decreaseVolumeHits / (total)) * 100;
-             decreaseVolumeBar.style.width = percent + '%';
-             var percent = (increaseVolumeHits / (total)) * 100;
-             increaseVolumeBar.style.width = percent + '%';
-             var percent = (decreaseSpeedHits / (total)) * 100;
-             decreaseSpeedBar.style.width = percent + '%';
-             var percent = (increaseSpeedHits / (total)) * 100;
-             increaseSpeedBar.style.width = percent + '%';
-             */
+
         })
 
     };
@@ -93,6 +93,13 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', 'socket', function ($sco
         } else {
             $scope.grouped = "groupedTrue";
         }
+    };
+
+    $scope.leaveRoom = function () {
+        socket.emit('leave room lecturer', document.cookie.slice(20));
+        userid = document.cookie.substring(5, 20);
+        document.cookie = '11111' + userid;
+        $location.path('/');
     };
 
     $scope.studentView = function () {
@@ -265,6 +272,12 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', 'socket', function ($sco
     socket.on('storeClient', function (modifier) {
         console.log("New user joined ", $scope.userCount);
         $scope.userCount += modifier;
+        $scope.$apply();
+    });
+
+    //On the even rarer occassion a room is being deleted while the lecturer is still in it, can be multi-tab
+    socket.on('delete current room', function () {
+        $location.path('/');
         $scope.$apply();
     });
 

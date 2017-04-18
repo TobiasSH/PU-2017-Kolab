@@ -14,6 +14,7 @@ kolabApp.controller('questionsCtrl', ['$scope', '$http','$location', 'socket', f
 
     // initial retrieval of questions from the database
     var refresh = function () {
+        socket.emit('cookie initialize', document.cookie);
         $http.get('/roomsQuestionsCollection').then(function (response) {
                 console.log("I got the data I requested, questions-controller");
                 console.log("This is the pure response object:" + response.text);
@@ -127,6 +128,12 @@ kolabApp.controller('questionsCtrl', ['$scope', '$http','$location', 'socket', f
         }
 
 
+    });
+
+    // On the rare occassion a room is delete while the user is in it
+    socket.on('delete current room', function () {
+        console.log('Your room was deleted, returning to front-page');
+        $location.path('/');
     });
 
 }]);

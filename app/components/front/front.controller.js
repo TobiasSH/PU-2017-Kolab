@@ -140,11 +140,18 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', func
         $scope.$apply();
     });
 
-    socket.on('delete room broadcast', function (index, room) {
-        console.log('A room was deleted:  ', room);
-        $scope.kolabDBScope.splice(index, 1);
-        $scope.$apply();
+    socket.on('delete room broadcast', function (index, roomName) {
+        console.log('A room was deleted:  ', roomName);
+        for (var i = 0; i < $scope.kolabDBScope.length; i++){
+            if ($scope.kolabDBScope[i].room == roomName){
+                $scope.kolabDBScope.splice(i, 1);
+                $scope.$apply();
+                break;
+            }
+        }
+
     });
+
 
 
 // Function for making user ID

@@ -1,4 +1,4 @@
-kolabApp.controller('menuCtrl', ['$scope', '$http','$location', 'socket', function ($scope, $http, $location, socket ) {
+kolabApp.controller('menuCtrl', ['$scope', '$http', '$location', 'socket', function ($scope, $http, $location, socket) {
 
     console.log("Hello World from menu-controller, cookie is now: ", document.cookie);
 
@@ -17,11 +17,13 @@ kolabApp.controller('menuCtrl', ['$scope', '$http','$location', 'socket', functi
     //Clicking the same button is registered as unclicking this button
 
     $scope.roomCookie = document.cookie.slice(20);
+
     $scope.go = function (path) {
         $location.path(path);
     };
 
     var refresh = function () {
+        socket.emit('cookie initialize', document.cookie);
         if (document.cookie.length < 4) {
             return;
         }
@@ -62,14 +64,13 @@ kolabApp.controller('menuCtrl', ['$scope', '$http','$location', 'socket', functi
 
     //Button clicks
 
-    $scope.questions = function() {
-        //TODO need to decrement or not increment when joining questions-view
+    $scope.questions = function () {
+
         $location.path('/questions');
 
     };
 
     $scope.cantKeepUp = function () {
-        console.log("cantKeepUp button was clicked");
 
         var inc = setCountGetInc(0);
         if (inc == -1) {
@@ -79,7 +80,9 @@ kolabApp.controller('menuCtrl', ['$scope', '$http','$location', 'socket', functi
             console.log("yo clicked")
 
         }
-        socket.emit('cantKeepUp', inc, $scope.roomCookie)
+        socket.emit('cantKeepUp', inc, $scope.roomCookie);
+        console.log("cantKeepUp button was clicked, cookie is: ",document.cookie);
+
 
 
     };
@@ -144,7 +147,6 @@ kolabApp.controller('menuCtrl', ['$scope', '$http','$location', 'socket', functi
     };
 
 
-
     $scope.increaseSpeed = function () {
         console.log("increaseSpeed button was clicked");
 
@@ -165,10 +167,10 @@ kolabApp.controller('menuCtrl', ['$scope', '$http','$location', 'socket', functi
     };
 
 
-    $scope.leaveRoom = function() {
+    $scope.leaveRoom = function () {
         socket.emit('leave room', document.cookie);
-        userid = document.cookie.substring(5,20);
-        document.cookie = '11111'+userid;
+        userid = document.cookie.substring(5, 20);
+        document.cookie = '11111' + userid;
         $location.path('/');
     };
     //on connect sets cookie and counts users
@@ -182,11 +184,16 @@ kolabApp.controller('menuCtrl', ['$scope', '$http','$location', 'socket', functi
 
     //doesnt this have to be in all the controllers?
     socket.on('resetVotes', function () {
-        userid = document.cookie.substring(5,20);
-        document.cookie = '11111'+ userid;
+        userid = document.cookie.substring(5, 20);
+        document.cookie = '11111' + userid;
         refresh();
     });
 
+    // On the rare occassion a room is delete while the user is in it
+    socket.on('delete current room', function () {
+        $location.path('/');
+        $scope.$apply();
+    });
 
     // Function checking whether we should increment or decrement based on current value of click
     function setCountGetInc(x) {
