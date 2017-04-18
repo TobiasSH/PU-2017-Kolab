@@ -74,7 +74,7 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket', f
             $scope.increaseVolumePercent = ($scope.increaseVolumeHits/ $scope.userCount) * 100;
             $scope.decreaseSpeedPercent = ($scope.decreaseSpeedHits/ $scope.userCount) * 100;
             $scope.increaseSpeedPercent = ($scope.increaseSpeedHits/ $scope.userCount) * 100;
-            cantKeepUpBar.style.width =  $scope.cantKeepUpPercent;
+
 
 
 
