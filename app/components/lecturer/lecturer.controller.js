@@ -1,26 +1,19 @@
 kolabApp.controller('lecturerCtrl', ['$scope', '$http', 'socket', function ($scope, $http, socket) {
     console.log("Hello World from lecturer-controller");
 
-    var max = 0; //unused?
+
 
     $scope.grouped = "groupedTrue";
 
     $scope.roomCookie = document.cookie.slice(20);
 
-    /*
-     $scope.userCount = 0;
-     $scope.cantKeepUpHits = 0;
-     $scope.decreaseVolumeHits = 0;
-     $scope.increaseVolumeHits = 0;
-     $scope.decreaseSpeedHits = 0;
-     $scope.increaseSpeedHits = 0;
-     */
-    /*
+
+
      var cantKeepUpBar = document.getElementById("cantKeepUpBar");
      var decreaseVolumeBar = document.getElementById("decreaseVolumeBar");
      var increaseVolumeBar = document.getElementById("increaseVolumeBar");
      var decreaseSpeedBar = document.getElementById("decreaseSpeedBar");
-     var increaseSpeedBar = document.getElementById("increaseSpeedBar");*/
+     var increaseSpeedBar = document.getElementById("increaseSpeedBar");
 
 
     // initial retrieval of questions from the database
@@ -63,6 +56,17 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', 'socket', function ($sco
             $scope.decreaseSpeedHits = response.data[0].decreaseSpeed;
             $scope.increaseSpeedHits = response.data[0].increaseSpeed;
             $scope.userCount = response.data[0].userCount;
+
+            $scope.cantKeepUpPercent = ($scope.cantKeepUpHits / $scope.userCount) * 100;
+            $scope.decreaseVolumePercent = ($scope.decreaseVolumeHits/ $scope.userCount) * 100;
+            $scope.increaseVolumePercent = ($scope.increaseVolumeHits/ $scope.userCount) * 100;
+            $scope.decreaseSpeedPercent = ($scope.decreaseSpeedHits/ $scope.userCount) * 100;
+            $scope.increaseSpeedPercent = ($scope.increaseSpeedHits/ $scope.userCount) * 100;
+            cantKeepUpBar.style.width =  $scope.cantKeepUpPercent;
+
+
+
+
 
             /*
              console.log(total + " kn");
