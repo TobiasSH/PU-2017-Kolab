@@ -80,7 +80,7 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', '$location', 'socket', funct
             console.log("yo clicked")
 
         }
-        socket.emit('cantKeepUp', inc, $scope.roomCookie);
+        socket.emit('cantKeepUp', inc, $scope.roomCookie, document.cookie);
         console.log("cantKeepUp button was clicked, cookie is: ",document.cookie);
 
 
@@ -97,12 +97,12 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', '$location', 'socket', funct
 
         } else if (inc == 1 && countString.charAt(2) == 0) {
             inc2 = setCountGetInc(2);
-            socket.emit('increaseVolume', inc2, $scope.roomCookie);
+            socket.emit('increaseVolume', inc2, $scope.roomCookie, document.cookie);
             decreaseVolume.className = button + " btn-volumeClicked";
             increaseVolume.className = button + "btn-volume";
         }
 
-        socket.emit('decreaseVolume', inc, $scope.roomCookie);
+        socket.emit('decreaseVolume', inc, $scope.roomCookie, document.cookie);
 
     };
 
@@ -118,11 +118,11 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', '$location', 'socket', funct
 
         } else if (inc == 1 && countString.charAt(1) == 0) {
             inc2 = setCountGetInc(1);
-            socket.emit('decreaseVolume', inc2, $scope.roomCookie);
+            socket.emit('decreaseVolume', inc2, $scope.roomCookie, document.cookie);
             increaseVolume.className = button + "btn-volumeClicked";
             decreaseVolume.className = button + "btn-volume";
         }
-        socket.emit('increaseVolume', inc, $scope.roomCookie); //Needs opposite message for the other button
+        socket.emit('increaseVolume', inc, $scope.roomCookie, document.cookie); //Needs opposite message for the other button
 
     };
 
@@ -138,11 +138,11 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', '$location', 'socket', funct
 
         } else if (inc == 1 && countString.charAt(4) == 0) {
             inc2 = setCountGetInc(4);
-            socket.emit('increaseSpeed', inc2, $scope.roomCookie);
+            socket.emit('increaseSpeed', inc2, $scope.roomCookie, document.cookie);
             decreaseSpeed.className = button + "btn-speedClicked";
             increaseSpeed.className = button + "btn-speed";
         }
-        socket.emit('decreaseSpeed', inc, $scope.roomCookie);
+        socket.emit('decreaseSpeed', inc, $scope.roomCookie, document.cookie);
 
     };
 
@@ -157,12 +157,12 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', '$location', 'socket', funct
             increaseSpeed.className = button + "btn-speedClicked";
         } else if (inc == 1 && countString.charAt(3) == 0) {
             inc2 = setCountGetInc(3);
-            socket.emit('decreaseSpeed', inc2, $scope.roomCookie);
+            socket.emit('decreaseSpeed', inc2, $scope.roomCookie, document.cookie);
             increaseSpeed.className = button + "btn-speedClicked";
             decreaseSpeed.className = button + "btn-speed";
         }
         console.log(countString);
-        socket.emit('increaseSpeed', inc, $scope.roomCookie);
+        socket.emit('increaseSpeed', inc, $scope.roomCookie, document.cookie);
 
     };
 

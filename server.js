@@ -34,7 +34,7 @@ io.on('connection', function (socket) {
 
     socket.on('disconnect', function () {// 11111 , cku, decVol, incVol, decSpeed, incSpeed
         console.log("USER IS DISCONNECTING!!!");
-        if (currentCookie == undefined) { //If the cookie is not set in the socket-header, should not happen
+        if (socket.handshake.headers.cookie  == undefined) { //If the cookie is not set in the socket-header, should not happen
 
             console.log("User's header cookie was underfined");
             //socket.leave(currentRoomID);
@@ -45,7 +45,7 @@ io.on('connection', function (socket) {
 
         } else {
 
-            var clicks = cookieParseCounter(currentCookie); //socket header is not updated regularly enough for this to work i dont think
+            var clicks = cookieParseCounter(socket.handshake.headers.cookie ); //socket header is not updated regularly enough for this to work i dont think
 
             var moddedClicks = [];  // This is used so that we can update the database accordingly
             var modified = false;   // Tells us if the cookie has been altered
