@@ -33,59 +33,60 @@ io.on('connection', function (socket) {
 
 
     socket.on('disconnect', function () {// 11111 , cku, decVol, incVol, decSpeed, incSpeed
-        console.log("USER IS DISCONNECTING!!!");
-        if (socket.handshake.headers.cookie  == undefined) { //If the cookie is not set in the socket-header, should not happen
+        console.log("USER IS DISCONNECTING!!!", Object.getOwnPropertyNames(socket.rooms).length);
+        if (Object.getOwnPropertyNames(socket.rooms).length == 0) {
+            if (socket.handshake.headers.cookie == undefined) { //If the cookie is not set in the socket-header, should not happen
 
-            console.log("User's header cookie was underfined");
-            //socket.leave(currentRoomID);
-            io.to(currentRoomID).emit('storeClient', -1);
-            db.counter.update({room: currentRoomID}, {$inc: {userCount: -1}});
-
-            return false;
-
-        } else {
-
-            var clicks = cookieParseCounter(socket.handshake.headers.cookie ); //socket header is not updated regularly enough for this to work i dont think
-
-            var moddedClicks = [];  // This is used so that we can update the database accordingly
-            var modified = false;   // Tells us if the cookie has been altered
-            for (var i = 0; i < 5; ++i) {//trying to remove the clicks the user has done
-                if (clicks[i] == 0) {       //looping through the user's cookie
-                    io.to(currentRoomID).emit(clickList[i], -1); //emitting the appropriate message to the lecturer view of the user's room
-                    moddedClicks.push(-1);
-                    modified = true;
-                } else {
-                    moddedClicks.push(0);
-                }
-            }
-            if (modified) { // If the cookie has been modified
-                //database updates to restore the changes the user has done
-                console.log("Disconnect: Modified, clicks = ", moddedClicks);
-                db.counter.update({room: currentRoomID}, {
-
-                    $inc: {
-                        cantKeepUp: moddedClicks[0],
-                        decreaseVolume: moddedClicks[1],
-                        increaseVolume: moddedClicks[2],
-                        decreaseSpeed: moddedClicks[3],
-                        increaseSpeed: moddedClicks[4],
-                        userCount: -1
-                    }
-                });
-            } else {
+                console.log("User's header cookie was underfined");
+                //socket.leave(currentRoomID);
+                io.to(currentRoomID).emit('storeClient', -1);
                 db.counter.update({room: currentRoomID}, {$inc: {userCount: -1}});
-            }
 
-            socket.leave(currentRoomID);
-            io.to(currentRoomID).emit('storeClient', -1);
-            return false;
+                return false;
+
+            } else {
+
+                var clicks = cookieParseCounter(socket.handshake.headers.cookie); //socket header is not updated regularly enough for this to work i dont think
+
+                var moddedClicks = [];  // This is used so that we can update the database accordingly
+                var modified = false;   // Tells us if the cookie has been altered
+                for (var i = 0; i < 5; ++i) {//trying to remove the clicks the user has done
+                    if (clicks[i] == 0) {       //looping through the user's cookie
+                        io.to(currentRoomID).emit(clickList[i], -1); //emitting the appropriate message to the lecturer view of the user's room
+                        moddedClicks.push(-1);
+                        modified = true;
+                    } else {
+                        moddedClicks.push(0);
+                    }
+                }
+                if (modified) { // If the cookie has been modified
+                    //database updates to restore the changes the user has done
+                    console.log("Disconnect: Modified, clicks = ", moddedClicks);
+                    db.counter.update({room: currentRoomID}, {
+
+                        $inc: {
+                            cantKeepUp: moddedClicks[0],
+                            decreaseVolume: moddedClicks[1],
+                            increaseVolume: moddedClicks[2],
+                            decreaseSpeed: moddedClicks[3],
+                            increaseSpeed: moddedClicks[4],
+                            userCount: -1
+                        }
+                    });
+                } else {
+                    db.counter.update({room: currentRoomID}, {$inc: {userCount: -1}});
+                }
+
+                socket.leave(currentRoomID);
+                io.to(currentRoomID).emit('storeClient', -1);
+                return false;
+            }
 
         }
+
     });
 
     socket.on('leave room', function (cookie) {
-        console.log("USER IS LEAVING ROOM!!!");
-
 
         var clicks = cookie.substring(0, 5); // We remove everything but the clicks, first five
 
@@ -345,21 +346,21 @@ app.get('/front', function (req, res) {
 
 
 /* DATABASE METHODS */
-app.get('/ownerTest', function (req,res){
+app.get('/ownerTest', function (req, res) {
     console.log("Owner test");
     var roomName = cookieParseRoom(req.headers.cookie);
     console.log("current room: ", roomName);
     var userID = cookieParseUser(req.headers.cookie);
     console.log("UserID: ", userID);
 
-    db.roomsCollection.find({room: roomName}, function (err, docs){
+    db.roomsCollection.find({room: roomName}, function (err, docs) {
         if (err) {
             console.warn(err.message);
         }
         else {
-            if(docs[0].creator===userID){
+            if (docs[0].creator === userID) {
                 res.json(true);
-            }else {
+            } else {
                 res.json(false);
             }
 
