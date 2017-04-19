@@ -10,7 +10,7 @@
                     </h1>
                 </td>
                 <td width="10%">
-                    <button type="button" class="btn btn-lg btn-responsive btn-home"  ng-click="leaveRoom()">
+                    <button type="button" class="btn btn-lg btn-responsive btn-home" ng-click="leaveRoom()">
                         <img class="home-button-icon" src="../../../assets/img/icons/chevron-right.svg"
                              onerror="this.onerror=null; this.src='../../../assets/img/icons/chevron-right.png'">
                     </button>
@@ -44,38 +44,42 @@
                 </td>
             </tr>
         </table>
-                    <div class="progress">
-                        <div id="cantKeepUpBar" class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="{{cantKeepUpPercent}}"
-                             aria-valuemin="0" aria-valuemax="100" ng-style="{'width':cantKeepUpPercent+'%'}">
-                            Cant Keep up
-                        </div>
-                    </div>
+        <div class="progress">
+            <div id="cantKeepUpBar" class="progress-bar progress-bar-info" role="progressbar"
+                 aria-valuenow="{{cantKeepUpPercent}}"
+                 aria-valuemin="0" aria-valuemax="100" ng-style="{'width':cantKeepUpPercent+'%'}">
+                Cant Keep up
+            </div>
 
-                </td>
+        </div>
+
         <table class="table menu-table">
             <tbody>
             <td>
-                    <div class="progress">
-                        <div id="decreaseVolumeBar" class="progress-bar progress-barL progress-bar-danger" role="progressbar"  aria-valuenow="{{decreaseVolumePercent}}"
-                             aria-valuemin="0" aria-valuemax="100" ng-style="{'width':decreaseVolumePercent+'%'}">
-                            Decrease Volume
-                        </div>
+                <div class="progress">
+                    <div id="decreaseVolumeBar" class="progress-bar progress-barL progress-bar-danger"
+                         role="progressbar" aria-valuenow="{{decreaseVolumePercent}}"
+                         aria-valuemin="0" aria-valuemax="100" ng-style="{'width':decreaseVolumePercent+'%'}">
+                        Decrease Volume
                     </div>
-                </td>
-                <td>
-                    <div class="progress">
-                        <div id="increaseVolumeBar" class="progress-bar  progress-bar-danger" role="progressbar" aria-valuenow="{{increaseVolumePercent}}"
-                             aria-valuemin="0" aria-valuemax="100" ng-style="{'width':increaseVolumePercent+'%'}">
-                            Increase Volume
-                        </div>
+                </div>
+            </td>
+            <td>
+                <div class="progress">
+                    <div id="increaseVolumeBar" class="progress-bar  progress-bar-danger" role="progressbar"
+                         aria-valuenow="{{increaseVolumePercent}}"
+                         aria-valuemin="0" aria-valuemax="100" ng-style="{'width':increaseVolumePercent+'%'}">
+                        Increase Volume
                     </div>
-                </td>
+                </div>
+            </td>
             </tr>
             <tr>
                 <td>
 
                     <div class="progress">
-                        <div id="decreaseSpeedBar" class="progress-bar progress-barl progress-bar-warning" role="progressbar" aria-valuenow="{{decreaseSpeedPercent}}"
+                        <div id="decreaseSpeedBar" class="progress-bar progress-barl progress-bar-warning"
+                             role="progressbar" aria-valuenow="{{decreaseSpeedPercent}}"
                              aria-valuemin="0" aria-valuemax="100" ng-style="{'width':decreaseSpeedPercent+'%'}">
                             Decrease Speed
                         </div>
@@ -83,7 +87,8 @@
                 </td>
                 <td>
                     <div class="progress">
-                        <div id="increaseSpeedBar" class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="{{increaseSpeedPercent}}"
+                        <div id="increaseSpeedBar" class="progress-bar progress-bar-warning" role="progressbar"
+                             aria-valuenow="{{increaseSpeedPercent}}"
                              aria-valuemin="0" aria-valuemax="100" ng-style="{'width':increaseSpeedPercent+'%'}">
                             Increase Speed
                         </div>
@@ -92,6 +97,7 @@
             </tr>
             </tbody>
         </table>
+
 
         <!--
         <span style="display:block; height: 20px;"></span>
@@ -102,13 +108,8 @@
         -->
 
         <span style="display:block; height: 20px;"></span>
-        <div>
-            <button type="button" class="btn btn-primary" ng-click="resetVotes()">
-                Reset votes
-            </button>
-        </div>
+
         <div ng-switch="grouped">
-            <button type="button" class="btn btn-small" ng-click="switchView()">Grouped/Ungrouped</button>
 
             <div ng-switch-when="groupedFalse">
                 <table id="questionsTable" class="table questions-table">
@@ -155,5 +156,13 @@
                 </table>
             </div>
         </div>
+        <div>
+            <button type="button" class="btn btn-primary" ng-click="resetVotes()">
+                Reset votes
+            </button>
+        </div>
+        <button type="button" class="btn btn-small" ng-click="switchView()">Grouped/Ungrouped</button>
+
     </div>
+
 </div>
