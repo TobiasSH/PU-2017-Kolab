@@ -31,7 +31,7 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket', f
     // initial retrieval of questions from the database
     var refresh = function () {
         $http.get('/ownerTest').then(function (response) {
-            if (!response) {
+            if (!response.data) {
                 $location.path('/');
             }
         });

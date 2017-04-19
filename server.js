@@ -357,8 +357,12 @@ app.get('/ownerTest', function (req,res){
             console.warn(err.message);
         }
         else {
-            console.log(docs);
-            res.json(docs);
+            if(docs[0].creator===userID){
+                res.json(true);
+            }else {
+                res.json(false);
+            }
+
         }
     })
 
@@ -374,7 +378,7 @@ app.get('/roomsQuestionsCollection', function (req, res) {
             console.warn(err.message);
         }
         else {
-            console.log(docs);
+
             res.json(docs);
         }
     });
