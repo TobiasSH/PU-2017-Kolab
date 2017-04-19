@@ -1,6 +1,6 @@
 <div class="container vertical-center">
-    <div class="container horizontal-center">
-        <h1>Kolab</h1>
+    <div class="front container horizontal-center">
+        <h1 id="kolabLogo">Kolab</h1>
         <table class="table">
             <tbody>
             <tr>
@@ -29,12 +29,12 @@
                         <!--<td>{{question.number}}</td>-->
                         <td class="td-room">{{room.room}}</td>
                         <th>
-                            <button class="btn btn-danger btn-lg btn-block btn-remove"
+                            <button class="joinMyRoom btn btn-danger btn-lg btn-block btn-remove"
                                     ng-click="deleteRoom($index, room )">Delete
                             </button>
                         </th>
                         <th>
-                            <button class="btn btn-danger btn-lg btn-block btn-remove"
+                            <button class="joinMyRoom btn btn-danger btn-lg btn-block btn-remove"
                                     ng-click="joinMyRoom( room.room )">Join
                             </button>
                         </th>
@@ -51,7 +51,7 @@
                         <!--<td>{{question.number}}</td>-->
                         <td class="td-room">{{room.room}}</td>
                         <td>
-                            <button class="btn btn-danger btn-lg btn-block btn-remove"
+                            <button class="joinRoom btn btn-danger btn-lg btn-block btn-remove"
                                     ng-click="joinExistingRoom( room.room )">Join
                             </button>
                         </td>

@@ -2,6 +2,9 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket', f
     console.log("Hello World from lecturer-controller");
 
 
+    var roomName = document.cookie;
+
+
 
     $scope.grouped = "groupedTrue";
 
@@ -58,7 +61,6 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket', f
                 console.log("I got ERROR", error);
             });
         //if user doesnt have a room, we return them to the front-page
-        var roomName = document.cookie;
         if (roomName.length <= 21) { //TODO NEEDS CHECK FOR USERID VS CREATOR OF ROOM
             console.log("New user, returning to start");
             $location.path('/');
