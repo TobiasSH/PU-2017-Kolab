@@ -345,9 +345,29 @@ app.get('/front', function (req, res) {
 
 
 /* DATABASE METHODS */
+app.get('/ownerTest', function (req,res){
+    console.log("Owner test");
+    var roomName = cookieParseRoom(req.headers.cookie);
+    console.log("current room: ", roomName);
+    var userID = cookieParseUser(req.headers.cookie);
+    console.log("UserID: ", userID);
+
+    db.roomsCollection.find({room: roomName}, function (err, docs){
+        if (err) {
+            console.warn(err.message);
+        }
+        else {
+            console.log(docs);
+            res.json(docs);
+        }
+    })
+
+});
+
+
 app.get('/roomsQuestionsCollection', function (req, res) {
     console.log("RQ: I received a GET request");
-    var roomName = cookieParseRoom(req.headers.cookie);//this becomes the socket???
+    var roomName = cookieParseRoom(req.headers.cookie);
     console.log("current room: ", roomName);
     db.roomsQuestionsCollection.find({room: roomName}, function (err, docs) {
         if (err) {
@@ -390,7 +410,6 @@ app.get('/roomsCollection/:id', function (req, res) {
 });
 
 app.get('/roomsQuestionsCollection/:id', function (req, res) {
-    console.log(req);
     var roomName = cookieParseRoom(req.headers.cookie);
     console.log("Q: I received a GET request", roomName);
     var id = req.params.id;
@@ -402,7 +421,6 @@ app.get('/roomsQuestionsCollection/:id', function (req, res) {
 
 
 app.get('/counters', function (req, res) {
-    console.log(req);
     var roomName = cookieParseRoom(req.headers.cookie);
     console.log("Q: I received a GET request", roomName);
     db.counter.find({room: roomName}, function (err, doc) {
@@ -413,13 +431,23 @@ app.get('/counters', function (req, res) {
 function cookieParseRoom(cookie) {//Removes everything about the cookie which is not about room
     if (cookie.indexOf("io=") == 0) {//checks to see if io is first
         cookie = cookie.replace(/io=\s*(.*?)\s*; /, ''); //regex to remove io= .... ;
-        return cookie.slice(20); //removes the UID and click counters
+        return cookie.slice(21); //removes the UID and click counters
     }
 
-    var tempVar = cookie.slice(20); //remove the non-room parts
+    var tempVar = cookie.slice(21); //remove the non-room parts
     console.log("This is the processed string: ", tempVar.substring(0, tempVar.indexOf(';')));
     return ( tempVar.substring(0, tempVar.indexOf(';'))); //remove the last semicolon
 }
+
+function cookieParseUser(cookie) {//Removes everything about the cookie which is not about room
+    if (cookie.indexOf("io=") == 0) {//checks to see if io is first
+        cookie = cookie.replace(/io=\s*(.*?)\s*; /, ''); //regex to remove io= .... ;
+        return cookie.substring(5, 21); //removes the UID and click counters
+    }
+
+    return cookie.substring(5, 21); //remove the non-room parts
+}
+
 
 function cookieParseCounter(cookie) {//Removes everything about the cookie which is not about room
     if (cookie.indexOf("io=") == 0) {//checks to see if io is first

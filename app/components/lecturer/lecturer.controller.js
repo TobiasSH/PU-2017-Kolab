@@ -5,7 +5,8 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket', f
 
     $scope.grouped = "groupedTrue";
 
-    $scope.roomCookie = document.cookie.slice(20);
+    console.log(document.cookie);
+    $scope.roomCookie = document.cookie.slice(21);
 
     $scope.go = function (path) {
         $location.path(path);
@@ -29,6 +30,11 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket', f
 
     // initial retrieval of questions from the database
     var refresh = function () {
+        $http.get('/ownerTest').then(function (response) {
+            if (!response) {
+                $location.path('/');
+            }
+        });
         socket.emit('cookie initialize', document.cookie);
         $http.get('/roomsQuestionsCollection').then(function (response) {
                 console.log("I got the data I requested, questions-controller");
@@ -57,7 +63,7 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket', f
             console.log("New user, returning to start");
             $location.path('/');
         } else {//we join the socket we're supposed to be on, based on our room
-            socket.emit('join room lecturer', roomName.slice(20));
+            socket.emit('join room lecturer', roomName.slice(21));
         }
 
         $http.get('/counters').then(function (response) {
@@ -97,8 +103,8 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket', f
     };
 
     $scope.leaveRoom = function () {
-        socket.emit('leave room lecturer', document.cookie.slice(20));
-        userid = document.cookie.substring(5, 20);
+        socket.emit('leave room lecturer', document.cookie.slice(21));
+        userid = document.cookie.substring(5, 21);
         document.cookie = '11111' + userid;
         $location.path('/');
     };

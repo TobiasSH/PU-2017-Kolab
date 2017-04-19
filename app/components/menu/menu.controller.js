@@ -16,11 +16,13 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', '$location', 'socket', funct
     //When a button is clicked the the corresponding digit is set to 0
     //Clicking the same button is registered as unclicking this button
 
-    $scope.roomCookie = document.cookie.slice(20);
+    $scope.roomCookie = document.cookie.slice(21);
 
     $scope.go = function (path) {
         $location.path(path);
     };
+
+
 
     var refresh = function () {
         socket.emit('cookie initialize', document.cookie);
@@ -53,7 +55,7 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', '$location', 'socket', funct
             console.log("New user, returning to start");
             $location.path('/');
         } else {
-            socket.emit('join room', roomName.slice(20), document.cookie); //we join the socket we're supposed to be on, based on our room
+            socket.emit('join room', roomName.slice(21), document.cookie); //we join the socket we're supposed to be on, based on our room
         }
         countString = document.cookie;
 
@@ -169,7 +171,7 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', '$location', 'socket', funct
 
     $scope.leaveRoom = function () {
         socket.emit('leave room', document.cookie);
-        userid = document.cookie.substring(5, 20);
+        userid = document.cookie.substring(5, 21);
         document.cookie = '11111' + userid;
         $location.path('/');
     };
@@ -184,7 +186,7 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', '$location', 'socket', funct
 
     //doesnt this have to be in all the controllers?
     socket.on('resetVotes', function () {
-        userid = document.cookie.substring(5, 20);
+        userid = document.cookie.substring(5, 21);
         useridcounters = '11111' + userid;
         document.cookie = useridcounters + $scope.roomCookie;
         refresh();
