@@ -6,7 +6,7 @@ kolabApp.controller('questionsCtrl', ['$scope', '$http','$location', 'socket', f
     console.log("Q: Current cookie, ", document.cookie);
 
 
-    $scope.roomCookie = document.cookie.slice(20);
+    $scope.roomCookie = document.cookie.slice(21);
 
     $scope.go = function (path) {
         $location.path(path);
@@ -14,6 +14,7 @@ kolabApp.controller('questionsCtrl', ['$scope', '$http','$location', 'socket', f
 
     // initial retrieval of questions from the database
     var refresh = function () {
+        socket.emit('cookie initialize', document.cookie);
         $http.get('/roomsQuestionsCollection').then(function (response) {
                 console.log("I got the data I requested, questions-controller");
                 console.log("This is the pure response object:" + response.text);
@@ -40,8 +41,8 @@ kolabApp.controller('questionsCtrl', ['$scope', '$http','$location', 'socket', f
             console.log("New user, returning to start");
             $location.path('/');
         } else {
-            socket.emit('join room', roomName.slice(20)); //we join the socket we're supposed to be on, based on our room
-            socket.emit('storeClient', 1, roomName.slice(20)); //tell the lecturer we've joined
+            socket.emit('join room', roomName.slice(21)); //we join the socket we're supposed to be on, based on our room
+            socket.emit('storeClient', 1, roomName.slice(21)); //tell the lecturer we've joined
         }
         console.log("Current room, from end of refresh()", String(socket.room));
     };
@@ -51,7 +52,7 @@ kolabApp.controller('questionsCtrl', ['$scope', '$http','$location', 'socket', f
     // remove function bound to the delete buttons in lecture view
     $scope.sendQuestion = function () {
         if ($scope.question != null && $scope.question.text.trim().length) {
-            socket.emit('question message', $('#textareaQ').val(), document.cookie.slice(20));
+            socket.emit('question message', $('#textareaQ').val(), document.cookie.slice(21));
             $('#textareaQ').val('');
             return false;
         }
@@ -96,7 +97,7 @@ kolabApp.controller('questionsCtrl', ['$scope', '$http','$location', 'socket', f
 
     // Lecturer has pressed reset votes, so we reset cookie
     socket.on('resetVotes', function () {
-        userid = document.cookie.substring(5,20);
+        userid = document.cookie.substring(5,21);
         document.cookie = '11111'+ userid;
 
     });

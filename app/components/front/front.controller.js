@@ -26,6 +26,7 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', func
             console.log("Old user, " + document.cookie + ", Welcome back");
         } else {
             document.cookie = "11111" + randomString(16, '0123456789abcdef');
+            console.log("This is the new cookie: ", document.cookie);
             socket.emit('cookie initialize', document.cookie);
             //socket.handshake.headers.cookie = document.cookie;
 
@@ -46,7 +47,7 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', func
 
                 for (var i = 0; i < $scope.kolabDBScope.length; i++) {
                     console.log('Looping through kolabDBScope', $scope.kolabDBScope[i].creator);
-                    var userID = document.cookie.slice(4, 20);
+                    var userID = document.cookie.slice(5, 21);
                     if ($scope.kolabDBScope[i].creator === userID) {
                         console.log("Adding room because we created it", $scope.kolabDBScope[i].room);
                         $scope.myRooms.push($scope.kolabDBScope[i]);
@@ -78,10 +79,10 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', func
             }
             if (availRoom) {
 
-                document.cookie = document.cookie.substring(0, 20);
+                document.cookie = document.cookie.substring(0, 21);
                 document.cookie += $('#textareaNewRoom').val();
 
-                socket.emit('new room message', $('#textareaNewRoom').val(), document.cookie.slice(4, 20));
+                socket.emit('new room message', $('#textareaNewRoom').val(), document.cookie.slice(5, 21));
 
                 $('#textareaNewRoom').val('');
                 $location.path('/lecturer');
@@ -105,7 +106,8 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', func
             for (var i = 0; i < $scope.kolabDBScope.length; i++) {
                 if ($scope.kolabDBScope[i].room === $('#textareaJoinRoom').val()) {
                     console.log("Trying to join room ", $('#textareaJoinRoom').val());
-                    document.cookie = document.cookie.substring(0, 20);
+                    document.cookie = document.cookie.substring(0, 21);
+                    console.log("Cookie after splicing: ",document.cookie);
                     document.cookie += $('#textareaJoinRoom').val();
 
                     $('#textareaJoinRoom').val('');
@@ -116,20 +118,21 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', func
         }
     };
     $scope.joinExistingRoom = function (room) {
-        document.cookie = document.cookie.substring(0, 20);
+        document.cookie = document.cookie.substring(0, 21);
         document.cookie += room;
         console.log("This is the name of the room: " + room);
+        console.log("We spliced the cookie and now it is :", document.cookie);
         $location.path('/student');
     };
 
     $scope.joinMyRoom = function (room) {
-        document.cookie = document.cookie.substring(0, 20);//removes old room if there is one
+        document.cookie = document.cookie.substring(0, 21);//removes old room if there is one
         document.cookie += room;
         $location.path('/lecturer');
     };
 
     $scope.deleteRoom = function (index, obj) {
-        socket.emit('room delete', index, obj, document.cookie.slice(4, 20));
+        socket.emit('room delete', index, obj, document.cookie.slice(5, 21));
         $scope.myRooms.splice(index, 1);
     };
 
@@ -151,6 +154,7 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', func
         }
 
     });
+
 
 
 // Function for making user ID

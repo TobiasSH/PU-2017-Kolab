@@ -128,8 +128,10 @@ h1 {
 
 .menu-table {
     /*table-layout: fixed;*/
-    width: 98%;
-    margin: 10px 0 -60px 10px;
+
+    width: 96%;
+    margin: 10px 0 -50px 0;
+
     /*border: 1px solid green;*/
 }
 
@@ -324,6 +326,7 @@ textarea{
     opacity: 1.0;
 }
 
+
 .btn-volume {
     background: #FFCCCC;
     color: #555555;
@@ -410,4 +413,13 @@ textarea{
 .progress-bar {
     font-size: 28px;
     line-height: 32px;
+
+}
+
+.progress-barL {
+    font-size: 28px;
+    line-height: 32px;
+    display: block;
+    float: right;
+
 }
