@@ -1,6 +1,8 @@
 kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket', function ($scope, $http, $location, socket) {
     console.log("Hello World from lecturer-controller");
 
+    var max = 0; //unused?
+
     $scope.grouped = "groupedTrue";
 
     $scope.roomCookie = document.cookie.slice(20);
@@ -9,6 +11,14 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket', f
         $location.path(path);
     };
 
+    /*
+     $scope.userCount = 0;
+     $scope.cantKeepUpHits = 0;
+     $scope.decreaseVolumeHits = 0;
+     $scope.increaseVolumeHits = 0;
+     $scope.decreaseSpeedHits = 0;
+     $scope.increaseSpeedHits = 0;
+     */
     /*
      var cantKeepUpBar = document.getElementById("cantKeepUpBar");
      var decreaseVolumeBar = document.getElementById("decreaseVolumeBar");

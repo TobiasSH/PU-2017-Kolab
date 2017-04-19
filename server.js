@@ -9,53 +9,34 @@ var path = require('path');
 app.use(express.static(__dirname));
 app.use(bodyParser.json());
 
-/* Express socketIO session */
-
-var session = require("express-session")({
-    secret: "my-secret",
-    resave: true,
-    saveUninitialized: true
-});
-var sharedsession = require("express-socket.io-session");
-
-app.use(session); //attaching session
-
 /* SOCKET IO */
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
-io.use(sharedsession(session, { //
-    autoSave: true
-}));
 
 var userCount = 0;
 
 // Used when cycling through cookie-clicks to send the appropriate socket messages
 var clickList = ['cantKeepUp', 'decreaseVolume', 'increaseVolume', 'decreaseSpeed', 'increaseSpeed'];
 
-// While a user is connected to a socket, these functions are available, and server is listening for the following messages
+// socket functions
 io.on('connection', function (socket) {
     console.log('User ' + socket.id + ' connected.' + userCount);
 
-    var currentRoomID;  //TODO this might not work with multiple users
-    var currentCookie;  //deprecated
+    var currentRoomID;
+    var currentCookie;
 
     socket.on('cookie initialize', function (cookie) {
-        socket.handshake.session.userdata = cookie; //sets the socket header to the cookie
-        //socket.handshake.session.save();
+        socket.handshake.headers.cookie = cookie; //sets the socket header to the cookie
         currentCookie = cookie;
-        console.log("Cookie was set, ", cookie);
     });
 
 
     socket.on('disconnect', function () {// 11111 , cku, decVol, incVol, decSpeed, incSpeed
         console.log("USER IS DISCONNECTING!!!");
-        console.log("Current cookie is : ", currentCookie);
-        console.log("Header cookie from socket is : ", socket.handshake.session.userdata);
+        if (currentCookie == undefined) { //If the cookie is not set in the socket-header, should not happen
 
-        if (socket.handshake.session.userdata == undefined) { //If the cookie is not set in the socket-header, should not happen
-
-            console.log("User's header cookie was undefined");
+            console.log("User's header cookie was underfined");
             //socket.leave(currentRoomID);
             io.to(currentRoomID).emit('storeClient', -1);
             db.counter.update({room: currentRoomID}, {$inc: {userCount: -1}});
@@ -64,8 +45,8 @@ io.on('connection', function (socket) {
 
         } else {
 
-            var clicks = cookieParseCounter(socket.handshake.session.userdata); //socket header is not updated regularly enough for this to work i dont think
-            console.log("Disconnect, clicks are: ", clicks); //
+            var clicks = cookieParseCounter(currentCookie); //socket header is not updated regularly enough for this to work i dont think
+
             var moddedClicks = [];  // This is used so that we can update the database accordingly
             var modified = false;   // Tells us if the cookie has been altered
             for (var i = 0; i < 5; ++i) {//trying to remove the clicks the user has done
@@ -281,33 +262,28 @@ io.on('connection', function (socket) {
     //menu buttons, updating socket header for each click
     socket.on('cantKeepUp', function (inc, room, cookie) {
         db.counter.update({room: room}, {$inc: {cantKeepUp: inc}});
-        socket.handshake.session.userdata = cookie;
+        socket.handshake.headers.cookie = cookie;
         io.to(room).emit('cantKeepUp', inc);
-
     });
     socket.on('decreaseVolume', function (inc, room, cookie) {
         db.counter.update({room: room}, {$inc: {decreaseVolume: inc}});
-        socket.handshake.session.userdata = cookie;
+        socket.handshake.headers.cookie = cookie;
         io.to(room).emit('decreaseVolume', inc, userCount);
-
     });
     socket.on('increaseVolume', function (inc, room, cookie) {
         db.counter.update({room: room}, {$inc: {increaseVolume: inc}});
-        socket.handshake.session.userdata = cookie;
+        socket.handshake.headers.cookie = cookie;
         io.to(room).emit('increaseVolume', inc, userCount);
-
     });
     socket.on('decreaseSpeed', function (inc, room, cookie) {
         db.counter.update({room: room}, {$inc: {decreaseSpeed: inc}});
-        socket.handshake.session.userdata = cookie;
+        socket.handshake.headers.cookie = cookie;
         io.to(room).emit('decreaseSpeed', inc, userCount);
-
     });
     socket.on('increaseSpeed', function (inc, room, cookie) {
         db.counter.update({room: room}, {$inc: {increaseSpeed: inc}});
-        socket.handshake.session.userdata = cookie;
+        socket.handshake.headers.cookie = cookie;
         io.to(room).emit('increaseSpeed', inc, userCount);
-
     });
     socket.on('resetVotes', function (room) {
         db.counter.update({room: room}, {
@@ -414,6 +390,7 @@ app.get('/roomsCollection/:id', function (req, res) {
 });
 
 app.get('/roomsQuestionsCollection/:id', function (req, res) {
+    console.log(req);
     var roomName = cookieParseRoom(req.headers.cookie);
     console.log("Q: I received a GET request", roomName);
     var id = req.params.id;
@@ -453,7 +430,7 @@ function cookieParseCounter(cookie) {//Removes everything about the cookie which
     return cookie.substring(0, 5); //remove the non-room parts
 }
 
-var server = http.listen(process.env.PORT || 3001);
+var server = http.listen(process.env.PORT || 3000);
 console.log("Server running on port 3000");
 
 module.exports = server;
