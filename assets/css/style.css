@@ -228,6 +228,7 @@ textarea{
     opacity: 1.0;
 }
 
+
 .btn-volume {
     background: #FFCCCC;
     color: #555555;
@@ -314,4 +315,14 @@ textarea{
 .progress-bar {
     font-size: 28px;
     line-height: 32px;
-} 
+
+
+}
+
+.progress-barL {
+    font-size: 28px;
+    line-height: 32px;
+    display: block;
+    float: right;
+
+}
