@@ -185,7 +185,8 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', '$location', 'socket', funct
     //doesnt this have to be in all the controllers?
     socket.on('resetVotes', function () {
         userid = document.cookie.substring(5, 20);
-        document.cookie = '11111' + userid;
+        useridcounters = '11111' + userid;
+        document.cookie = useridcounters + $scope.roomCookie;
         refresh();
     });
 
