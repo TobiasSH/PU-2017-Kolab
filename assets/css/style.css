@@ -1,8 +1,8 @@
 /* GENERAL LAYOUT */
 /********************/
-body{
+body {
     height: 100%;
-    width:100%;
+    width: 100%;
     max-height: 100%;
     max-width: 100%;
 }
@@ -22,12 +22,9 @@ body{
 
 }
 
-
 .vertical-center {
     min-height: 100%; /* Fallback for browsers do NOT support vh unit */
     min-height: 100vh; /* These two lines are counted as one :-)       */
-
-
 
     display: flex;
     align-items: center;
@@ -42,26 +39,24 @@ body{
     align-items: center;
 }
 
-
 /* MEDIA SPECIFICATIONS */
 
-
-
-@media (max-width: 1000px) {/* MOBILES */
-
+@media (max-width: 1000px) {
+    /* MOBILES */
     td.td-room.ng-binding {
         padding-top: 4%;
     }
 
     .vertical-center {
-        max-height:100%;
+        max-height: 100%;
         align-content: center;
     }
 
-    .front.horizontal-center{
+    .front.horizontal-center {
         width: 73.5%;
         left: 13.251%;
     }
+
     .horizontal-center {
         width: 100%;
         left: 0;
@@ -76,14 +71,14 @@ body{
     }
 }
 
-
-@media (min-width: 1300px) {/* LARGE DESKTOPS */
+@media (min-width: 1300px) {
+    /* LARGE DESKTOPS */
     .vertical-center {
-        max-height:75%;
+        max-height: 75%;
         align-content: center;
     }
 
-    .horizontal-center{
+    .horizontal-center {
         width: 30%;
         left: 33%;
 
@@ -91,16 +86,17 @@ body{
 
 }
 
-@media (min-width: 1000px) { /* MEDIUM DESKTOPS */
+@media (min-width: 1000px) {
+    /* MEDIUM DESKTOPS */
     .vertical-center {
-        max-height:100%;
+        max-height: 100%;
         height: 100%;
         align-content: center;
     }
 
-    .horizontal-center{
+    .horizontal-center {
         width: 50%;
-        left:25%;
+        left: 25%;
         height: inherit;
     }
 }
@@ -109,13 +105,10 @@ td.td-room.ng-binding {
     padding-top: 7%;
 }
 
-
-
 h1 {
     color: #EEEEEE;
     text-shadow: -2px 2px black;
 }
-
 
 /* TABLE CSS */
 /********************/
@@ -154,12 +147,11 @@ h1 {
     font-size: 48px;
 }
 
-tbody{
+tbody {
     width: 100%;
-    display:inherit;
+    display: inherit;
     /*border: 1px solid yellow;*/
 }
-
 
 .table tr {
     min-width: inherit;
@@ -177,11 +169,10 @@ tbody{
 
 }*/
 
-.questionRows{
+.questionRows {
     border-bottom: 1px solid black;
     /*word-break: break-all;*/
 }
-
 
 .nounRows {
     background-color: darkgray;
@@ -192,7 +183,7 @@ tbody{
     opacity: 0.4;
 }
 
-th{
+th {
     border: 0 !important;
     font-size: 38px;
     min-height: inherit;
@@ -200,8 +191,6 @@ th{
     width: 25%;
 
 }
-
-
 
 .table td {
     border: 0 !important;
@@ -217,23 +206,23 @@ th{
     width: 100%;
 }
 
-.td-noun{
+.td-noun {
     color: white;
     opacity: 1;
     text-shadow: -2px 2px black;
     cursor: pointer;
 }
 
-
-.title{
+.title {
     /*text-align: left;
     table-layout: fixed;*/
     width: 92%;
     margin: 40px 40px 0 40px;
-    background: rgba(204,204,204,0.05);
+    background: rgba(204, 204, 204, 0.05);
     /*border: 1px solid black;*/
     border-radius: 0 128px 128px 0;
 }
+
 .title h1 {
     margin-left: 20px;
 }
@@ -246,7 +235,6 @@ th{
     font-size: 90px;
 }
 
-
 /* TEXTAREA AND FORM */
 /********************/
 .form-control {
@@ -256,34 +244,31 @@ th{
     min-height: 150px;
 }
 
-textarea{
+textarea {
     resize: none;
     width: 100%;
 }
-
 
 /* BUTTONS */
 /********************/
 
 .joinRoom {
     position: relative;
-    left:50%;
+    left: 50%;
 }
-
 
 .joinMyRoom {
     position: relative;
-    left:36%;
+    left: 36%;
 }
 
 .btn {
     border-radius: 0;
 }
 
-
 .btn-send {
     height: 100%;
-    width:100%;
+    width: 100%;
     font-size: 34px;
     min-width: 150px;
     background: #99DDEE;
@@ -291,7 +276,7 @@ textarea{
     border-radius: 0 128px 128px 0;
 }
 
-.btn-remove{
+.btn-remove {
     height: 50%;
     width: 50%;
     font-size: 34px;
@@ -302,10 +287,9 @@ textarea{
     margin: 10px 0 10px 0;
 }
 
-
 .bn-square {
-    width:100%;
-    height:450px;
+    width: 100%;
+    height: 450px;
     font-size: 28px;
     min-height: 100%;
     min-width: 100%;
@@ -326,7 +310,6 @@ textarea{
     opacity: 1.0;
 }
 
-
 .btn-volume {
     background: #FFCCCC;
     color: #555555;
@@ -338,6 +321,7 @@ textarea{
     color: #555555;
     opacity: 1.0;
 }
+
 .btn-cantkeepupClicked {
     background: #99EAEE;
     color: #555555;
@@ -369,27 +353,26 @@ textarea{
 .btn-home {
     float: right;
     /*width:100%;*/
-    height:150px;
+    height: 150px;
     min-height: 100%;
     min-width: 100%;
     max-width: 150px;
     max-height: 150px;
     /*background: #CCFFCC;*/
-    background: rgba(204,255,204,0.05);
+    background: rgba(204, 255, 204, 0.05);
     color: #888888;
     border-radius: 128px;
 }
-
 
 /* IMAGES */
 /********************/
 
 .front-button-icon {
-  height: 128px;
+    height: 128px;
 }
 
 .menu-button-icon {
-  height: 100px;
+    height: 100px;
 }
 
 .lecturer-button-icon {
@@ -397,29 +380,62 @@ textarea{
 }
 
 .home-button-icon {
-  height: 100%;
-  width: 128px;
+    height: 100%;
+    width: 128px;
 }
 
 /* PROGRESSBAR */
 /********************/
 
+.progressGroup {
+
+    padding: 0 !important;
+    border: 1px solid green !important;
+    width: 50%;
+
+
+}
+
+
+.progressText{
+    font-size: 30px !important;
+    padding-left: 40px !important;
+    color: white !important;
+    text-shadow: 2px 2px black;
+
+}
+
 .progress {
+    color: white;
     width: 92%;
     height: 40px;
     margin: 10px 40px 0 40px;
+    text-shadow: 2px 2px black;
+
 }
 
 .progress-bar {
+    color: white;
     font-size: 28px;
     line-height: 32px;
+    text-shadow: 2px 2px black;
 
 }
 
 .progress-barL {
-    font-size: 28px;
-    line-height: 32px;
     display: block;
     float: right;
+    overflow:auto;
+}
 
+
+.progress-bar-custom {
+   background: rgb(122, 122, 119); /* Background color for the bars */
+}
+
+.progress-striped .progress-bar-custom {
+    background-image: -webkit-gradient(linear, 0 100%, 100% 0, color-stop(0.25, rgba(0, 0, 0, 0.15), color-stop(0.25, transparent), color-stop(0.5, transparent), color-stop(0.5, rgba(0, 0, 0, 0.15)), color-stop(0.75, rgba(0, 0, 0, 0.15)), color-stop(0.75, transparent), to(transparent)));
+    background-image: -webkit-linear-gradient(45deg, rgba(0, 0, 0, 0.15) 25%, transparent 25%, transparent 50%, rgba(0, 0, 0, 0.15) 50%, rgba(0, 0, 0, 0.15) 75%, transparent 75%, transparent);
+    background-image: linear-gradient(45deg, rgba(0, 0, 0, 0.15) 25%, transparent 25%, transparent 50%, rgba(0, 0, 0, 0.15) 50%, rgba(0, 0, 0, 0.15) 75%, transparent 75%, transparent);
+    background-size: 22px 22px;
 }

@@ -19,6 +19,7 @@ var userCount = 0;
 // Used when cycling through cookie-clicks to send the appropriate socket messages
 var clickList = ['cantKeepUp', 'decreaseVolume', 'increaseVolume', 'decreaseSpeed', 'increaseSpeed'];
 
+
 // socket functions
 io.on('connection', function (socket) {
     console.log('User ' + socket.id + ' connected.' + userCount);
@@ -353,12 +354,21 @@ app.get('/ownerTest', function (req, res) {
     var userID = cookieParseUser(req.headers.cookie);
     console.log("UserID: ", userID);
 
+    if (userID == undefined){
+        console.log("User was undefined!!");
+        return false;
+    }
+
     db.roomsCollection.find({room: roomName}, function (err, docs) {
         if (err) {
             console.warn(err.message);
         }
         else {
-            if (docs[0].creator === userID) {
+            if (docs.length == 0){
+                console.log("Room was undefined!!");
+                return false;
+            }
+            else if (docs[0].creator === userID){
                 res.json(true);
             } else {
                 res.json(false);
