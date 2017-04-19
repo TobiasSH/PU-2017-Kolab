@@ -387,30 +387,49 @@ textarea {
 /* PROGRESSBAR */
 /********************/
 
+.cantKeepUpText{
+    padding-left: 41%;
+    font-size: 30px;
+    color: white;
+    text-shadow: 2px 2px black;
+}
+
+.cantKeepUpData{
+    border: 1px solid black !important
+}
+
+.click-table{
+    width: 92%;
+    display: inline-table;
+    margin-top: 20px;
+}
+
 .progressGroup {
 
-    padding: 0 !important;
-    border: 1px solid green !important;
+    border: 1px solid black !important;
     width: 50%;
+}
 
-
+.progressHalfBars {
+    width:100% !important;
 }
 
 
 .progressText{
-    font-size: 30px !important;
-    padding-left: 40px !important;
-    color: white !important;
+    font-size: 30px;
+    padding-left: 0;
+    color: white;
     text-shadow: 2px 2px black;
 
 }
 
 .progress {
     color: white;
-    width: 92%;
     height: 40px;
-    margin: 10px 40px 0 40px;
+    /*margin: 10px 40px 0 40px;*/
     text-shadow: 2px 2px black;
+    margin-bottom: 0;
+    border-radius: 0;
 
 }
 

@@ -16,20 +16,12 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket', f
     };
 
     /*
-     $scope.userCount = 0;
-     $scope.cantKeepUpHits = 0;
-     $scope.decreaseVolumeHits = 0;
-     $scope.increaseVolumeHits = 0;
-     $scope.decreaseSpeedHits = 0;
-     $scope.increaseSpeedHits = 0;
-     */
-
      var cantKeepUpBar = document.getElementById("cantKeepUpBar");
      var decreaseVolumeBar = document.getElementById("decreaseVolumeBar");
      var increaseVolumeBar = document.getElementById("increaseVolumeBar");
      var decreaseSpeedBar = document.getElementById("decreaseSpeedBar");
      var increaseSpeedBar = document.getElementById("increaseSpeedBar");
-
+    */
 
     // initial retrieval of questions from the database
     var refresh = function () {
@@ -77,14 +69,11 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket', f
             $scope.increaseSpeedHits = response.data[0].increaseSpeed;
             $scope.userCount = response.data[0].userCount;
 
-            $scope.cantKeepUpPercent = ($scope.cantKeepUpHits / $scope.userCount) * 100;
-            $scope.decreaseVolumePercent = ($scope.decreaseVolumeHits/ $scope.userCount) * 100;
-            $scope.increaseVolumePercent = ($scope.increaseVolumeHits/ $scope.userCount) * 100;
-            $scope.decreaseSpeedPercent = ($scope.decreaseSpeedHits/ $scope.userCount) * 100;
-            $scope.increaseSpeedPercent = ($scope.increaseSpeedHits/ $scope.userCount) * 100;
-
-
-
+            $scope.cantKeepUpPercent = parseInt(($scope.cantKeepUpHits / $scope.userCount) * 100);
+            $scope.decreaseVolumePercent = parseInt(($scope.decreaseVolumeHits/ $scope.userCount) * 100);
+            $scope.increaseVolumePercent = parseInt(($scope.increaseVolumeHits/ $scope.userCount) * 100);
+            $scope.decreaseSpeedPercent = parseInt(($scope.decreaseSpeedHits/ $scope.userCount) * 100);
+            $scope.increaseSpeedPercent = parseInt(($scope.increaseSpeedHits/ $scope.userCount) * 100);
 
 
 
