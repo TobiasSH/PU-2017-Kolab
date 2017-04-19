@@ -13,7 +13,7 @@ The project was developed using MEAN stack with socketIO and a separate python s
 <a href="http://nodejs.org/"><img src="http://ecodile.com/wp-content/uploads/2015/10/node_icon2.png" title="NodeJS" align="left" height="48" width="48" ></a>
 <a href="http://getbootstrap.com/"><img src="http://www.rsiconcepts.com/blog/wp-content/uploads/2015/04/bootstrap-and-responsive-web-designing-logo-e1430044801154.png" title="Bootstrap" align="left" height="48" width="48" ></a>
 <a href="https://socket.io/"><img src="https://www.pubnub.com/wp-content/uploads/2014/07/SOCKETIOICON.gif" title="SocketIO" align="left" height="48" width="48" ></a>
-<a href="www.nltk.org"><img src="/assets/img/nltk_logo.png" title="NLTK" align="left" height="48" width="48" ></a>
+<a href="http://www.nltk.org/"><img src="/assets/img/nltk_logo.png" title="NLTK" align="left" height="48" width="48" ></a>
 <a href="http://heroku.com/"><img src="https://maxcdn.icons8.com/Color/PNG/512/Logos/heroku-512.png" title="Heroku" align="left" height="48" width="48" ></a>
 <a href="http://mlab.com/"><img src="https://help.fortrabbit.com/media/mlab-mark.png" title="MLab" align="left" height="48" width="48" ></a>
 <a href="https://travis-ci.org/"><img src="https://cdn.worldvectorlogo.com/logos/travis-ci-icon.svg" title="TravisCI" align="left" height="48" width="48" ></a>
