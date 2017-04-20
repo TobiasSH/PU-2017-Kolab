@@ -235,14 +235,12 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket', f
         if ($scope.increaseVolumePercent >= 75) {
             $scope.increaseVolumeStyle = 'progress-bar-danger';
             $scope.activeAnimationIV = "active";
-            $scope.$apply();
         } else if ($scope.increaseVolumePercent < 75 && $scope.increaseVolumePercent >= 50) {
             $scope.increaseVolumeStyle = 'progress-bar-warning';
             $scope.activeAnimationIV = "";
         } else if ($scope.increaseVolumePercent < 50 && $scope.increaseVolumePercent >= 25) {
             $scope.increaseVolumeStyle = 'progress-bar-success';
             $scope.activeAnimationIV = "";
-            $scope.$apply();
         } else {
             $scope.increaseVolumeStyle = 'progress-bar-info';
             $scope.activeAnimationIV = "";
@@ -274,7 +272,7 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket', f
         } else if ($scope.increaseSpeedPercent < 75 && $scope.increaseSpeedPercent >= 50) {
             $scope.increaseSpeedStyle = 'progress-bar-warning';
             $scope.activeAnimationIS = "";
-        } else if ($scope.increaseSpeedPercent <= 50 && $scope.increaseSpeedPercent >= 25) {
+        } else if ($scope.increaseSpeedPercent < 50 && $scope.increaseSpeedPercent >= 25) {
             $scope.increaseSpeedStyle = 'progress-bar-success';
             $scope.activeAnimationIS = "";
         } else {
