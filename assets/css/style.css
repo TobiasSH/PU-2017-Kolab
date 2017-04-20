@@ -384,53 +384,45 @@ textarea {
     width: 128px;
 }
 
-/* PROGRESSBAR */
+/* PROGRESSBARS */
 /********************/
 
-.cantKeepUpText{
+.cantKeepUpText {
     padding-left: 41%;
     font-size: 30px;
     color: white;
     text-shadow: 2px 2px black;
 }
 
-.cantKeepUpData{
+.cantKeepUpData {
     border: 1px solid black !important
 }
 
-.click-table{
+.click-table {
     width: 92%;
     display: inline-table;
     margin-top: 20px;
 }
 
 .progressGroup {
-
     border: 1px solid black !important;
     width: 50%;
 }
 
-.progressHalfBars {
-    width:100% !important;
-}
-
-
-.progressText{
+.progressText {
     font-size: 30px;
     padding-left: 0;
     color: white;
     text-shadow: 2px 2px black;
-
 }
 
 .progress {
     color: white;
     height: 40px;
-    /*margin: 10px 40px 0 40px;*/
     text-shadow: 2px 2px black;
     margin-bottom: 0;
     border-radius: 0;
-
+    background: rgb(122, 122, 119); /* Background color for the bars */
 }
 
 .progress-bar {
@@ -438,23 +430,9 @@ textarea {
     font-size: 28px;
     line-height: 32px;
     text-shadow: 2px 2px black;
-
 }
 
 .progress-barL {
     display: block;
     float: right;
-    overflow:auto;
-}
-
-
-.progress-bar-custom {
-   background: rgb(122, 122, 119); /* Background color for the bars */
-}
-
-.progress-striped .progress-bar-custom {
-    background-image: -webkit-gradient(linear, 0 100%, 100% 0, color-stop(0.25, rgba(0, 0, 0, 0.15), color-stop(0.25, transparent), color-stop(0.5, transparent), color-stop(0.5, rgba(0, 0, 0, 0.15)), color-stop(0.75, rgba(0, 0, 0, 0.15)), color-stop(0.75, transparent), to(transparent)));
-    background-image: -webkit-linear-gradient(45deg, rgba(0, 0, 0, 0.15) 25%, transparent 25%, transparent 50%, rgba(0, 0, 0, 0.15) 50%, rgba(0, 0, 0, 0.15) 75%, transparent 75%, transparent);
-    background-image: linear-gradient(45deg, rgba(0, 0, 0, 0.15) 25%, transparent 25%, transparent 50%, rgba(0, 0, 0, 0.15) 50%, rgba(0, 0, 0, 0.15) 75%, transparent 75%, transparent);
-    background-size: 22px 22px;
 }

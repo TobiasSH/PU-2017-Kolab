@@ -53,8 +53,8 @@
             <tr>
                 <td class="cantKeepUpData" colspan="2">
                     <span class="cantKeepUpText">Cant Keep up</span>
-                    <div class="progress progress-bar-custom progress-striped">
-                        <div id="cantKeepUpBar" class="progress-bar" role="progressbar"
+                    <div class="progress">
+                        <div id="cantKeepUpBar" class="progress-bar progress-bar-striped {{cantKeepUpStyle}} {{activeAnimationCKU}}" role="progressbar"
                              aria-valuenow="{{cantKeepUpPercent}}"
                              aria-valuemin="0" aria-valuemax="100" ng-style="{'width':cantKeepUpPercent+'%'}">
                             {{cantKeepUpPercent}}%
@@ -67,8 +67,8 @@
             <tr>
                 <td class="progressGroup">
                     <span class="progressText">Decrease Volume</span>
-                    <div class="progress progressHalfBars progress-bar-custom progress-striped">
-                        <div id="decreaseVolumeBar" class="progress-bar progress-barL"
+                    <div class="progress">
+                        <div id="decreaseVolumeBar" class="progress-bar progress-bar-striped {{decreaseVolumeStyle}} {{activeAnimationDV}} progress-barL"
                              role="progressbar" aria-valuenow="{{decreaseVolumePercent}}"
                              aria-valuemin="0" aria-valuemax="100" ng-style="{'width':decreaseVolumePercent+'%'}">
                             {{decreaseVolumePercent}}%
@@ -78,8 +78,8 @@
 
                 <td class="progressGroup">
                     <span class="progressText">Increase Volume</span>
-                    <div class="progress progressHalfBars progress-bar-custom progress-striped">
-                        <div id="increaseVolumeBar" class="progress-bar" role="progressbar"
+                    <div class="progress">
+                        <div id="increaseVolumeBar" class="progress-bar progress-bar-striped {{increaseVolumeStyle}} {{activeAnimationIV}}" role="progressbar"
                              aria-valuenow="{{increaseVolumePercent}}"
                              aria-valuemin="0" aria-valuemax="100" ng-style="{'width':increaseVolumePercent+'%'}">
                             {{increaseVolumePercent}}%
@@ -90,8 +90,8 @@
             <tr>
                 <td class="progressGroup">
                     <span class="progressText">Decrease Speed</span>
-                    <div class="progress progressHalfBars progress-bar-custom progress-striped">
-                        <div id="decreaseSpeedBar" class="progress-bar progress-barl"
+                    <div class="progress">
+                        <div id="decreaseSpeedBar" class="progress-bar progress-bar-striped {{decreaseSpeedStyle}} {{activeAnimationDS}} progress-barl"
                              role="progressbar" aria-valuenow="{{decreaseSpeedPercent}}"
                              aria-valuemin="0" aria-valuemax="100" ng-style="{'width':decreaseSpeedPercent+'%'}">
                             {{decreaseSpeedPercent}}%
@@ -100,8 +100,8 @@
                 </td>
                 <td class="progressGroup">
                     <span class="progressText">Increase Speed</span>
-                    <div class="progress progressHalfBars progress-bar-custom progress-striped">
-                        <div id="increaseSpeedBar" class="progress-bar" role="progressbar"
+                    <div class="progress">
+                        <div id="increaseSpeedBar" class="progress-bar progress-bar-striped {{increaseSpeedStyle}} {{activeAnimationIS}}" role="progressbar"
                              aria-valuenow="{{increaseSpeedPercent}}"
                              aria-valuemin="0" aria-valuemax="100" ng-style="{'width':increaseSpeedPercent+'%'}">
                             {{increaseSpeedPercent}}%

@@ -5,7 +5,6 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket', f
     var roomName = document.cookie;
 
 
-
     $scope.grouped = "groupedTrue";
 
     console.log(document.cookie);
@@ -15,13 +14,6 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket', f
         $location.path(path);
     };
 
-    /*
-     var cantKeepUpBar = document.getElementById("cantKeepUpBar");
-     var decreaseVolumeBar = document.getElementById("decreaseVolumeBar");
-     var increaseVolumeBar = document.getElementById("increaseVolumeBar");
-     var decreaseSpeedBar = document.getElementById("decreaseSpeedBar");
-     var increaseSpeedBar = document.getElementById("increaseSpeedBar");
-    */
 
     // initial retrieval of questions from the database
     var refresh = function () {
@@ -70,13 +62,24 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket', f
             $scope.userCount = response.data[0].userCount;
 
             $scope.cantKeepUpPercent = parseInt(($scope.cantKeepUpHits / $scope.userCount) * 100);
-            $scope.decreaseVolumePercent = parseInt(($scope.decreaseVolumeHits/ $scope.userCount) * 100);
-            $scope.increaseVolumePercent = parseInt(($scope.increaseVolumeHits/ $scope.userCount) * 100);
-            $scope.decreaseSpeedPercent = parseInt(($scope.decreaseSpeedHits/ $scope.userCount) * 100);
-            $scope.increaseSpeedPercent = parseInt(($scope.increaseSpeedHits/ $scope.userCount) * 100);
+            $scope.decreaseVolumePercent = parseInt(($scope.decreaseVolumeHits / $scope.userCount) * 100);
+            $scope.increaseVolumePercent = parseInt(($scope.increaseVolumeHits / $scope.userCount) * 100);
+            $scope.decreaseSpeedPercent = parseInt(($scope.decreaseSpeedHits / $scope.userCount) * 100);
+            $scope.increaseSpeedPercent = parseInt(($scope.increaseSpeedHits / $scope.userCount) * 100);
 
+            // Active bar animations when % is higher than 75
+            $scope.activeAnimationCKU = "";
+            $scope.activeAnimationDV = "";
+            $scope.activeAnimationIV = "";
+            $scope.activeAnimationDS = "";
+            $scope.activeAnimationIS = "";
 
-
+            //Checks which color the bars should be
+            cantKeepUpCheck();
+            decreaseVolumeCheck();
+            increaseVolumeCheck();
+            decreaseSpeedCheck();
+            increaseSpeedCheck();
 
         })
 
@@ -99,16 +102,14 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket', f
         $location.path('/');
     };
 
-    $scope.studentView = function () {
-        console.log("cantKeepUp button was clicked");
-    };
 
+    /*$scope.studentView = function () {
+        console.log("cantKeepUp button was clicked");
+    };*/
+
+    // reset votes button function
     $scope.resetVotes = function () {
-        /*cantKeepUpBar.style.width = 0 + '%';
-         decreaseVolumeBar.style.width = 0 + '%';
-         increaseVolumeBar.style.width = 0 + '%';
-         increaseSpeedBar.style.width = 0 + '%';
-         decreaseSpeedBar.style.width = 0 + '%';*/
+
         $scope.cantKeepUpHits = 0;
         $scope.decreaseVolumeHits = 0;
         $scope.increaseVolumeHits = 0;
@@ -134,7 +135,7 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket', f
 
     };
 
-    // socket message "question delete" and the response to that message
+    // socket listener for questions deleted in the normal question view at lecturer
     socket.on('question delete', function (index, obj) {
         console.log("Trying to delete message (SOCKET) with ID: " + obj._id);
 
@@ -149,6 +150,7 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket', f
         $scope.$apply();
     });
 
+    // socket listener for questions deleted while in "group view" at lecturer
     socket.on('question delete grouped', function (rowIndex, index, obj) {
         console.log("Grouped: Trying to delete message with ID: " + obj._id + ", and rowIndex: " + rowIndex + ", and normal index: " + index);
         $scope.newTags[obj.tag].splice(index, 1);
@@ -164,7 +166,7 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket', f
         $scope.$apply();
     });
 
-    // socket message "question message" and the response to that message
+    // socket listener for new questions
     socket.on('question message', function (msg) {
         console.log(msg.tag);
         $scope.kolabDBScope.push(msg);
@@ -193,70 +195,129 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket', f
     });
 
 
+    // Progress bar type checks
+    var cantKeepUpCheck = function () {
 
+        if ($scope.cantKeepUpPercent >= 75) {
+            $scope.cantKeepUpStyle = 'progress-bar-danger';
+            $scope.activeAnimationCKU = "active";
+        } else if ($scope.cantKeepUpPercent < 75 && $scope.cantKeepUpPercent >= 50) {
+            $scope.cantKeepUpStyle = 'progress-bar-warning';
+            $scope.activeAnimationCKU = "";
+        } else if ($scope.cantKeepUpPercent < 50 && $scope.cantKeepUpPercent >= 25) {
+            $scope.cantKeepUpStyle = 'progress-bar-success';
+            $scope.activeAnimationCKU = "";
+        } else {
+            $scope.cantKeepUpStyle = 'progress-bar-info';
+            $scope.activeAnimationCKU = "";
+        }
+    };
 
-    //Progress bars
+    var decreaseVolumeCheck = function () {
+
+        if ($scope.decreaseVolumePercent >= 75) {
+            $scope.decreaseVolumeStyle = 'progress-bar-danger';
+            $scope.activeAnimationDV = "active";
+        } else if ($scope.decreaseVolumePercent < 75 && $scope.decreaseVolumePercent >= 50) {
+            $scope.decreaseVolumeStyle = 'progress-bar-warning';
+            $scope.activeAnimationDV = "";
+        } else if ($scope.decreaseVolumePercent < 50 && $scope.decreaseVolumePercent >= 25) {
+            $scope.decreaseVolumeStyle = 'progress-bar-success';
+            $scope.activeAnimationDV = "";
+        } else {
+            $scope.decreaseVolumeStyle = 'progress-bar-info';
+            $scope.activeAnimationDV = "";
+        }
+    };
+
+    var increaseVolumeCheck = function () {
+
+        if ($scope.increaseVolumePercent >= 75) {
+            $scope.increaseVolumeStyle = 'progress-bar-danger';
+            $scope.activeAnimationIV = "active";
+            $scope.$apply();
+        } else if ($scope.increaseVolumePercent < 75 && $scope.increaseVolumePercent >= 50) {
+            $scope.increaseVolumeStyle = 'progress-bar-warning';
+            $scope.activeAnimationIV = "";
+        } else if ($scope.increaseVolumePercent < 50 && $scope.increaseVolumePercent >= 25) {
+            $scope.increaseVolumeStyle = 'progress-bar-success';
+            $scope.activeAnimationIV = "";
+            $scope.$apply();
+        } else {
+            $scope.increaseVolumeStyle = 'progress-bar-info';
+            $scope.activeAnimationIV = "";
+        }
+    };
+
+    var decreaseSpeedCheck = function () {
+
+        if ($scope.decreaseSpeedPercent >= 75) {
+            $scope.decreaseSpeedStyle = 'progress-bar-danger';
+            $scope.activeAnimationDS = "active";
+        } else if ($scope.decreaseSpeedPercent < 75 && $scope.decreaseSpeedPercent >= 50) {
+            $scope.decreaseSpeedStyle = 'progress-bar-warning';
+            $scope.activeAnimationDS = "";
+        } else if ($scope.decreaseSpeedPercent < 50 && $scope.decreaseSpeedPercent >= 25) {
+            $scope.decreaseSpeedStyle = 'progress-bar-success';
+            $scope.activeAnimationDS = "";
+        } else {
+            $scope.decreaseSpeedStyle = 'progress-bar-info';
+            $scope.activeAnimationDS = "";
+        }
+    };
+
+    var increaseSpeedCheck = function () {
+
+        if ($scope.increaseSpeedPercent >= 75) {
+            $scope.increaseSpeedStyle = 'progress-bar-danger';
+            $scope.activeAnimationIS = "active";
+        } else if ($scope.increaseSpeedPercent < 75 && $scope.increaseSpeedPercent >= 50) {
+            $scope.increaseSpeedStyle = 'progress-bar-warning';
+            $scope.activeAnimationIS = "";
+        } else if ($scope.increaseSpeedPercent <= 50 && $scope.increaseSpeedPercent >= 25) {
+            $scope.increaseSpeedStyle = 'progress-bar-success';
+            $scope.activeAnimationIS = "";
+        } else {
+            $scope.increaseSpeedStyle = 'progress-bar-info';
+            $scope.activeAnimationIS = "";
+        }
+    };
+
+    //Progress bars socket listeners
     socket.on('cantKeepUp', function (mod, total) {//total is not being sent?
-        /*
-         console.log("cantkeepUp");
-         cantKeepUpHits += hit;
-         var percent = (cantKeepUpHits / (total)) * 100;
-         cantKeepUpBar.style.width = percent + '%';
-         */
         $scope.cantKeepUpHits += mod;
-        $scope.cantKeepUpPercent = ($scope.cantKeepUpHits / $scope.userCount) * 100;
+        $scope.cantKeepUpPercent = parseInt(($scope.cantKeepUpHits / $scope.userCount) * 100);
 
+        cantKeepUpCheck();
         $scope.$apply();
 
     });
     socket.on('decreaseVolume', function (mod, total) {
-        /*
-         console.log("decrease volume");
-         decreaseVolumeHits += hit;
-         console.log(decreaseVolumeHits);
-         var percent = (decreaseVolumeHits / (total)) * 100;
-         decreaseVolumeBar.style.width = percent + '%';
-         */
         $scope.decreaseVolumeHits += mod;
-        $scope.decreaseVolumePercent = ($scope.decreaseVolumeHits/ $scope.userCount) * 100;
+        $scope.decreaseVolumePercent = parseInt(($scope.decreaseVolumeHits / $scope.userCount) * 100);
 
+        decreaseVolumeCheck();
         $scope.$apply();
     });
     socket.on('increaseVolume', function (mod, total) {
-        /*
-         console.log("inc volume");
-         increaseVolumeHits += hit;
-         var percent = (increaseVolumeHits / (total)) * 100;
-         increaseVolumeBar.style.width = percent + '%';
-         */
         $scope.increaseVolumeHits += mod;
-        $scope.increaseVolumePercent = ($scope.increaseVolumeHits/ $scope.userCount) * 100;
+        $scope.increaseVolumePercent = parseInt(($scope.increaseVolumeHits / $scope.userCount) * 100);
+
+        increaseVolumeCheck();
         $scope.$apply();
     });
     socket.on('decreaseSpeed', function (mod, total) {
-        /*
-         console.log("decrease speed");
-         decreaseSpeedHits += hit;
-         var percent = (decreaseSpeedHits / (total)) * 100;
-         decreaseSpeedBar.style.width = percent + '%';
-
-         */
-
         $scope.decreaseSpeedHits += mod;
-        $scope.decreaseSpeedPercent = ($scope.decreaseSpeedHits/ $scope.userCount) * 100;
+        $scope.decreaseSpeedPercent = parseInt(($scope.decreaseSpeedHits / $scope.userCount) * 100);
 
+        decreaseSpeedCheck();
         $scope.$apply();
     });
     socket.on('increaseSpeed', function (mod, total) {
-        /*
-         console.log("increase speed");
-         increaseSpeedHits += hit;
-         var percent = (increaseSpeedHits / (total)) * 100;
-         increaseSpeedBar.style.width = percent + '%';
-         */
         $scope.increaseSpeedHits += mod;
-        $scope.increaseSpeedPercent = ($scope.increaseSpeedHits/ $scope.userCount) * 100;
+        $scope.increaseSpeedPercent = parseInt(($scope.increaseSpeedHits / $scope.userCount) * 100);
 
+        increaseSpeedCheck();
         $scope.$apply();
     });
 
