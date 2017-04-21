@@ -1,8 +1,14 @@
 kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', function ($scope, $location, $http, socket) {
+
+
+    $scope.alertType = "";
+
+
     $scope.go = function (path) {
         $location.path(path);
     };
 
+    // Prevents enter from making a newline without using shift modifier
     $('#textareaNewRoom').keydown(function (e) {
         // Enter was pressed without shift key
         if (e.keyCode == 13 && !e.shiftKey) {
@@ -11,7 +17,7 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', func
         }
     });
 
-
+    // Prevents enter from making a newline without using shift modifier
     $('#textareaJoinRoom').keydown(function (e) {
         // Enter was pressed without shift key
         if (e.keyCode == 13 && !e.shiftKey) {
@@ -23,12 +29,12 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', func
     function checkCookie() {
         var user = document.cookie;
         if (user != "") {
-            console.log("Old user, " + document.cookie + ", Welcome back");
+            $scope.alertType = ["success", "Welcome back!"];
         } else {
             document.cookie = "11111" + randomString(16, '0123456789abcdef');
-            console.log("This is the new cookie: ", document.cookie);
             socket.emit('cookie initialize', document.cookie);
-            //socket.handshake.headers.cookie = document.cookie;
+            $scope.alertType = ["info", "We use cookies to improve your experience and to keep Kolab easy to use. " +
+            "By your continued use of this site you accept such use."];
 
         }
     }

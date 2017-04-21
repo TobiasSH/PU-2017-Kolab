@@ -322,6 +322,19 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket', f
     socket.on('storeClient', function (modifier) {
         console.log("New user joined ", $scope.userCount);
         $scope.userCount += modifier;
+
+        $scope.cantKeepUpPercent = parseInt(($scope.cantKeepUpHits / $scope.userCount) * 100);
+        $scope.decreaseVolumePercent = parseInt(($scope.decreaseVolumeHits / $scope.userCount) * 100);
+        $scope.increaseVolumePercent = parseInt(($scope.increaseVolumeHits / $scope.userCount) * 100);
+        $scope.decreaseSpeedPercent = parseInt(($scope.decreaseSpeedHits / $scope.userCount) * 100);
+        $scope.increaseSpeedPercent = parseInt(($scope.increaseSpeedHits / $scope.userCount) * 100);
+
+        cantKeepUpCheck();
+        decreaseVolumeCheck();
+        increaseVolumeCheck();
+        decreaseSpeedCheck();
+        increaseSpeedCheck();
+
         $scope.$apply();
     });
 

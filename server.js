@@ -297,7 +297,7 @@ io.on('connection', function (socket) {
                 increaseSpeed: 0
             }
         });
-        io.to(room).emit('resetVotes'); // TODO this might not do anything in the connected menu-controllers??
+        io.to(room).emit('resetVotes');
     });
 
     //servers response to emitted message to delete question from lecturer controller

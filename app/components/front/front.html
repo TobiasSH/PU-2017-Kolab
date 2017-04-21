@@ -4,7 +4,7 @@
         <table class="table">
             <tbody>
             <tr>
-                <td><textarea id="textareaNewRoom" maxlength="140" size="80" class="form-control"
+                <td><textarea title="New room" id="textareaNewRoom" maxlength="140" size="80" class="form-control"
                               ng-model="newRoom.text"
                               ng-keyup="$event.keyCode == 13 ? createRoom() : null"></textarea>
                 </td>
@@ -14,7 +14,7 @@
                 </td>
             </tr>
             <tr>
-                <td> <textarea id="textareaJoinRoom" maxlength="140" size="80" class="form-control"
+                <td> <textarea title="Join room" id="textareaJoinRoom" maxlength="140" size="80" class="form-control"
                                ng-model="joinRoom.text"
                                ng-keyup="$event.keyCode == 13 ? joinRoom() : null"></textarea></td>
                 <td>
@@ -61,6 +61,12 @@
                 </table>
             </tr>
             </tbody>
+
+
         </table>
+        <div class="alert alert-dismissable alert-success">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            {{alertType[1]}}
+        </div>
     </div>
 </div>

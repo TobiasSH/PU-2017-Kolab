@@ -436,3 +436,12 @@ textarea {
     display: block;
     float: right;
 }
+
+
+/* ALERTS AND TOOLTIPS */
+
+.alert{
+    position: sticky;
+    bottom: 40px;
+
+}

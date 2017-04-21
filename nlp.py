@@ -152,8 +152,10 @@ class Namespace(BaseNamespace):
     def on_pp_message(self, message):
         processNew(message)
 
+
+#
 print ("Connecting to socketIO.. Port is: ", 80)
-socketIO = SocketIO('localhost', 3000, Namespace)
+socketIO = SocketIO('kolab-group.herokuapp.com', 80, Namespace)
 socketIO.wait() #waits forever
 
 
