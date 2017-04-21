@@ -116,6 +116,19 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket', f
         $scope.decreaseSpeedHits = 0;
         $scope.increaseSpeedHits = 0;
 
+        $scope.cantKeepUpPercent = parseInt(($scope.cantKeepUpHits / $scope.userCount) * 100);
+        $scope.decreaseVolumePercent = parseInt(($scope.decreaseVolumeHits / $scope.userCount) * 100);
+        $scope.increaseVolumePercent = parseInt(($scope.increaseVolumeHits / $scope.userCount) * 100);
+        $scope.decreaseSpeedPercent = parseInt(($scope.decreaseSpeedHits / $scope.userCount) * 100);
+        $scope.increaseSpeedPercent = parseInt(($scope.increaseSpeedHits / $scope.userCount) * 100);
+
+        cantKeepUpCheck();
+        decreaseVolumeCheck();
+        increaseVolumeCheck();
+        decreaseSpeedCheck();
+        increaseSpeedCheck();
+
+
 
         socket.emit('resetVotes', $scope.roomCookie);
         console.log("votes reset");

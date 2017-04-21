@@ -16,6 +16,7 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', '$location', 'socket', funct
     //When a button is clicked the the corresponding digit is set to 0
     //Clicking the same button is registered as unclicking this button
 
+
     $scope.roomCookie = document.cookie.slice(21);
 
     $scope.go = function (path) {
@@ -195,6 +196,9 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', '$location', 'socket', funct
     // On the rare occassion a room is delete while the user is in it
     socket.on('delete current room', function () {
         $location.path('/');
+        userid = document.cookie.substring(5, 21);
+        useridcounters = '11111' + userid;
+        document.cookie = document.cookie.substring(0,21);
         $scope.$apply();
     });
 
