@@ -1,6 +1,6 @@
 <div class="container vertical-center">
     <div class="front container horizontal-center">
-        <img src="/assets/img/kolab-ny.svg">
+        <img class="logo" src="/assets/img/kolab-ny.svg">
         <table class="table">
             <tbody>
             <tr>
@@ -9,7 +9,7 @@
                               ng-keyup="$event.keyCode == 13 ? createRoom() : null"></textarea>
                 </td>
                 <td>
-                    <button class="btn btn-primary btn-lg btn-block btn-send" ng-click="createRoom()">Create room
+                    <button class="btn btn-lg btn-block btn-send" ng-click="createRoom()">Create room
                     </button>
                 </td>
             </tr>
@@ -18,7 +18,7 @@
                                ng-model="joinRoom.text"
                                ng-keyup="$event.keyCode == 13 ? joinRoom() : null"></textarea></td>
                 <td>
-                    <button class="btn btn-primary btn-lg btn-block btn-send" ng-click="joinRoom()">Join room
+                    <button class="btn btn-lg btn-block btn-send" ng-click="joinRoom()">Join room
                     </button>
                 </td>
 
@@ -29,12 +29,14 @@
                         <!--<td>{{question.number}}</td>-->
                         <td class="td-room">{{room.room}}</td>
                         <th>
-                            <button class="joinMyRoom btn btn-danger btn-lg btn-block btn-remove"
-                                    ng-click="deleteRoom($index, room )">Delete
+                            <button class="joinMyRoom btn btn-lg btn-block btn-remove"
+                                    ng-click="deleteRoom($index, room )">
+                                    <img class="lecturer-button-icon" src="../../../assets/img/icons/remove.svg"
+                                     onerror="this.onerror=null; this.src='../../../assets/img/icons/remove.png'">
                             </button>
                         </th>
                         <th>
-                            <button class="joinMyRoom btn btn-danger btn-lg btn-block btn-remove"
+                            <button class="joinMyRoom btn btn-lg btn-block btn-join"
                                     ng-click="joinMyRoom( room.room )">Join
                             </button>
                         </th>
@@ -51,7 +53,7 @@
                         <!--<td>{{question.number}}</td>-->
                         <td class="td-room">{{room.room}}</td>
                         <td>
-                            <button class="joinRoom btn btn-danger btn-lg btn-block btn-remove"
+                            <button class="joinRoom btn btn-lg btn-block btn-join"
                                     ng-click="joinExistingRoom( room.room )">Join
                             </button>
                         </td>

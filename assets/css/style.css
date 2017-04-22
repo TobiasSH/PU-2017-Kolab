@@ -241,7 +241,7 @@ th {
     width: 100%;
     height: 100%;
     font-size: 30px;
-    min-height: 150px;
+    min-height: 20px;
 }
 
 textarea {
@@ -272,7 +272,7 @@ textarea {
     font-size: 34px;
     min-width: 150px;
     background: #99DDEE;
-    color: #555555;
+    color: #446677; /*#555555;*/
     border-radius: 0 128px 128px 0;
 }
 
@@ -364,6 +364,41 @@ textarea {
     border-radius: 128px;
 }
 
+.btn-reset{
+    height: 50%;
+    width: 30%;
+    font-size: 34px;
+    min-height: 100px;
+    min-width: 100px;
+    background: #EEAA88;
+    color: #996644;
+    border-radius: 50px;
+    margin: 10px 0 10px 0;
+}
+
+.btn-grouped{
+    height: 50%;
+    width: 30%;
+    font-size: 34px;
+    min-height: 100px;
+    min-width: 100px;
+    background: #CCCCCC;
+    border-radius: 50px;
+    margin: 10px 0 10px 0;
+}
+
+.btn-join {
+    height: 50%;
+    width: 50%;
+    font-size: 34px;
+    min-height: 100px;
+    min-width: 100px;
+    background: #BBDDBB;
+    color: #448844;
+    border-radius: 50px;
+    margin: 10px 0 10px 0;
+}
+
 /* IMAGES */
 /********************/
 
@@ -384,6 +419,11 @@ textarea {
     width: 128px;
 }
 
+.logo {
+    height: 10%;
+    width: 60%;
+}
+
 /* PROGRESSBARS */
 /********************/
 
@@ -391,11 +431,11 @@ textarea {
     padding-left: 41%;
     font-size: 30px;
     color: white;
-    text-shadow: 2px 2px black;
+    /*text-shadow: 2px 2px black;*/
 }
 
 .cantKeepUpData {
-    border: 1px solid black !important
+    /*border: 1px solid black !important*/
 }
 
 .click-table {
@@ -405,7 +445,7 @@ textarea {
 }
 
 .progressGroup {
-    border: 1px solid black !important;
+    /*border: 1px solid black !important;*/
     width: 50%;
 }
 
@@ -413,13 +453,13 @@ textarea {
     font-size: 30px;
     padding-left: 0;
     color: white;
-    text-shadow: 2px 2px black;
+    /*text-shadow: 2px 2px black;*/
 }
 
 .progress {
     color: white;
     height: 40px;
-    text-shadow: 2px 2px black;
+    /*text-shadow: 2px 2px black;*/
     margin-bottom: 0;
     border-radius: 0;
     background: rgb(122, 122, 119); /* Background color for the bars */
@@ -429,7 +469,7 @@ textarea {
     color: white;
     font-size: 28px;
     line-height: 32px;
-    text-shadow: 2px 2px black;
+    /*text-shadow: 2px 2px black;*/
 }
 
 .progress-barL {

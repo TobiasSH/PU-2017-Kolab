@@ -4,7 +4,6 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket', f
 
     var roomName = document.cookie;
 
-
     $scope.cantKeepUpPercent = 0;
     $scope.decreaseVolumePercent = 0;
     $scope.increaseVolumePercent = 0;
@@ -96,8 +95,10 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket', f
     $scope.switchView = function () {
         if ($scope.grouped == "groupedTrue") {
             $scope.grouped = "groupedFalse";
+            document.getElementById("groupedButton").innerHTML = "Grouped";
         } else {
             $scope.grouped = "groupedTrue";
+            document.getElementById("groupedButton").innerHTML = "Ungrouped";
         }
     };
 

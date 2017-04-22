@@ -52,7 +52,7 @@
             <tbody>
             <tr>
                 <td class="cantKeepUpData" colspan="2">
-                    <span class="cantKeepUpText">Cant Keep up</span>
+                    <span class="cantKeepUpText">Can't Keep up</span>
                     <div class="progress">
                         <div id="cantKeepUpBar"
                              class="progress-bar progress-bar-striped {{cantKeepUpStyle}} {{activeAnimationCKU}}"
@@ -122,11 +122,13 @@
         </table>
 
         <div style="padding-top: 80px;">
-            <button type="button" class="btn btn-primary" ng-click="resetVotes()">
+            <button id="resetButton" type="button" class="btn btn-reset" ng-click="resetVotes()">
                 Reset votes
             </button>
+            <button id="groupedButton" type="button" class="btn btn-grouped" ng-click="switchView()">
+                Ungrouped
+            </button>
         </div>
-        <button type="button" class="btn btn-small" ng-click="switchView()">Grouped/Ungrouped</button>
 
 
         <div ng-switch="grouped">

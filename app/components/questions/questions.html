@@ -29,7 +29,7 @@
             </tr>
         </table>
         <div ng-switch="grouped">
-            <button type="button" class="btn btn-small" ng-click="switchView()">Grouped/Ungrouped</button>
+            <button id="groupedButton" type="button" class="btn btn-grouped" ng-click="switchView()">Ungrouped</button>
 
             <div ng-switch-when="groupedFalse">
                 <table id="questionsTable" class="table questions-table">
