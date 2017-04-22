@@ -40,7 +40,7 @@ kolabApp.controller('questionsCtrl', ['$scope', '$http','$location', 'socket', f
                 console.log("I got ERROR", error);
             });
         //if user doesnt have a room, we return them to the front-page
-        if (roomCookie.length <= 25) {
+        if (document.cookie.length <= 25) {
             console.log("New user, returning to start");
             $location.path('/');
         } else {

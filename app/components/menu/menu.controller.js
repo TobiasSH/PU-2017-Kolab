@@ -58,7 +58,7 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', '$location', 'socket', funct
             }
         }
         //if user doesnt have a room, we return them to the front-page
-        if (roomCookie.length == 0) {
+        if (document.cookie.length <= 25) {
             console.log("New user, returning to start");
             $location.path('/');
         } else {
