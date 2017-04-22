@@ -199,11 +199,9 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', '$location', 'socket','alert
 
     //doesnt this have to be in all the controllers?
     socket.on('resetVotes', function () {
-        console.log("Reset votes message received");
-        alertService.addInfo("Votes were reset by the lecturer!");
+        alertService.addInfo("Votes were reset by the lecturer!", true);
         useridcounters = "key=11111" + userIDCookie;
         document.cookie = useridcounters + roomCookie;
-        console.log("Cookie is now :", document.cookie);
         $scope.$apply();
         refresh();
     });

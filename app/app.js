@@ -1,4 +1,4 @@
-var kolabApp = angular.module('kolabApp', ['ngRoute', 'ui.bootstrap']);
+var kolabApp = angular.module('kolabApp', ['ngRoute', 'ui.bootstrap', 'ngAnimate']);
 
 
 kolabApp.config(function ($routeProvider, $locationProvider, $httpProvider) {

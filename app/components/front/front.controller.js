@@ -12,11 +12,15 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', 'ale
         $location.path(path);
     };
 
-    // Prevents enter from making a newline without using shift modifier
+    // JQuery: Prevents enter from making a newline without using shift modifier
     $('#textareaNewRoom').keydown(function (e) {
         // Enter was pressed without shift key
         if (e.keyCode == 13 && !e.shiftKey) {
             // prevent default behavior
+            e.preventDefault();
+        }
+        if (e.keyCode == 50 && e.shiftKey || e.keyCode == 51 && e.shiftKey || e.keyCode == 52 && e.shiftKey) {
+            alertService.addWarning("Special characters are not allowed in rooms.", true);
             e.preventDefault();
         }
     });
@@ -33,7 +37,7 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', 'ale
 
     function checkCookie() {
         if (document.cookie != "") {
-            alertService.addSuccess("Welcome back!");
+            alertService.addSuccess("Welcome back!", true);
         } else {
             document.cookie = "key=11111" + randomString(16, '0123456789abcdef');
             socket.emit('cookie initialize', normalCookie);
@@ -108,7 +112,7 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', 'ale
                 $location.path('/lecturer');
                 return false;
             } else {
-                alert("That room already exists!");
+                alertService.addError("That room already exists!", true);
             }
         }
 
@@ -135,7 +139,10 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', 'ale
                     return false;
                 }
             }
+        } else {
+            alertService.addWarning("You need to type out the room you want to join", true);
         }
+
     };
     $scope.joinExistingRoom = function (room) {
         document.cookie = document.cookie.substring(0, 25);

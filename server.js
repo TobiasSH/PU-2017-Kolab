@@ -32,9 +32,16 @@ io.on('connection', function (socket) {
 
 
     socket.on('disconnect', function () {// 11111 , cku, decVol, incVol, decSpeed, incSpeed
+<<<<<<< HEAD
         console.log("USER IS DISCONNECTING!!! Socket header cookie is : ", socket.handshake.headers.cookie);
 
         //if (Object.getOwnPropertyNames(socket.rooms).length != 0) { // If the user was connected to a socket
+=======
+        console.log("USER IS DISCONNECTING!!!", socket.rooms);
+
+        //if (Object.getOwnPropertyNames(socket.rooms).length != 0) {}
+        console.log("User already connected to a room ", socket.room);
+>>>>>>> roomsWithCounters
         if (socket.handshake.headers.cookie == undefined) { //If the cookie is not set in the socket-header, should not happen
 
             console.log("User's header cookie was undefined");
@@ -43,6 +50,7 @@ io.on('connection', function (socket) {
             db.counter.update({room: currentRoomID}, {$inc: {userCount: -1}});
 
             return false;
+<<<<<<< HEAD
 
         } else {
 
@@ -166,6 +174,46 @@ socket.on('join room', function (roomName, cookie) {
                     db.counter.update({room: currentRoomID}, {$inc: {userCount: 1}});
                 }
             }
+=======
+
+        } else {
+            console.log("User cookie was defined and is: ", socket.handshake.headers.cookie);
+
+            var clicks = cookieParseCounter(socket.handshake.headers.cookie); //socket header is not updated regularly enough for this to work i dont think
+
+            var moddedClicks = [];  // This is used so that we can update the database accordingly
+            var modified = false;   // Tells us if the cookie has been altered
+            for (var i = 0; i < 5; ++i) {//trying to remove the clicks the user has done
+                if (clicks[i] == 0) {       //looping through the user's cookie
+                    io.to(currentRoomID).emit(clickList[i], -1); //emitting the appropriate message to the lecturer view of the user's room
+                    moddedClicks.push(-1);
+                    modified = true;
+                } else {
+                    moddedClicks.push(0);
+                }
+            }
+            if (modified) { // If the cookie has been modified
+                //database updates to restore the changes the user has done
+                console.log("Disconnect: Modified, clicks = ", moddedClicks);
+                db.counter.update({room: currentRoomID}, {
+
+                    $inc: {
+                        cantKeepUp: moddedClicks[0],
+                        decreaseVolume: moddedClicks[1],
+                        increaseVolume: moddedClicks[2],
+                        decreaseSpeed: moddedClicks[3],
+                        increaseSpeed: moddedClicks[4],
+                        userCount: -1
+                    }
+                });
+            } else {
+                db.counter.update({room: currentRoomID}, {$inc: {userCount: -1}});
+            }
+
+            socket.leave(currentRoomID);
+            io.to(currentRoomID).emit('storeClient', -1);
+            return false;
+>>>>>>> roomsWithCounters
         }
     }
 );
@@ -191,6 +239,15 @@ socket.on('new room message', function (msg, userId) {
         else {
             console.log("room inserted into the db: " + msg + "by user: " + userId);
         }
+<<<<<<< HEAD
+=======
+        socket.leave(currentRoomID);
+        io.to(currentRoomID).emit('storeClient', -1);
+        currentRoomID = "";
+
+
+
+>>>>>>> roomsWithCounters
     });
     //Create counters for the new room, unspecified ID, we use roomname to retrieve
     var clickCounterDocument = [{
@@ -198,12 +255,56 @@ socket.on('new room message', function (msg, userId) {
         "decreaseSpeed": 0, "increaseSpeed": 0, "userCount": 0
     }];
 
+<<<<<<< HEAD
     db.counter.insert(clickCounterDocument, function (err, o) {
         if (err) {
             console.warn(err.message);
         }
         else {
             console.log("room inserted into the db: " + msg + "by user: " + userId);
+=======
+    socket.on('join room', function (roomName, cookie) {
+
+            //Checks if the user is already connected to the room socket
+            if (socket.rooms[roomName]) {
+                console.log("User already connected to room");
+                return false;
+            } else { // We connect the user and checks their cookie to see if we need to increment some counters
+                socket.join(roomName);
+                console.log("socket.rooms after, ", socket.rooms);
+                currentRoomID = roomName;
+                io.to(roomName).emit('storeClient', 1);
+                if (cookie != undefined) { //Checks if we're sending the cookie or not
+                    var modified = false;
+                    var moddedClicks = [];
+                    for (var i = 0; i < 5; ++i) {//trying to remove the clicks the user has done
+                        if (cookie[i] == 0) {       //looping through the user's cookie
+                            io.to(currentRoomID).emit(clickList[i], 1); //emitting the appropriate message to the lecturer view of the user's room
+                            moddedClicks.push(1); //this is used so that we can update the database accordingly
+                            modified = true;      //Makes us update the database
+                        } else {
+                            moddedClicks.push(0);
+                        }
+                    }
+                    if (modified) {//trying not to pester the DB needlessly
+                        console.log("JR: Modified, modded clicks: ", moddedClicks);
+                        db.counter.update({room: currentRoomID}, {
+                            $inc: {
+                                cantKeepUp: moddedClicks[0],
+                                decreaseVolume: moddedClicks[1],
+                                increaseVolume: moddedClicks[2],
+                                decreaseSpeed: moddedClicks[3],
+                                increaseSpeed: moddedClicks[4],
+                                userCount: 1
+                            }
+                        });
+                    } else {
+                        console.log("Join Room 'else'-statement");
+                        db.counter.update({room: currentRoomID}, {$inc: {userCount: 1}});
+                    }
+                }
+            }
+>>>>>>> roomsWithCounters
         }
     });
     //Sends the new room to all users on the front-page
