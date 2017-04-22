@@ -349,7 +349,7 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket','a
     };
 
 //Progress bars socket listeners
-    socket.on('cantKeepUp', function (mod, total) {//total is not being sent?
+    socket.on('cantKeepUp', function (mod) {
         $scope.cantKeepUpHits += mod;
         $scope.cantKeepUpPercent = cantKeepUpPercentCalc();
 
@@ -357,28 +357,28 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket','a
         $scope.$apply();
 
     });
-    socket.on('decreaseVolume', function (mod, total) {
+    socket.on('decreaseVolume', function (mod) {
         $scope.decreaseVolumeHits += mod;
         $scope.decreaseVolumePercent = decreaseVolumePercentCalc();
 
         decreaseVolumeCheck();
         $scope.$apply();
     });
-    socket.on('increaseVolume', function (mod, total) {
+    socket.on('increaseVolume', function (mod) {
         $scope.increaseVolumeHits += mod;
         $scope.increaseVolumePercent = increaseVolumePercentCalc();
 
         increaseVolumeCheck();
         $scope.$apply();
     });
-    socket.on('decreaseSpeed', function (mod, total) {
+    socket.on('decreaseSpeed', function (mod) {
         $scope.decreaseSpeedHits += mod;
         $scope.decreaseSpeedPercent = decreaseSpeedPercentCalc();
 
         decreaseSpeedCheck();
         $scope.$apply();
     });
-    socket.on('increaseSpeed', function (mod, total) {
+    socket.on('increaseSpeed', function (mod) {
         $scope.increaseSpeedHits += mod;
         $scope.increaseSpeedPercent = increaseSpeedPercentCalc();
 
