@@ -1,4 +1,4 @@
-var kolabApp = angular.module('kolabApp', ['ngRoute', 'angular.filter', 'treeGrid']);
+var kolabApp = angular.module('kolabApp', ['ngRoute', 'ui.bootstrap']);
 
 
 kolabApp.config(function ($routeProvider, $locationProvider, $httpProvider) {

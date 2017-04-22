@@ -1,14 +1,15 @@
 kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket', function ($scope, $http, $location, socket) {
     console.log("Hello World from lecturer-controller");
 
+    console.log("Current cookie: ", document.cookie);
 
-    var roomName = document.cookie;
-
+    var userIDCookie = document.cookie.slice(9, 25);
+    var normalCookie = document.cookie.slice(4, 25);
+    var roomCookie = document.cookie.slice(25);
 
     $scope.grouped = "groupedTrue";
 
-    console.log(document.cookie);
-    $scope.roomCookie = document.cookie.slice(21);
+    $scope.scopeRoomCookie = roomCookie;
 
     $scope.go = function (path) {
         $location.path(path);
@@ -17,15 +18,20 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket', f
 
     // initial retrieval of questions from the database
     var refresh = function () {
+
         $http.get('/ownerTest').then(function (response) {
             if (!response.data) {
+                console.log("Owner test failed");
                 $location.path('/');
             }
+            console.log("Owner test successful");
         });
         socket.emit('cookie initialize', document.cookie);
         $http.get('/roomsQuestionsCollection').then(function (response) {
-                console.log("I got the data I requested, questions-controller");
-                console.log("This is the pure response object:" + response.text);
+                console.log("WTFFFFFF");
+
+                console.log("I got the data I requested from roomsQuestionsCollection");
+                console.log("This is the pure response object:" + response);
                 $scope.kolabDBScope = response.data;
                 $scope.question = null;
                 //Used to identify the different tags, aka nouns
@@ -44,12 +50,14 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket', f
             function (error) {
                 console.log("I got ERROR", error);
             });
+
         //if user doesnt have a room, we return them to the front-page
-        if (roomName.length <= 21) { //TODO NEEDS CHECK FOR USERID VS CREATOR OF ROOM
+        if (roomCookie.length <= 25) { //TODO NEEDS CHECK FOR USERID VS CREATOR OF ROOM
             console.log("New user, returning to start");
             $location.path('/');
         } else {//we join the socket we're supposed to be on, based on our room
-            socket.emit('join room lecturer', roomName.slice(21));
+            console.log("Joining room: ", roomCookie);
+            socket.emit('join room lecturer', roomCookie);
         }
 
         $http.get('/counters').then(function (response) {
@@ -96,18 +104,17 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket', f
     };
 
     $scope.leaveRoom = function () {
-        socket.emit('leave room lecturer', document.cookie.slice(21));
-        userid = document.cookie.substring(5, 21);
-        document.cookie = '11111' + userid;
+        socket.emit('leave room lecturer', roomCookie);
+        document.cookie = "key=11111" + userIDCookie;
         $location.path('/');
     };
 
 
     /*$scope.studentView = function () {
-        console.log("cantKeepUp button was clicked");
-    };*/
+     console.log("cantKeepUp button was clicked");
+     };*/
 
-    // reset votes button function
+// reset votes button function
     $scope.resetVotes = function () {
 
         $scope.cantKeepUpHits = 0;
@@ -129,26 +136,25 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket', f
         increaseSpeedCheck();
 
 
-
-        socket.emit('resetVotes', $scope.roomCookie);
+        socket.emit('resetVotes', roomCookie);
         console.log("votes reset");
     };
 
 
-    // remove function bound to the delete buttons in lecture view
+// remove function bound to the delete buttons in lecture view
     $scope.remove = function (index, obj) {
         console.log("This is the index of the question we're trying to delete: " + index + "\n and this is the ID: " + obj._id);
         socket.emit('question delete', index, obj);
 
     };
-    // remove from grouped view
+// remove from grouped view
     $scope.removeGrouped = function (rowIndex, index, id) {
         console.log("This is the index of the question we're trying to delete: " + index + "\n and this is the ID: " + id);
         socket.emit('question delete grouped', rowIndex, index, id);
 
     };
 
-    // socket listener for questions deleted in the normal question view at lecturer
+// socket listener for questions deleted in the normal question view at lecturer
     socket.on('question delete', function (index, obj) {
         console.log("Trying to delete message (SOCKET) with ID: " + obj._id);
 
@@ -163,7 +169,7 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket', f
         $scope.$apply();
     });
 
-    // socket listener for questions deleted while in "group view" at lecturer
+// socket listener for questions deleted while in "group view" at lecturer
     socket.on('question delete grouped', function (rowIndex, index, obj) {
         console.log("Grouped: Trying to delete message with ID: " + obj._id + ", and rowIndex: " + rowIndex + ", and normal index: " + index);
         $scope.newTags[obj.tag].splice(index, 1);
@@ -179,7 +185,7 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket', f
         $scope.$apply();
     });
 
-    // socket listener for new questions
+// socket listener for new questions
     socket.on('question message', function (msg) {
         console.log(msg.tag);
         $scope.kolabDBScope.push(msg);
@@ -208,7 +214,7 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket', f
     });
 
 
-    // Progress bar type checks
+// Progress bar type checks
     var cantKeepUpCheck = function () {
 
         if ($scope.cantKeepUpPercent >= 75) {
@@ -294,7 +300,7 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket', f
         }
     };
 
-    //Progress bars socket listeners
+//Progress bars socket listeners
     socket.on('cantKeepUp', function (mod, total) {//total is not being sent?
         $scope.cantKeepUpHits += mod;
         $scope.cantKeepUpPercent = parseInt(($scope.cantKeepUpHits / $scope.userCount) * 100);
@@ -351,10 +357,11 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket', f
         $scope.$apply();
     });
 
-    //On the even rarer occassion a room is being deleted while the lecturer is still in it, can be multi-tab
+//On the even rarer occassion a room is being deleted while the lecturer is still in it, can be multi-tab
     socket.on('delete current room', function () {
         $location.path('/');
         $scope.$apply();
     });
 
-}]);
+}])
+;

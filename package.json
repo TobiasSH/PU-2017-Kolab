@@ -23,8 +23,7 @@
   "homepage": "https://github.com/TobiasSH/PU-2017-Kolab#readme",
   "dependencies": {
     "angular": "^1.6.2",
-    "angular-bootstrap-grid-tree": "^0.4.0",
-    "angular-filter": "^0.5.15",
+    "angular-ui-bootstrap": "^2.5.0",
     "body-parser": "^1.16.1",
     "bootstrap": "^3.3.7",
     "cookie": "^0.3.1",

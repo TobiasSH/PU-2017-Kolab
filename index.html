@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
           integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
+
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="icon" href="/assets/img/favicon.simple.ico">
 
@@ -17,8 +18,9 @@
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script src="https://d3js.org/d3.v4.min.js"></script>
 
-    <script src="/node_modules/angular-filter/dist/angular-filter.min.js"></script> <!-- NOT USED -->
-    <script src="node_modules/angular-bootstrap-grid-tree/src/tree-grid-directive.js"></script> <!-- NOT USED -->
+
+    <!-- Angular-UI-Bootstrap -->
+    <script src="/node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script>
 
     <!-- SOCKET IO -->
     <script src="/socket.io/socket.io.js"></script>
@@ -41,7 +43,9 @@
     <script src="/app/components/front/front.directive.js"></script>
 
     <!-- Services -->
-    <script src="/socket.service.js"></script>
+    <script src="/app/shared/socket/socket.service.js"></script>
+    <script src="/app/shared/alerts/alerts.service.js"></script>
+
 
 
     <title>Kolab</title>

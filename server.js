@@ -13,12 +13,10 @@ app.use(bodyParser.json());
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
-
 var userCount = 0;
 
 // Used when cycling through cookie-clicks to send the appropriate socket messages
 var clickList = ['cantKeepUp', 'decreaseVolume', 'increaseVolume', 'decreaseSpeed', 'increaseSpeed'];
-
 
 // socket functions
 io.on('connection', function (socket) {
@@ -34,9 +32,9 @@ io.on('connection', function (socket) {
 
 
     socket.on('disconnect', function () {// 11111 , cku, decVol, incVol, decSpeed, incSpeed
-        console.log("USER IS DISCONNECTING!!!", Object.getOwnPropertyNames(socket.rooms).length);
+        console.log("USER IS DISCONNECTING!!! Socket header cookie is : ", socket.handshake.headers.cookie);
 
-        if (Object.getOwnPropertyNames(socket.rooms).length == 0) {
+        if (Object.getOwnPropertyNames(socket.rooms).length == 0) { // If the user was connected to a socket
             if (socket.handshake.headers.cookie == undefined) { //If the cookie is not set in the socket-header, should not happen
 
                 console.log("User's header cookie was undefined");
@@ -48,7 +46,8 @@ io.on('connection', function (socket) {
 
             } else {
 
-                var clicks = cookieParseCounter(socket.handshake.headers.cookie); //socket header is not updated regularly enough for this to work i dont think
+                var clicks = cookieParseCounter(socket.handshake.headers.cookie);
+                console.log("Clicks are:", clicks);
 
                 var moddedClicks = [];  // This is used so that we can update the database accordingly
                 var modified = false;   // Tells us if the cookie has been altered
@@ -91,6 +90,7 @@ io.on('connection', function (socket) {
     socket.on('leave room', function (cookie) {
 
         var clicks = cookie.substring(0, 5); // We remove everything but the clicks, first five
+        console.log("User leaving, clicks are : ", clicks);
 
         var moddedClicks = [];
         var modified = false;
@@ -170,13 +170,13 @@ io.on('connection', function (socket) {
     );
 
 
-    socket.on('join room lecturer', function (roomName, cookie) {
+    socket.on('join room lecturer', function (roomName) {
         socket.join(roomName);
     });
 
-    socket.on('leave room lecturer', function (room) {
-        console.log("Lecturer leaving room: ", room);
-        socket.leave(room);
+    socket.on('leave room lecturer', function (roomName) {
+        console.log("Lecturer leaving room: ", roomName);
+        socket.leave(roomName);
     });
 
 
@@ -355,7 +355,7 @@ app.get('/ownerTest', function (req, res) {
     var userID = cookieParseUser(req.headers.cookie);
     console.log("UserID: ", userID);
 
-    if (userID == undefined){
+    if (userID == undefined) {
         console.log("User was undefined!!");
         return false;
     }
@@ -365,14 +365,16 @@ app.get('/ownerTest', function (req, res) {
             console.warn(err.message);
         }
         else {
-            if (docs.length == 0){
+            if (docs.length == 0) {
                 console.log("Room was undefined!!");
                 return false;
             }
-            else if (docs[0].creator === userID){
+            else if (docs[0].creator === userID) {
                 res.json(true);
             } else {
+                console.log("Owner test failed returned false");
                 res.json(false);
+
             }
 
         }
@@ -430,6 +432,7 @@ app.get('/roomsQuestionsCollection/:id', function (req, res) {
     console.log("Q: I received a GET request", roomName);
     var id = req.params.id;
     console.log("Current room: ", roomName);
+    roomName = roomName.substring(1);
     db.roomsQuestionsCollection.findOne({_id: mongojs.ObjectId(id), room: String(roomName)}, function (err, doc) {
         res.json(doc);
     });
@@ -444,34 +447,42 @@ app.get('/counters', function (req, res) {
     })
 });
 
+// TODO Remove the extra shit at the end after ;
+
 function cookieParseRoom(cookie) {//Removes everything about the cookie which is not about room
+    console.log("CookieParseRoom running on: ", cookie);
+
     if (cookie.indexOf("io=") == 0) {//checks to see if io is first
         cookie = cookie.replace(/io=\s*(.*?)\s*; /, ''); //regex to remove io= .... ;
-        return cookie.slice(21); //removes the UID and click counters
-    }
+        console.log("Cookie is now: ", cookie);
 
-    var tempVar = cookie.slice(21); //remove the non-room parts
+        return cookie.slice(25); //removes key= prefix, the UID and click counters
+
+    }
+    var tempVar = cookie.slice(25); //remove the non-room parts
     console.log("This is the processed string: ", tempVar.substring(0, tempVar.indexOf(';')));
     return ( tempVar.substring(0, tempVar.indexOf(';'))); //remove the last semicolon
 }
 
 function cookieParseUser(cookie) {//Removes everything about the cookie which is not about room
+    console.log("CookieParseUser running on: ", cookie);
     if (cookie.indexOf("io=") == 0) {//checks to see if io is first
         cookie = cookie.replace(/io=\s*(.*?)\s*; /, ''); //regex to remove io= .... ;
-        return cookie.substring(5, 21); //removes the UID and click counters
+        return cookie.substring(9, 25); //removes the UID and click counters
     }
-
-    return cookie.substring(5, 21); //remove the non-room parts
+    console.log("This is the processed string: ", cookie.substring(9,25));
+    return cookie.substring(9, 25); //remove the non-room parts
 }
 
 
 function cookieParseCounter(cookie) {//Removes everything about the cookie which is not about room
+    console.log("CookieParseCounter running on: ", cookie);
     if (cookie.indexOf("io=") == 0) {//checks to see if io is first
         cookie = cookie.replace(/io=\s*(.*?)\s*; /, ''); //regex to remove io= .... ;
-        return cookie.substring(0, 5); //removes the UID and click counters
+        return cookie.substring(4, 9); //removes the UID and click counters
     }
-
-    return cookie.substring(0, 5); //remove the non-room parts
+    console.log("This is the processed string: ",cookie.substring(4,9));
+    return cookie.substring(4, 9); //remove the non-room parts
 }
 
 var server = http.listen(process.env.PORT || 3000);

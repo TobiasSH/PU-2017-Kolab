@@ -1,12 +1,18 @@
 kolabApp.controller('questionsCtrl', ['$scope', '$http','$location', 'socket', function ($scope, $http, $location, socket) {
     console.log("Hello World from questions-controller");
 
+
+    console.log("Current cookie: ", document.cookie);
+
+    var userIDCookie = document.cookie.slice(9, 25);
+    var normalCookie = document.cookie.slice(4, 25);
+    var roomCookie = document.cookie.slice(25);
+
+
     $scope.grouped = "groupedTrue";
 
-    console.log("Q: Current cookie, ", document.cookie);
 
-
-    $scope.roomCookie = document.cookie.slice(21);
+    $scope.roomCookie = roomCookie;
 
     $scope.go = function (path) {
         $location.path(path);
@@ -14,7 +20,7 @@ kolabApp.controller('questionsCtrl', ['$scope', '$http','$location', 'socket', f
 
     // initial retrieval of questions from the database
     var refresh = function () {
-        socket.emit('cookie initialize', document.cookie);
+        socket.emit('cookie initialize', normalCookie);
         $http.get('/roomsQuestionsCollection').then(function (response) {
                 console.log("I got the data I requested, questions-controller");
                 console.log("This is the pure response object:" + response.text);
@@ -36,15 +42,14 @@ kolabApp.controller('questionsCtrl', ['$scope', '$http','$location', 'socket', f
                 console.log("I got ERROR", error);
             });
         //if user doesnt have a room, we return them to the front-page
-        var roomName = document.cookie;
-        if (roomName.length <= 21) {
+        if (roomCookie.length <= 25) {
             console.log("New user, returning to start");
             $location.path('/');
         } else {
-            socket.emit('join room', roomName.slice(21)); //we join the socket we're supposed to be on, based on our room
-            socket.emit('storeClient', 1, roomName.slice(21)); //tell the lecturer we've joined
+            socket.emit('join room', roomCookie); //we join the socket we're supposed to be on, based on our room
+            socket.emit('storeClient', 1, roomCookie); //tell the lecturer we've joined
         }
-        console.log("Current room, from end of refresh()", String(socket.room));
+        console.log("Current room, from end of refresh()", roomCookie);
     };
     refresh();
 
@@ -52,7 +57,7 @@ kolabApp.controller('questionsCtrl', ['$scope', '$http','$location', 'socket', f
     // remove function bound to the delete buttons in lecture view
     $scope.sendQuestion = function () {
         if ($scope.question != null && $scope.question.text.trim().length) {
-            socket.emit('question message', $('#textareaQ').val(), document.cookie.slice(21));
+            socket.emit('question message', $('#textareaQ').val(), roomCookie);
             $('#textareaQ').val('');
             return false;
         }
@@ -97,9 +102,7 @@ kolabApp.controller('questionsCtrl', ['$scope', '$http','$location', 'socket', f
 
     // Lecturer has pressed reset votes, so we reset cookie
     socket.on('resetVotes', function () {
-        userid = document.cookie.substring(5,21);
-        document.cookie = '11111'+ userid;
-
+        document.cookie = "key=11111"+ userIDCookie;
     });
 
     // socket message "question message" and the response to that message
@@ -134,6 +137,7 @@ kolabApp.controller('questionsCtrl', ['$scope', '$http','$location', 'socket', f
     socket.on('delete current room', function () {
         console.log('Your room was deleted, returning to front-page');
         $location.path('/');
+        $scope.$apply();
     });
 
 }]);
