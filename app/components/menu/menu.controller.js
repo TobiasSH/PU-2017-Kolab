@@ -1,4 +1,4 @@
-kolabApp.controller('menuCtrl', ['$scope', '$http', '$location', 'socket', function ($scope, $http, $location, socket) {
+kolabApp.controller('menuCtrl', ['$scope', '$http', '$location', 'socket','alertService', function ($scope, $http, $location, socket, alertService) {
 
 
     console.log("Current cookie: ", document.cookie);
@@ -31,14 +31,19 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', '$location', 'socket', funct
 
 
     var refresh = function () {
+        var normalCookie = document.cookie.slice(4, 25);
+        var roomCookie = document.cookie.slice(25);
+        var clicksCookie = document.cookie.slice(4, 9);
+
+
         socket.emit('cookie initialize', document.cookie);
         console.log("Room: ", document.cookie.slice(25));
 
         if (document.cookie.length < 4) {
             return;
         }
-        for (var x = 4; x < 9; x++) {
-            if (document.cookie.charAt(x) == 0) {
+        for (var x = 0; x < 5; x++) {
+            if (clicksCookie.charAt(x) == 0) {
                 if (x < 1) {
                     buttonList[x].className = button + " btn-cantkeepupClicked"
                 } else if (x < 3) {
@@ -46,7 +51,7 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', '$location', 'socket', funct
                 } else if (x < 5) {
                     buttonList[x].className = button + "btn-speedClicked"
                 }
-            } else if (document.cookie.charAt(x) == 1) {
+            } else if (clicksCookie.charAt(x) == 1) {
                 if (x < 1) {
                     buttonList[x].className = button + " btn-cantkeepup"
                 } else if (x < 3) {
@@ -194,8 +199,12 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', '$location', 'socket', funct
 
     //doesnt this have to be in all the controllers?
     socket.on('resetVotes', function () {
+        console.log("Reset votes message received");
+        alertService.addInfo("Votes were reset by the lecturer!");
         useridcounters = "key=11111" + userIDCookie;
         document.cookie = useridcounters + roomCookie;
+        console.log("Cookie is now :", document.cookie);
+        $scope.$apply();
         refresh();
     });
 

@@ -1,4 +1,4 @@
-kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket', function ($scope, $http, $location, socket) {
+kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket','alertService', function ($scope, $http, $location, socket, alertService) {
     console.log("Hello World from lecturer-controller");
 
     console.log("Current cookie: ", document.cookie);
@@ -358,6 +358,7 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket', f
 
 //On the even rarer occassion a room is being deleted while the lecturer is still in it, can be multi-tab
     socket.on('delete current room', function () {
+        alertService.addWarning("Your room was deleted!");
         $location.path('/');
         $scope.$apply();
     });

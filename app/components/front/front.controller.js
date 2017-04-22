@@ -37,10 +37,9 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', 'ale
         } else {
             document.cookie = "key=11111" + randomString(16, '0123456789abcdef');
             socket.emit('cookie initialize', normalCookie);
-            alertService.addWarning({
-                type: "info", msg: "We use cookies to improve your experience and to keep Kolab easy to use. " +
+            alertService.addWarning("We use cookies to improve your experience and to keep Kolab easy to use. " +
                 "By your continued use of this site you accept such use."
-            });
+            );
 
         }
     }
