@@ -34,56 +34,56 @@ io.on('connection', function (socket) {
 
 
     socket.on('disconnect', function () {// 11111 , cku, decVol, incVol, decSpeed, incSpeed
-        console.log("USER IS DISCONNECTING!!!", Object.getOwnPropertyNames(socket.rooms).length);
+        console.log("USER IS DISCONNECTING!!!", socket.rooms);
 
-        if (Object.getOwnPropertyNames(socket.rooms).length != 0) {
-            if (socket.handshake.headers.cookie == undefined) { //If the cookie is not set in the socket-header, should not happen
+        //if (Object.getOwnPropertyNames(socket.rooms).length != 0) {}
+        console.log("User already connected to a room ", socket.room);
+        if (socket.handshake.headers.cookie == undefined) { //If the cookie is not set in the socket-header, should not happen
 
-                console.log("User's header cookie was undefined");
-                //socket.leave(currentRoomID);
-                io.to(currentRoomID).emit('storeClient', -1);
-                db.counter.update({room: currentRoomID}, {$inc: {userCount: -1}});
+            console.log("User's header cookie was undefined");
+            //socket.leave(currentRoomID);
+            io.to(currentRoomID).emit('storeClient', -1);
+            db.counter.update({room: currentRoomID}, {$inc: {userCount: -1}});
 
-                return false;
+            return false;
 
-            } else {
+        } else {
+            console.log("User cookie was defined and is: ", socket.handshake.headers.cookie);
 
-                var clicks = cookieParseCounter(socket.handshake.headers.cookie); //socket header is not updated regularly enough for this to work i dont think
+            var clicks = cookieParseCounter(socket.handshake.headers.cookie); //socket header is not updated regularly enough for this to work i dont think
 
-                var moddedClicks = [];  // This is used so that we can update the database accordingly
-                var modified = false;   // Tells us if the cookie has been altered
-                for (var i = 0; i < 5; ++i) {//trying to remove the clicks the user has done
-                    if (clicks[i] == 0) {       //looping through the user's cookie
-                        io.to(currentRoomID).emit(clickList[i], -1); //emitting the appropriate message to the lecturer view of the user's room
-                        moddedClicks.push(-1);
-                        modified = true;
-                    } else {
-                        moddedClicks.push(0);
-                    }
-                }
-                if (modified) { // If the cookie has been modified
-                    //database updates to restore the changes the user has done
-                    console.log("Disconnect: Modified, clicks = ", moddedClicks);
-                    db.counter.update({room: currentRoomID}, {
-
-                        $inc: {
-                            cantKeepUp: moddedClicks[0],
-                            decreaseVolume: moddedClicks[1],
-                            increaseVolume: moddedClicks[2],
-                            decreaseSpeed: moddedClicks[3],
-                            increaseSpeed: moddedClicks[4],
-                            userCount: -1
-                        }
-                    });
+            var moddedClicks = [];  // This is used so that we can update the database accordingly
+            var modified = false;   // Tells us if the cookie has been altered
+            for (var i = 0; i < 5; ++i) {//trying to remove the clicks the user has done
+                if (clicks[i] == 0) {       //looping through the user's cookie
+                    io.to(currentRoomID).emit(clickList[i], -1); //emitting the appropriate message to the lecturer view of the user's room
+                    moddedClicks.push(-1);
+                    modified = true;
                 } else {
-                    db.counter.update({room: currentRoomID}, {$inc: {userCount: -1}});
+                    moddedClicks.push(0);
                 }
+            }
+            if (modified) { // If the cookie has been modified
+                //database updates to restore the changes the user has done
+                console.log("Disconnect: Modified, clicks = ", moddedClicks);
+                db.counter.update({room: currentRoomID}, {
 
-                socket.leave(currentRoomID);
-                io.to(currentRoomID).emit('storeClient', -1);
-                return false;
+                    $inc: {
+                        cantKeepUp: moddedClicks[0],
+                        decreaseVolume: moddedClicks[1],
+                        increaseVolume: moddedClicks[2],
+                        decreaseSpeed: moddedClicks[3],
+                        increaseSpeed: moddedClicks[4],
+                        userCount: -1
+                    }
+                });
+            } else {
+                db.counter.update({room: currentRoomID}, {$inc: {userCount: -1}});
             }
 
+            socket.leave(currentRoomID);
+            io.to(currentRoomID).emit('storeClient', -1);
+            return false;
         }
 
     });
@@ -121,6 +121,8 @@ io.on('connection', function (socket) {
         }
         socket.leave(currentRoomID);
         io.to(currentRoomID).emit('storeClient', -1);
+        currentRoomID = "";
+
 
 
     });
@@ -133,7 +135,7 @@ io.on('connection', function (socket) {
                 return false;
             } else { // We connect the user and checks their cookie to see if we need to increment some counters
                 socket.join(roomName);
-                console.log("socket.rooms after, ", cookie);
+                console.log("socket.rooms after, ", socket.rooms);
                 currentRoomID = roomName;
                 io.to(roomName).emit('storeClient', 1);
                 if (cookie != undefined) { //Checks if we're sending the cookie or not
@@ -355,7 +357,7 @@ app.get('/ownerTest', function (req, res) {
     var userID = cookieParseUser(req.headers.cookie);
     console.log("UserID: ", userID);
 
-    if (userID == undefined){
+    if (userID == undefined) {
         console.log("User was undefined!!");
         return false;
     }
@@ -365,11 +367,11 @@ app.get('/ownerTest', function (req, res) {
             console.warn(err.message);
         }
         else {
-            if (docs.length == 0){
+            if (docs.length == 0) {
                 console.log("Room was undefined!!");
                 return false;
             }
-            else if (docs[0].creator === userID){
+            else if (docs[0].creator === userID) {
                 res.json(true);
             } else {
                 res.json(false);

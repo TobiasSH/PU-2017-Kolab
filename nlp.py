@@ -155,7 +155,8 @@ class Namespace(BaseNamespace):
 
 #
 print ("Connecting to socketIO.. Port is: ", 80)
-socketIO = SocketIO('kolab-group.herokuapp.com', 80, Namespace)
+#socketIO = SocketIO('kolab-group.herokuapp.com', 80, Namespace)
+socketIO = SocketIO('localhost', 3000, Namespace)
 socketIO.wait() #waits forever
 
 
