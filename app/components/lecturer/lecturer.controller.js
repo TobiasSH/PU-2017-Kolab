@@ -7,9 +7,9 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket', f
     var normalCookie = document.cookie.slice(4, 25);
     var roomCookie = document.cookie.slice(25);
 
-    $scope.grouped = "groupedTrue";
-
     $scope.scopeRoomCookie = roomCookie;
+
+    $scope.grouped = "groupedTrue";
 
     $scope.go = function (path) {
         $location.path(path);
@@ -28,7 +28,6 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket', f
         });
         socket.emit('cookie initialize', document.cookie);
         $http.get('/roomsQuestionsCollection').then(function (response) {
-                console.log("WTFFFFFF");
 
                 console.log("I got the data I requested from roomsQuestionsCollection");
                 console.log("This is the pure response object:" + response);
@@ -52,7 +51,7 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket', f
             });
 
         //if user doesnt have a room, we return them to the front-page
-        if (roomCookie.length <= 25) { //TODO NEEDS CHECK FOR USERID VS CREATOR OF ROOM
+        if (document.cookie.length <= 25) { //TODO NEEDS CHECK FOR USERID VS CREATOR OF ROOM
             console.log("New user, returning to start");
             $location.path('/');
         } else {//we join the socket we're supposed to be on, based on our room

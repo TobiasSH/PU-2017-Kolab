@@ -7,6 +7,7 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', '$location', 'socket', funct
     var normalCookie = document.cookie.slice(4, 25);
     var roomCookie = document.cookie.slice(25);
 
+    $scope.scopeRoomCookie = roomCookie;
 
     var cantKeepUp = document.getElementById("cantKeepUp");
     var decreaseVolume = document.getElementById("decreaseVolume");
@@ -22,7 +23,6 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', '$location', 'socket', funct
     //Clicking the same button is registered as unclicking this button
 
 
-    $scope.roomCookie = roomCookie;
 
     $scope.go = function (path) {
         $location.path(path);

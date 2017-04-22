@@ -8,11 +8,9 @@ kolabApp.controller('questionsCtrl', ['$scope', '$http','$location', 'socket', f
     var normalCookie = document.cookie.slice(4, 25);
     var roomCookie = document.cookie.slice(25);
 
+    $scope.scopeRoomCookie = roomCookie;
 
     $scope.grouped = "groupedTrue";
-
-
-    $scope.roomCookie = roomCookie;
 
     $scope.go = function (path) {
         $location.path(path);
