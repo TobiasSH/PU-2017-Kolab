@@ -5,6 +5,12 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket', f
     var roomName = document.cookie;
 
 
+    $scope.cantKeepUpPercent = 0;
+    $scope.decreaseVolumePercent = 0;
+    $scope.increaseVolumePercent = 0;
+    $scope.decreaseSpeedPercent = 0;
+    $scope.increaseSpeedPercent = 0;
+
     $scope.grouped = "groupedTrue";
 
     console.log(document.cookie);
@@ -61,11 +67,11 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket', f
             $scope.increaseSpeedHits = response.data[0].increaseSpeed;
             $scope.userCount = response.data[0].userCount;
 
-            $scope.cantKeepUpPercent = parseInt(($scope.cantKeepUpHits / $scope.userCount) * 100);
-            $scope.decreaseVolumePercent = parseInt(($scope.decreaseVolumeHits / $scope.userCount) * 100);
-            $scope.increaseVolumePercent = parseInt(($scope.increaseVolumeHits / $scope.userCount) * 100);
-            $scope.decreaseSpeedPercent = parseInt(($scope.decreaseSpeedHits / $scope.userCount) * 100);
-            $scope.increaseSpeedPercent = parseInt(($scope.increaseSpeedHits / $scope.userCount) * 100);
+            $scope.cantKeepUpPercent = cantKeepUpPercentCalc();
+            $scope.decreaseVolumePercent = decreaseVolumePercentCalc();
+            $scope.increaseVolumePercent = increaseVolumePercentCalc();
+            $scope.decreaseSpeedPercent = decreaseVolumePercentCalc();
+            $scope.increaseSpeedPercent = increaseSpeedPercentCalc();
 
             // Active bar animations when % is higher than 75
             $scope.activeAnimationCKU = "";
@@ -116,11 +122,11 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket', f
         $scope.decreaseSpeedHits = 0;
         $scope.increaseSpeedHits = 0;
 
-        $scope.cantKeepUpPercent = parseInt(($scope.cantKeepUpHits / $scope.userCount) * 100);
-        $scope.decreaseVolumePercent = parseInt(($scope.decreaseVolumeHits / $scope.userCount) * 100);
-        $scope.increaseVolumePercent = parseInt(($scope.increaseVolumeHits / $scope.userCount) * 100);
-        $scope.decreaseSpeedPercent = parseInt(($scope.decreaseSpeedHits / $scope.userCount) * 100);
-        $scope.increaseSpeedPercent = parseInt(($scope.increaseSpeedHits / $scope.userCount) * 100);
+        $scope.cantKeepUpPercent = 0;
+        $scope.decreaseVolumePercent = 0;
+        $scope.increaseVolumePercent = 0;
+        $scope.decreaseSpeedPercent = 0;
+        $scope.increaseSpeedPercent = 0;
 
         cantKeepUpCheck();
         decreaseVolumeCheck();
@@ -206,6 +212,49 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket', f
 
 
     });
+
+    // Percentage calculations for chrome
+    var cantKeepUpPercentCalc = function (){
+        if ($scope.userCount == 0){
+            return 0;
+        }else{
+            return parseInt(($scope.cantKeepUpHits / $scope.userCount) * 100);
+        }
+    };
+
+
+    var decreaseVolumePercentCalc = function (){
+        if ($scope.userCount == 0){
+            return 0;
+        }else{
+            return parseInt(($scope.decreaseVolumeHits / $scope.userCount) * 100);
+        }
+    };
+
+    var increaseVolumePercentCalc = function (){
+        if ($scope.userCount == 0){
+            return 0;
+        }else{
+            return parseInt(($scope.increaseVolumeHits / $scope.userCount) * 100);
+        }
+    };
+
+    var decreaseSpeedPercentCalc = function (){
+        if ($scope.userCount == 0){
+            return 0;
+        }else{
+            return parseInt(($scope.decreaseSpeedHits / $scope.userCount) * 100);
+        }
+    };
+
+    var increaseSpeedPercentCalc = function (){
+        if ($scope.userCount == 0){
+            return 0;
+        }else{
+            return parseInt(($scope.increaseSpeedHits / $scope.userCount) * 100);
+        }
+    };
+
 
 
     // Progress bar type checks
@@ -297,7 +346,7 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket', f
     //Progress bars socket listeners
     socket.on('cantKeepUp', function (mod, total) {//total is not being sent?
         $scope.cantKeepUpHits += mod;
-        $scope.cantKeepUpPercent = parseInt(($scope.cantKeepUpHits / $scope.userCount) * 100);
+        $scope.cantKeepUpPercent = cantKeepUpPercentCalc();
 
         cantKeepUpCheck();
         $scope.$apply();
@@ -305,28 +354,28 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket', f
     });
     socket.on('decreaseVolume', function (mod, total) {
         $scope.decreaseVolumeHits += mod;
-        $scope.decreaseVolumePercent = parseInt(($scope.decreaseVolumeHits / $scope.userCount) * 100);
+        $scope.decreaseVolumePercent = decreaseVolumePercentCalc();
 
         decreaseVolumeCheck();
         $scope.$apply();
     });
     socket.on('increaseVolume', function (mod, total) {
         $scope.increaseVolumeHits += mod;
-        $scope.increaseVolumePercent = parseInt(($scope.increaseVolumeHits / $scope.userCount) * 100);
+        $scope.increaseVolumePercent = increaseVolumePercentCalc();
 
         increaseVolumeCheck();
         $scope.$apply();
     });
     socket.on('decreaseSpeed', function (mod, total) {
         $scope.decreaseSpeedHits += mod;
-        $scope.decreaseSpeedPercent = parseInt(($scope.decreaseSpeedHits / $scope.userCount) * 100);
+        $scope.decreaseSpeedPercent = decreaseSpeedPercentCalc();
 
         decreaseSpeedCheck();
         $scope.$apply();
     });
     socket.on('increaseSpeed', function (mod, total) {
         $scope.increaseSpeedHits += mod;
-        $scope.increaseSpeedPercent = parseInt(($scope.increaseSpeedHits / $scope.userCount) * 100);
+        $scope.increaseSpeedPercent = increaseSpeedPercentCalc();
 
         increaseSpeedCheck();
         $scope.$apply();
@@ -336,11 +385,11 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket', f
         console.log("New user joined ", $scope.userCount);
         $scope.userCount += modifier;
 
-        $scope.cantKeepUpPercent = parseInt(($scope.cantKeepUpHits / $scope.userCount) * 100);
-        $scope.decreaseVolumePercent = parseInt(($scope.decreaseVolumeHits / $scope.userCount) * 100);
-        $scope.increaseVolumePercent = parseInt(($scope.increaseVolumeHits / $scope.userCount) * 100);
-        $scope.decreaseSpeedPercent = parseInt(($scope.decreaseSpeedHits / $scope.userCount) * 100);
-        $scope.increaseSpeedPercent = parseInt(($scope.increaseSpeedHits / $scope.userCount) * 100);
+        $scope.cantKeepUpPercent = cantKeepUpPercentCalc();
+        $scope.decreaseVolumePercent = decreaseVolumePercentCalc();
+        $scope.increaseVolumePercent = increaseVolumePercentCalc();
+        $scope.decreaseSpeedPercent = decreaseSpeedPercentCalc();
+        $scope.increaseSpeedPercent = increaseSpeedPercentCalc();
 
         cantKeepUpCheck();
         decreaseVolumeCheck();

@@ -36,7 +36,7 @@ io.on('connection', function (socket) {
     socket.on('disconnect', function () {// 11111 , cku, decVol, incVol, decSpeed, incSpeed
         console.log("USER IS DISCONNECTING!!!", Object.getOwnPropertyNames(socket.rooms).length);
 
-        if (Object.getOwnPropertyNames(socket.rooms).length == 0) {
+        if (Object.getOwnPropertyNames(socket.rooms).length != 0) {
             if (socket.handshake.headers.cookie == undefined) { //If the cookie is not set in the socket-header, should not happen
 
                 console.log("User's header cookie was undefined");
