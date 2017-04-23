@@ -3,11 +3,14 @@
         <table class="title">
             <tbody>
             <tr>
-                <td width="90%">
-                    <h1>{{roomCookie}}
-                        <o></o>
-                        {{userCount}}
-                    </h1>
+                <td width="70%">
+                    <h1>{{roomCookie}}</h1>
+                </td>
+                <td width="10%" class="td-user-count">
+                    <h1>{{userCount}}</h1>
+                </td>
+                <td width="10%" class="td-user-icon">
+                    <span class="glyphicon glyphicon-user"></span>
                 </td>
                 <td width="10%">
                     <button type="button" class="btn btn-lg btn-responsive btn-home" ng-click="leaveRoom()">

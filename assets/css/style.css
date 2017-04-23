@@ -293,6 +293,24 @@ th {
     width: 3% !important;
 }
 
+.td-user-icon{
+    padding-left: 2% !important;
+    padding-right: 2% !important;
+}
+
+.td-user-icon span{
+    font-size: 2.5em;
+    color: #112233;
+}
+
+.td-user-count h1{
+    font-size: 3.2em;
+    color: #112233;
+    text-shadow: 0px 0px transparent;
+    margin: 0;
+    float: right;
+}
+
 /* TEXTAREA AND FORM */
 /********************/
 .form-control {
