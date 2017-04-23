@@ -34,6 +34,7 @@ body {
     position: absolute;
     top: 0;
     max-width: 100%;
+    height: 100%;
     /*width: 100%;*/
     text-align: center;
     align-items: center;
@@ -81,7 +82,6 @@ body {
     .horizontal-center {
         width: 30%;
         left: 33%;
-
     }
 
 }
@@ -131,32 +131,19 @@ h1 {
     /*border: 1px solid green;*/
 }
 
-.menu-table {
-    /*table-layout: fixed;*/
-
-    width: 92%;
-    /*margin: 10px 0 -50px 0;*/
-    margin: 40px 0 0 40px;
-
-    border-collapse: separate;
-    border-spacing: 10px 10px;
-
-    /*border: 1px solid green;*/
-}
-
 .front-table {
     width: 92%;
-    margin: 40px 0 0 40px;
+    margin: 4% 0 0 4%;
 }
 
 .lecturer-table {
     width: 92%;
-    margin: 40px 0 0 40px;
+    margin: 4% 0 0 4%;
 }
 
 .questions-table, .questions-table-grouped {
     width: 92%;
-    margin: 40px 40px 40px 40px;
+    margin: 4% 4% 4% 4%;
 }
 
 .table th {
@@ -227,8 +214,9 @@ th {
 .title {
     /*text-align: left;
     table-layout: fixed;*/
+    height: 6%;
     width: 92%;
-    margin: 40px 40px 0 40px;
+    margin: 4% 4% 0 4%;
     background: rgba(204, 204, 204, 0.05);
     /*border: 1px solid black;*/
     border-radius: 0 128px 128px 0;
@@ -311,6 +299,31 @@ th {
     float: right;
 }
 
+.menu-table {
+    /*table-layout: fixed;*/
+    /*vertical-align: middle !important;*/
+    /*align-items: center;*/
+
+    height: 82%;
+    width: 92%;
+    margin-left: 4%;
+    margin-right: 4%;
+    margin-top: 4%;
+    margin-bottom: 4%;
+    /*margin: 10px 0 -50px 0;*/
+    /*margin: 40px 0 0 40px;*/
+
+    border-collapse: separate;
+    border-spacing: 10px 10px;
+
+    /*border: 1px solid green;*/
+}
+
+.menu-table td {
+    height: 33.33%;
+    width: 50%;
+}
+
 /* TEXTAREA AND FORM */
 /********************/
 .form-control {
@@ -370,12 +383,13 @@ textarea {
 
 .bn-square {
     width: 100%;
-    height: 450px;
+    height: 100%;
+    /*height: 380px;*/
     font-size: 28px;
-    min-height: 100%;
-    min-width: 100%;
-    max-width: 450px;
-    max-height: 450px;
+    min-height: 20px;
+    min-width: 20px;
+    max-width: 100%;/*450px;*/
+    max-height: 100%; /*450px;*/
     /*border: 1px solid red;*/
     border-radius: 30px;
 }
@@ -538,6 +552,8 @@ textarea {
     width: 92%;
     display: inline-table;
     margin-top: 20px;
+    border-collapse: separate;
+    border-spacing: 4px 0px;
 }
 
 .click-table td {
