@@ -100,7 +100,7 @@ kolabApp.controller('questionsCtrl', ['$scope', '$http','$location', 'socket', f
 
     // Lecturer has pressed reset votes, so we reset cookie
     socket.on('resetVotes', function () {
-        document.cookie = "key=11111"+ userIDCookie;
+        document.cookie = "key=11111"+ userIDCookie+roomCookie;
     });
 
     // socket message "question message" and the response to that message

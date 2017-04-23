@@ -91,9 +91,10 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', 'ale
 
     //Create a new room
     $scope.createRoom = function () {
-        console.log("method new room called");
         var availRoom = true;
-        // And newroom not in scope
+
+
+        // Testing to see if the room is in the list of rooms locally
         if ($scope.newRoom != null && $scope.newRoom.text.trim().length) {
             for (var i = 0; i < $scope.kolabDBScope.length; i++) {
                 if ($scope.kolabDBScope[i].room === $('#textareaNewRoom').val()) {
@@ -101,7 +102,7 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', 'ale
                     console.log("How often does this happen");
                 }
             }
-            if (availRoom) {
+            if (availRoom) { // If it is available, we create the room
 
                 document.cookie = document.cookie.substring(0, 25);
                 document.cookie += $('#textareaNewRoom').val();
@@ -118,7 +119,7 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', 'ale
 
 
         else {
-            console.log("Invalid string");
+            alertService.addWarning("Invalid string!", true);
         }
 
     };
@@ -140,12 +141,15 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', 'ale
                 }
             }
         } else {
-            alertService.addWarning("You need to type out the room you want to join", true);
+            alertService.addWarning("You need to type out name of the room you want to join", true);
         }
-
     };
+
     $scope.joinExistingRoom = function (room) {
-        document.cookie = document.cookie.substring(0, 25);
+        if (document.cookie.length > 25){
+            socket.emit('leave room', document.cookie.substring(4,25));
+        }
+        document.cookie = "key=11111" + userIDCookie; //Removing votes and room values
         document.cookie += room;
         console.log("This is the name of the room: " + room);
         console.log("We spliced the cookie and now it is : ", document.cookie);
@@ -180,6 +184,15 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', 'ale
             }
         }
 
+    });
+
+    //doesnt this have to be in all the controllers?
+    socket.on('resetVotes', function () {
+        alertService.addInfo("Votes were reset by the lecturer!", true);
+        useridcounters = "key=11111" + userIDCookie;
+        document.cookie = useridcounters + roomCookie;
+        $scope.$apply();
+        refresh();
     });
 
 
