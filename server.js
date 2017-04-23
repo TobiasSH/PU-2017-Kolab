@@ -5,6 +5,8 @@ var db = mongojs('mongodb://heroku_2hcp9k8k:19uocjcgsn6ce4pp7j66fe1ras@ds119020.
 var bodyParser = require('body-parser');
 var path = require('path');
 
+var schedule = require('node-schedule');
+
 
 app.use(express.static(__dirname));
 app.use(bodyParser.json());
@@ -181,13 +183,26 @@ io.on('connection', function (socket) {
 
     socket.on('new room message', function (msg, userId) {
         var rString = randomString(24, '0123456789abcdef');
-        console.log("trying to save room: " + msg + " user: " + userId);
-        db.roomsCollection.insert({_id: mongojs.ObjectID(rString), room: msg, creator: userId}, function (err, o) {
+        console.log("Trying to save room: " + msg + " user: " + userId);
+
+        var currentdate = new Date();
+        var expirydate = (currentdate.getDate()+1) + "/"
+            + (currentdate.getMonth() + 1) + "/"
+            + currentdate.getFullYear() + "@"
+            + currentdate.getHours() + ":"
+            + currentdate.getMinutes();
+
+        db.roomsCollection.insert({
+            _id: mongojs.ObjectID(rString),
+            room: msg,
+            creator: userId,
+            expire: expirydate
+        }, function (err, o) {
             if (err) {
                 console.warn(err.message);
             }
             else {
-                console.log("room inserted into the db: " + msg + "by user: " + userId);
+                console.log("Room inserted into the db: " + msg + "by user: " + userId);
             }
 
         });
@@ -202,7 +217,7 @@ io.on('connection', function (socket) {
                 console.warn(err.message);
             }
             else {
-                console.log("room inserted into the db: " + msg + "by user: " + userId);
+                console.log("Click counters for " + msg + " inserted into the db: by user: " + userId);
             }
         });
 
@@ -213,6 +228,7 @@ io.on('connection', function (socket) {
 
     socket.on('room delete', function (index, obj, userId) {
         //retrieve the room
+        console.log("A room is being deleted");
         db.roomsCollection.find({_id: mongojs.ObjectId(obj._id)}, function (err, docs) {
             //check if the room's creator is the same as the one trying to delete it
             if (docs[0].creator === obj.creator) {
@@ -349,6 +365,44 @@ app.get('/front', function (req, res) {
     res.sendFile(__dirname + '/index.html');
 });
 
+/* Check for expired rooms */
+
+
+// Node-schedule running once every hour, 3 minutes past
+var roomExpiredCheck = schedule.scheduleJob('03 * * * *', function () {
+    // Setting the current date and time
+    var currentdate = new Date();
+    var datetime = currentdate.getDate() + "/"
+        + (currentdate.getMonth() + 1) + "/"
+        + currentdate.getFullYear() + "@"
+        + currentdate.getHours() + ":"
+        + currentdate.getMinutes();
+
+    console.log("Scheduled room expired check is running at ", datetime);
+
+    // Retrieves the rooms from database
+    db.roomsCollection.find(function (err, docs) {
+        if (err) {
+            console.warn(err.message);
+        }
+        else {
+            // Looping through all the rooms
+            for (var i = 0; i < docs.length; i++) {
+                console.log("This room expires at : ", docs[i].expire);
+                // If the rooms date and time is past the current, then we remove from database and front-end users
+                if (docs[i].expire < datetime) {
+                    db.roomsCollection.remove({_id: mongojs.ObjectId(docs[i]._id)});
+                    db.counter.remove({room: docs[i].room});
+                    db.roomsQuestionsCollection.remove({room: docs[i].room});
+                    io.emit('delete room broadcast', 0, docs[i].room);
+                    io.to(docs[i].room).emit('delete current room');
+                }
+            }
+        }
+    });
+
+
+});
 
 /* DATABASE METHODS */
 app.get('/ownerTest', function (req, res) {

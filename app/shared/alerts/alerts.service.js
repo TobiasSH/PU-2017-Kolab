@@ -1,6 +1,5 @@
 kolabApp.factory('alertService', ['$timeout', function ($timeout) {
-
-    console.log("We get called, weee");
+    // Service which is usable for all controllers
     // Private functions and internal state
     var internal = {
 
@@ -16,10 +15,10 @@ kolabApp.factory('alertService', ['$timeout', function ($timeout) {
                 }
             };
             internal.alerts.push(newAlert);
-            if (autoClose) {
+            if (autoClose) { //if autoclose is specified as true, then we remove the alert after 3 seconds
                 $timeout(function () {
                     newAlert.close()
-                }, 5000)
+                }, 3000)
             }
         },
 
@@ -30,10 +29,8 @@ kolabApp.factory('alertService', ['$timeout', function ($timeout) {
 
     console.log(internal);
 
-    // Return the public API for the service
-    // We'll expose the `alerts` array for convenience
 
-    return {
+    return {    // Callable functions, f.ex alertService.addError
         addError: function (message, autoClose) {
             internal.addAlert('danger', message, autoClose);
         },

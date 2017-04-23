@@ -1,9 +1,9 @@
 kolabApp.directive('pageAlerts', ['alertService', function(alertService) {
-    console.log("Dir PA: Does this ever run?");
+
     return {
         templateUrl: '/app/shared/alerts/alerts.html',
         replace: true,
-        link: function (scope) {
+        link: function (scope) { // We extend the directive with the service, alertService
             scope.alerts = alertService.alerts;
         }
     }

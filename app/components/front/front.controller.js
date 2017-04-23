@@ -8,6 +8,34 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', 'ale
     var roomCookie = "";
 
 
+    var currentdate = new Date();
+    var datetime = (currentdate.getDate()) + "/"
+        + (currentdate.getMonth() + 1) + "/"
+        + currentdate.getFullYear() + "@"
+        + currentdate.getHours() + ":"
+        + (currentdate.getMinutes()-2);
+
+    var currentdatetime = (currentdate.getDate()) + "/"
+        + (currentdate.getMonth() + 1) + "/"
+        + currentdate.getFullYear() + "@"
+        + currentdate.getHours() + ":"
+        + (currentdate.getMinutes());
+
+
+    console.log(datetime);
+
+    var test = function(){
+        if (datetime > currentdatetime){
+            console.log(typeof datetime, " is larger than ",typeof currentdatetime);
+            console.log("Can be compared!!!");
+        }else if (datetime < currentdatetime){
+            console.log(typeof datetime, " is smaller than ", typeof currentdatetime);
+            console.log("Can be compared!!!");
+        }
+    };
+
+    test();
+
     $scope.go = function (path) {
         $location.path(path);
     };
@@ -19,6 +47,8 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', 'ale
             // prevent default behavior
             e.preventDefault();
         }
+
+        // TODO Only english characters and numbers allowed in newroom
         if (e.keyCode == 50 && e.shiftKey || e.keyCode == 51 && e.shiftKey || e.keyCode == 52 && e.shiftKey) {
             alertService.addWarning("Special characters are not allowed in rooms.", true);
             e.preventDefault();
@@ -146,8 +176,8 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', 'ale
     };
 
     $scope.joinExistingRoom = function (room) {
-        if (document.cookie.length > 25){
-            socket.emit('leave room', document.cookie.substring(4,25));
+        if (document.cookie.length > 25) {
+            socket.emit('leave room', document.cookie.substring(4, 25));
         }
         document.cookie = "key=11111" + userIDCookie; //Removing votes and room values
         document.cookie += room;
@@ -175,10 +205,19 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', 'ale
     });
 
     socket.on('delete room broadcast', function (index, roomName) {
-        console.log('A room was deleted:  ', roomName);
+
+        // Checking through the list of available rooms
         for (var i = 0; i < $scope.kolabDBScope.length; i++) {
             if ($scope.kolabDBScope[i].room == roomName) {
                 $scope.kolabDBScope.splice(i, 1);
+                $scope.$apply();
+                break;
+            }
+        }
+        // Checking through the list of your rooms
+        for (var x = 0; x < $scope.myRooms.length; x++) {
+            if ($scope.myRooms[x].room == roomName) {
+                $scope.myRooms.splice(x, 1);
                 $scope.$apply();
                 break;
             }
