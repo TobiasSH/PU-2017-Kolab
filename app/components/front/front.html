@@ -23,32 +23,32 @@
                 </td>
 
 
-                <table id="myRoomsTable" class="table">
-                    <h1 ng-show="myRooms.length > 0"> Your rooms</h1>
+                <table id="myRoomsTable" class="table long-table">
+                    <h1 class="table-title" ng-show="myRooms.length > 0"> Your rooms</h1>
                     <tr ng-repeat="room in myRooms" class="roomRows">
                         <!--<td>{{question.number}}</td>-->
                         <td class="td-room">{{room.room}}</td>
-                        <th>
+                        <td>
                             <button class="joinMyRoom btn btn-lg btn-block btn-remove"
                                     ng-click="deleteRoom($index, room )">
                                     <img class="lecturer-button-icon" src="../../../assets/img/icons/remove.svg"
                                      onerror="this.onerror=null; this.src='../../../assets/img/icons/remove.png'">
                             </button>
-                        </th>
-                        <th>
+                        </td>
+                        <td>
                             <button class="joinMyRoom btn btn-lg btn-block btn-join"
                                     ng-click="joinMyRoom( room.room )">Join
                             </button>
-                        </th>
+                        </td>
                     </tr>
 
 
                 </table>
 
 
-                <table id="roomsTable" class="table">
-                    <h1 ng-show="kolabDBScope.length <= 0"> No rooms, make one!</h1>
-                    <h1 ng-show="kolabDBScope.length > 0"> Available rooms</h1>
+                <table id="roomsTable" class="table long-table">
+                    <h1 class="table-title" ng-show="kolabDBScope.length <= 0"> No rooms, make one!</h1>
+                    <h1 class="table-title" ng-show="kolabDBScope.length > 0"> Available rooms</h1>
                     <tr ng-repeat="room in kolabDBScope | filter: joinRoom.text | orderBy:'-'" class="roomRows">
                         <!--<td>{{question.number}}</td>-->
                         <td class="td-room">{{room.room}}</td>

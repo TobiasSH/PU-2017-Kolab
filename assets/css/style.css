@@ -102,7 +102,19 @@ body {
 }
 
 td.td-room.ng-binding {
-    padding-top: 7%;
+    /*padding-top: 5%;*/
+    padding-left: 5%;
+}
+
+td.td-question.ng-binding {
+    padding-top: 1%;
+    padding-bottom: 1%;
+    padding-left: 3%;
+    vertical-align: middle;
+}
+
+td.td-noun.ng-binding {
+    border: 0;
 }
 
 h1 {
@@ -122,8 +134,12 @@ h1 {
 .menu-table {
     /*table-layout: fixed;*/
 
-    width: 96%;
-    margin: 10px 0 -50px 0;
+    width: 92%;
+    /*margin: 10px 0 -50px 0;*/
+    margin: 40px 0 0 40px;
+
+    border-collapse: separate;
+    border-spacing: 10px 10px;
 
     /*border: 1px solid green;*/
 }
@@ -140,7 +156,7 @@ h1 {
 
 .questions-table, .questions-table-grouped {
     width: 92%;
-    margin: 40px 0 0 40px;
+    margin: 40px 40px 40px 40px;
 }
 
 .table th {
@@ -149,7 +165,7 @@ h1 {
 
 tbody {
     width: 100%;
-    display: inherit;
+    /*display: inherit;
     /*border: 1px solid yellow;*/
 }
 
@@ -158,29 +174,21 @@ tbody {
     color: white;
     padding: 0;
     line-height: 25px;
-    min-height: 200px;
+    min-height: 20px;
 
 }
 
-/*.roomRows{
-    border: 1px solid black;
-    background: darkgray;
-
-
-}*/
-
-.questionRows {
-    border-bottom: 1px solid black;
+.questionRows td{
+    /*border-bottom: 1px solid black;*/
     /*word-break: break-all;*/
+    vertical-align: middle !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    padding-right: 0 !important;
 }
 
-.nounRows {
-    background-color: darkgray;
-    border-bottom: 1px solid black;
-    border-left: 1px solid black;
-    border-right: 1px solid black;
-    border-top: 1px solid black;
-    opacity: 0.4;
+.nounhead {
+    border-top: 0 !important;
 }
 
 th {
@@ -204,13 +212,16 @@ th {
 .td-question {
     font-size: 30px;
     width: 100%;
+    height: 100px !important;
 }
 
 .td-noun {
-    color: white;
-    opacity: 1;
-    text-shadow: -2px 2px black;
+    /*color: white;*/
+    color: #001122;
+    /*text-shadow:111px 1px black;*/
     cursor: pointer;
+    align-items: center;
+    display: flex;
 }
 
 .title {
@@ -235,6 +246,53 @@ th {
     font-size: 90px;
 }
 
+.table-title{
+    text-align:left;
+    color: #223344;
+    text-shadow: 0 0 transparent;
+    margin-top: 50px;
+    margin-bottom: 0px;
+}
+
+.long-table{    
+    border-collapse: separate;
+    border-spacing: 0px 14px;
+}
+
+.long-table td {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    padding-right: 0 !important;
+    vertical-align: middle !important;
+}
+
+.long-table td, th{
+    background: rgba(204, 204, 204, 0.15);
+    /*border-radius: 0 128px 128px 0;*/
+}
+
+.long-table td:last-child, th:last-child{
+    border-radius: 0 128px 128px 0;
+    /*width:300px;*/
+}
+
+.nounRows td {
+    background-color: rgba(34, 51, 68, 0.3);
+    opacity: 1;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+.td-space {
+    min-width: 0px !important;
+    width: 3% !important;
+    background-color: transparent !important; 
+}
+
+.td-placeholder {
+    width: 3% !important;
+}
+
 /* TEXTAREA AND FORM */
 /********************/
 .form-control {
@@ -253,13 +311,15 @@ textarea {
 /********************/
 
 .joinRoom {
-    position: relative;
-    left: 50%;
+    /*position: relative;
+    left: 50%;*/
+    float: right;
 }
 
 .joinMyRoom {
-    position: relative;
-    left: 36%;
+    /*position: relative;*/
+    /*left: 50%;*/
+    float: right;
 }
 
 .btn {
@@ -282,9 +342,12 @@ textarea {
     font-size: 34px;
     min-height: 100px;
     min-width: 100px;
+    max-width: 100px;
     background: #FFCCCC;
     border-radius: 50px;
-    margin: 10px 0 10px 0;
+    /*margin: 10px 0 10px 0;*/
+    float: right;
+    vertical-align: middle;
 }
 
 .bn-square {
@@ -345,9 +408,11 @@ textarea {
     color: #555555;
 }
 
-.btn-lecturer {
-    background: #99DDEE;
-    color: #555555;
+.btn-lecturer-div {
+    /*background: #99DDEE;
+    color: #555555;*/
+    padding-top: 50px;
+    padding-bottom: 30px;
 }
 
 .btn-home {
@@ -365,19 +430,19 @@ textarea {
 }
 
 .btn-reset{
-    height: 50%;
+    height: 5%;
     width: 30%;
     font-size: 34px;
     min-height: 100px;
     min-width: 100px;
     background: #EEAA88;
-    color: #996644;
+    color: #885533;
     border-radius: 50px;
-    margin: 10px 0 10px 0;
+    margin: 10px 150px 10px 0;
 }
 
 .btn-grouped{
-    height: 50%;
+    height: 5%;
     width: 30%;
     font-size: 34px;
     min-height: 100px;
@@ -393,10 +458,11 @@ textarea {
     font-size: 34px;
     min-height: 100px;
     min-width: 100px;
+    max-width: 100px;
     background: #BBDDBB;
     color: #448844;
     border-radius: 50px;
-    margin: 10px 0 10px 0;
+    /*margin: 10px 0 10px 0;*/
 }
 
 /* IMAGES */
@@ -422,6 +488,13 @@ textarea {
 .logo {
     height: 10%;
     width: 60%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+
+.plus-and-minus {
+    margin-left: 1%;
+    margin-right: 2%;
 }
 
 /* PROGRESSBARS */
@@ -444,6 +517,10 @@ textarea {
     margin-top: 20px;
 }
 
+.click-table td {
+    padding-bottom: 30px;
+}
+
 .progressGroup {
     /*border: 1px solid black !important;*/
     width: 50%;
@@ -453,28 +530,39 @@ textarea {
     font-size: 30px;
     padding-left: 0;
     color: white;
+    line-height: 50px;
     /*text-shadow: 2px 2px black;*/
 }
 
 .progress {
     color: white;
-    height: 40px;
+    height: 50px;
     /*text-shadow: 2px 2px black;*/
     margin-bottom: 0;
     border-radius: 0;
-    background: rgb(122, 122, 119); /* Background color for the bars */
+    /*background: rgb(122, 122, 119); /* Background color for the bars */
+    background: #334455;
 }
 
 .progress-bar {
-    color: white;
+    color: #334455; /*white;*/
+    font-weight: bold;
     font-size: 28px;
-    line-height: 32px;
+    line-height: 50px;
     /*text-shadow: 2px 2px black;*/
 }
 
 .progress-barL {
     display: block;
     float: right;
+}
+
+.click-table td:first-child .progress {
+    border-radius: 128px 0 0 128px;
+}
+
+.click-table td:last-child .progress {
+    border-radius: 0 128px 128px 0;
 }
 
 

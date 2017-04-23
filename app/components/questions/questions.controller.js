@@ -1,7 +1,7 @@
 kolabApp.controller('questionsCtrl', ['$scope', '$http','$location', 'socket', function ($scope, $http, $location, socket) {
     console.log("Hello World from questions-controller");
 
-    $scope.grouped = "groupedTrue";
+    $scope.grouped = "groupedFalse";
 
     console.log("Q: Current cookie, ", document.cookie);
 

@@ -10,7 +10,7 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket', f
     $scope.decreaseSpeedPercent = 0;
     $scope.increaseSpeedPercent = 0;
 
-    $scope.grouped = "groupedTrue";
+    $scope.grouped = "groupedFalse";
 
     console.log(document.cookie);
     $scope.roomCookie = document.cookie.slice(21);

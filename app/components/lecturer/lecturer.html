@@ -19,7 +19,7 @@
             </tbody>
         </table>
 
-        <table>
+        <!--<table>
             <tr>
                 <td>
                     Cant keep up: {{cantKeepUpHits}}
@@ -44,7 +44,7 @@
                     Decrease Volume: {{decreaseVolumeHits}}
                 </td>
             </tr>
-        </table>
+        </table>-->
 
 
 
@@ -52,7 +52,7 @@
             <tbody>
             <tr>
                 <td class="cantKeepUpData" colspan="2">
-                    <span class="cantKeepUpText">Can't Keep up</span>
+                    <span class="progressText cantKeepUpText">Can't Keep up</span>
                     <div class="progress">
                         <div id="cantKeepUpBar"
                              class="progress-bar progress-bar-striped {{cantKeepUpStyle}} {{activeAnimationCKU}}"
@@ -121,12 +121,12 @@
             </tbody>
         </table>
 
-        <div style="padding-top: 80px;">
+        <div class="btn-lecturer-div">
             <button id="resetButton" type="button" class="btn btn-reset" ng-click="resetVotes()">
                 Reset votes
             </button>
             <button id="groupedButton" type="button" class="btn btn-grouped" ng-click="switchView()">
-                Ungrouped
+                Grouped
             </button>
         </div>
 
@@ -134,11 +134,11 @@
         <div ng-switch="grouped">
 
             <div ng-switch-when="groupedFalse">
-                <table id="questionsTable" class="table questions-table">
+                <table id="questionsTable" class="table questions-table long-table">
                     <tr ng-repeat="question in kolabDBScope" class="questionRows">
                         <!--<td>{{question.number}}</td>-->
-                        <td width="80%" class="td-question">{{question.text}}</td>
-                        <td width="20%">
+                        <td class="td-question">{{question.text}}</td>
+                        <td>
                             <button class="btn btn-lg btn-block btn-remove" ng-click="remove($index, question)">
                                 <img class="lecturer-button-icon" src="../../../assets/img/icons/remove.svg"
                                      onerror="this.onerror=null; this.src='../../../assets/img/icons/remove.png'">
@@ -150,23 +150,25 @@
             </div>
             <div ng-switch-when="groupedTrue">
 
-                <table id="questionsTableGrouped" class="table questions-table">
+                <table id="questionsTableGrouped" class="table questions-table long-table">
                     <tbody class="nounhead" ng-repeat="noun in newTags track by $index"
                            ng-init="$rowIndex = $index" ng-show="noun.length > 0">
 
-                    <tr class="nounRows" ng-init="toggle[$rowIndex] = true"
-                        ng-click="toggle[$index] = !toggle[$rowIndex]">
+                    <tr class="nounRows" ng-init="toggle[$rowIndex] = true" ng-click="toggle[$index] = !toggle[$rowIndex]">
+                        <td class="td-placeholder"></td>
                         <td class="td-noun">
-                            <span class="glyphicon glyphicon-plus-sign" ng-if="!toggle[$rowIndex]"></span>
-                            <span class="glyphicon glyphicon-minus-sign" ng-if="toggle[$rowIndex]"></span>
+                            <span class="glyphicon glyphicon-plus-sign plus-and-minus" ng-if="!toggle[$rowIndex]"></span>
+                            <span class="glyphicon glyphicon-minus-sign plus-and-minus" ng-if="toggle[$rowIndex]"></span>
                             {{noun[0].tag}}
                         </td>
+                        <td class="td-placeholder"></td>
                     </tr>
                     <tr ng-if="toggle[$rowIndex]" ng-repeat="question in noun track by $index" class="questionRows">
 
                         <!--<td>{{question.number}}</td>-->
-                        <td width="80%" class="td-question">{{question.text}}</td>
-                        <td width="20%">
+                        <td class="td-space"></td>
+                        <td class="td-question">{{question.text}}</td>
+                        <td>
                             <button class="btn btn-lg btn-block btn-remove"
                                     ng-click="removeGrouped($rowIndex, $index, question)">
                                 <img class="lecturer-button-icon" src="../../../assets/img/icons/remove.svg"

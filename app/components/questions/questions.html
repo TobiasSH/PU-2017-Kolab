@@ -28,11 +28,13 @@
                 </td>
             </tr>
         </table>
+
+        <button id="groupedButton" type="button" class="btn btn-grouped" ng-click="switchView()">Grouped</button>
+
         <div ng-switch="grouped">
-            <button id="groupedButton" type="button" class="btn btn-grouped" ng-click="switchView()">Ungrouped</button>
 
             <div ng-switch-when="groupedFalse">
-                <table id="questionsTable" class="table questions-table">
+                <table id="questionsTable" class="table questions-table long-table">
                     <tr ng-repeat="question in kolabDBScope | orderBy:'-'" class="questionRows">
                         <!--<td>{{question.number}}</td>-->
                         <td class="td-question">{{question.text}}</td>
@@ -41,19 +43,20 @@
             </div>
             <div ng-switch-when="groupedTrue">
 
-                <table id="questionsTableGrouped" class="table questions-table">
+                <table id="questionsTableGrouped" class="table questions-table long-table">
                     <tbody class="nounhead" ng-repeat="noun in newTags track by $index"
                            ng-init="$rowIndex = $index" ng-show="noun.length > 0">
 
                     <tr class="nounRows" ng-init="toggle[$rowIndex] = true" ng-click="toggle[$index] = !toggle[$rowIndex]">
+                        <td class="td-placeholder"></td>
                         <td class="td-noun">
-                            <span class="glyphicon glyphicon-plus-sign" ng-if="!toggle[$rowIndex]"></span>
-                            <span class="glyphicon glyphicon-minus-sign" ng-if="toggle[$rowIndex]"></span>
+                            <span class="glyphicon glyphicon-plus-sign plus-and-minus" ng-if="!toggle[$rowIndex]"></span>
+                            <span class="glyphicon glyphicon-minus-sign plus-and-minus" ng-if="toggle[$rowIndex]"></span>
                             {{noun[0].tag}}
                         </td>
                     </tr>
                     <tr ng-if="toggle[$rowIndex]" ng-repeat="question in noun track by $index" class="questionRows">
-
+                        <td class="td-space"></td>
                         <!--<td>{{question.number}}</td>-->
                         <td class="td-question">{{question.text}}</td>
                     </tr>
