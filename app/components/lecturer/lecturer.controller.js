@@ -28,6 +28,7 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket','a
         $http.get('/ownerTest').then(function (response) {
             if (!response.data) {
                 console.log("Owner test failed");
+                alertService.addError("You do not belong here!", true);
                 $location.path('/');
             }
             console.log("Owner test successful");
