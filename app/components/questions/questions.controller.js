@@ -10,7 +10,7 @@ kolabApp.controller('questionsCtrl', ['$scope', '$http','$location', 'socket', f
 
     $scope.scopeRoomCookie = roomCookie;
 
-    $scope.grouped = "groupedTrue";
+    $scope.grouped = "groupedFalse";
 
     $scope.go = function (path) {
         $location.path(path);
@@ -64,8 +64,10 @@ kolabApp.controller('questionsCtrl', ['$scope', '$http','$location', 'socket', f
     $scope.switchView = function () {
         if ($scope.grouped == "groupedTrue") {
             $scope.grouped = "groupedFalse";
+            document.getElementById("groupedButton").innerHTML = "Grouped";
         } else {
             $scope.grouped = "groupedTrue";
+            document.getElementById("groupedButton").innerHTML = "Ungrouped";
         }
     };
 

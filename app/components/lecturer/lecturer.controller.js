@@ -1,7 +1,6 @@
 kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket','alertService', function ($scope, $http, $location, socket, alertService) {
     console.log("Hello World from lecturer-controller");
 
-    console.log("Current cookie: ", document.cookie);
 
     var userIDCookie = document.cookie.slice(9, 25);
     var normalCookie = document.cookie.slice(4, 25);
@@ -15,7 +14,7 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket','a
     $scope.decreaseSpeedPercent = 0;
     $scope.increaseSpeedPercent = 0;
 
-    $scope.grouped = "groupedTrue";
+    $scope.grouped = "groupedFalse";
 
     $scope.go = function (path) {
         $location.path(path);
@@ -24,7 +23,6 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket','a
 
     // initial retrieval of questions from the database
     var refresh = function () {
-
         $http.get('/ownerTest').then(function (response) {
             if (!response.data) {
                 console.log("Owner test failed");
@@ -104,8 +102,10 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket','a
     $scope.switchView = function () {
         if ($scope.grouped == "groupedTrue") {
             $scope.grouped = "groupedFalse";
+            document.getElementById("groupedButton").innerHTML = "Grouped";
         } else {
             $scope.grouped = "groupedTrue";
+            document.getElementById("groupedButton").innerHTML = "Ungrouped";
         }
     };
 
@@ -117,10 +117,10 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket','a
 
 
     /*$scope.studentView = function () {
-     console.log("cantKeepUp button was clicked");
-     };*/
+        console.log("cantKeepUp button was clicked");
+    };*/
 
-// reset votes button function
+    // reset votes button function
     $scope.resetVotes = function () {
 
         $scope.cantKeepUpHits = 0;
@@ -143,7 +143,6 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket','a
 
 
         socket.emit('resetVotes', roomCookie);
-        console.log("votes reset");
     };
 
 
@@ -153,14 +152,14 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket','a
         socket.emit('question delete', index, obj);
 
     };
-// remove from grouped view
+    // remove from grouped view
     $scope.removeGrouped = function (rowIndex, index, id) {
         console.log("This is the index of the question we're trying to delete: " + index + "\n and this is the ID: " + id);
         socket.emit('question delete grouped', rowIndex, index, id);
 
     };
 
-// socket listener for questions deleted in the normal question view at lecturer
+    // socket listener for questions deleted in the normal question view at lecturer
     socket.on('question delete', function (index, obj) {
         console.log("Trying to delete message (SOCKET) with ID: " + obj._id);
 
@@ -175,7 +174,7 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket','a
         $scope.$apply();
     });
 
-// socket listener for questions deleted while in "group view" at lecturer
+    // socket listener for questions deleted while in "group view" at lecturer
     socket.on('question delete grouped', function (rowIndex, index, obj) {
         console.log("Grouped: Trying to delete message with ID: " + obj._id + ", and rowIndex: " + rowIndex + ", and normal index: " + index);
         $scope.newTags[obj.tag].splice(index, 1);
@@ -191,7 +190,7 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket','a
         $scope.$apply();
     });
 
-// socket listener for new questions
+    // socket listener for new questions
     socket.on('question message', function (msg) {
         console.log(msg.tag);
         $scope.kolabDBScope.push(msg);
@@ -263,7 +262,7 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket','a
 
 
 
-// Progress bar type checks
+    // Progress bar type checks
     var cantKeepUpCheck = function () {
 
         if ($scope.cantKeepUpPercent >= 75) {
@@ -406,12 +405,11 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket','a
         $scope.$apply();
     });
 
-//On the even rarer occassion a room is being deleted while the lecturer is still in it, can be multi-tab
+    //On the even rarer occassion a room is being deleted while the lecturer is still in it, can be multi-tab
     socket.on('delete current room', function () {
         alertService.addWarning("Your room was deleted!");
         $location.path('/');
         $scope.$apply();
     });
 
-}])
-;
+}]);
