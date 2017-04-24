@@ -27,8 +27,6 @@ kolabApp.factory('alertService', ['$timeout', function ($timeout) {
         }
     };
 
-    console.log(internal);
-
 
     return {    // Callable functions, f.ex alertService.addError
         addError: function (message, autoClose) {

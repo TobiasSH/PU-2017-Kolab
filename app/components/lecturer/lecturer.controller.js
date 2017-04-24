@@ -1,6 +1,4 @@
 kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket','alertService', function ($scope, $http, $location, socket, alertService) {
-    console.log("Hello World from lecturer-controller");
-
 
     var userIDCookie = document.cookie.slice(9, 25);
     var normalCookie = document.cookie.slice(4, 25);
@@ -25,17 +23,13 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket','a
     var refresh = function () {
         $http.get('/ownerTest').then(function (response) {
             if (!response.data) {
-                console.log("Owner test failed");
                 alertService.addError("You do not belong here!", true);
                 $location.path('/');
             }
-            console.log("Owner test successful");
         });
         socket.emit('cookie initialize', document.cookie);
         $http.get('/roomsQuestionsCollection').then(function (response) {
 
-                console.log("I got the data I requested from roomsQuestionsCollection");
-                console.log("This is the pure response object:" + response);
                 $scope.kolabDBScope = response.data;
                 $scope.question = null;
                 //Used to identify the different tags, aka nouns
@@ -45,9 +39,9 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket','a
                     if (!$scope.newTags[$scope.kolabDBScope[i].tag]) {
                         $scope.newTags[$scope.kolabDBScope[i].tag] = [];
                     }
-                    $scope.newTags[$scope.kolabDBScope[i].tag].push($scope.kolabDBScope[i]);
+                    $scope.newTags[$scope.kolabDBScope[i].tag].push($scope.kolabDBScope[i]);//object with array of objects
                 }
-                console.log("These are the tags: ", $scope.newTags); //object with array of objects
+
 
             },
 
@@ -56,11 +50,10 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket','a
             });
 
         //if user doesnt have a room, we return them to the front-page
-        if (document.cookie.length <= 25) { //TODO NEEDS CHECK FOR USERID VS CREATOR OF ROOM
-            console.log("New user, returning to start");
+        if (document.cookie.length <= 25) {
+            alertService.addError("You do not belong here!");
             $location.path('/');
-        } else {//we join the socket we're supposed to be on, based on our room
-            console.log("Joining room: ", roomCookie);
+        } else {//we join the socket we're supposed to be on, based on our cookie
             socket.emit('join room lecturer', roomCookie);
         }
 
@@ -116,10 +109,6 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket','a
     };
 
 
-    /*$scope.studentView = function () {
-        console.log("cantKeepUp button was clicked");
-    };*/
-
     // reset votes button function
     $scope.resetVotes = function () {
 
@@ -148,21 +137,17 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket','a
 
 // remove function bound to the delete buttons in lecture view
     $scope.remove = function (index, obj) {
-        console.log("This is the index of the question we're trying to delete: " + index + "\n and this is the ID: " + obj._id);
         socket.emit('question delete', index, obj);
 
     };
     // remove from grouped view
     $scope.removeGrouped = function (rowIndex, index, id) {
-        console.log("This is the index of the question we're trying to delete: " + index + "\n and this is the ID: " + id);
         socket.emit('question delete grouped', rowIndex, index, id);
 
     };
 
     // socket listener for questions deleted in the normal question view at lecturer
     socket.on('question delete', function (index, obj) {
-        console.log("Trying to delete message (SOCKET) with ID: " + obj._id);
-
         for (var i = 0; i < $scope.newTags[obj.tag].length; i++) {
             if ($scope.newTags[obj.tag][i]._id === obj._id) {
                 $scope.newTags[obj.tag].splice(i, 1);
@@ -176,11 +161,8 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket','a
 
     // socket listener for questions deleted while in "group view" at lecturer
     socket.on('question delete grouped', function (rowIndex, index, obj) {
-        console.log("Grouped: Trying to delete message with ID: " + obj._id + ", and rowIndex: " + rowIndex + ", and normal index: " + index);
         $scope.newTags[obj.tag].splice(index, 1);
-        console.log("Current state of scope: " + $scope.kolabDBScope);
         for (var i = 0; i < $scope.kolabDBScope.length; i++) {
-            console.log($scope.kolabDBScope[i]);
             if ($scope.kolabDBScope[i]._id == obj._id) {
                 $scope.kolabDBScope.splice(i, 1);
                 $scope.$apply();
@@ -192,7 +174,6 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket','a
 
     // socket listener for new questions
     socket.on('question message', function (msg) {
-        console.log(msg.tag);
         $scope.kolabDBScope.push(msg);
         $scope.$apply();
         //needs an if-statement for whether we're on grouped or non-grouped view
@@ -200,7 +181,6 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket','a
         for (var property in $scope.newTags) {
             if ($scope.newTags.hasOwnProperty(property)) {
                 if (msg.tag === property) {
-                    console.log("We tried inserting directly into the scope", property);
                     newcategory = false;
                     $scope.newTags[property].push(msg);
                     $scope.$apply();
@@ -209,7 +189,6 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket','a
             }
         }
         if (newcategory == true) { //if the tag cannot be found we insert it into the scope
-            console.log("Category not found.");
             $scope.newTags[msg.tag] = [];
             $scope.newTags[msg.tag].push(msg);
             $scope.$apply();
@@ -387,7 +366,6 @@ kolabApp.controller('lecturerCtrl', ['$scope', '$http', '$location', 'socket','a
     });
 
     socket.on('storeClient', function (modifier) {
-        console.log("New user joined ", $scope.userCount);
         $scope.userCount += modifier;
 
         $scope.cantKeepUpPercent = cantKeepUpPercentCalc();

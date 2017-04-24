@@ -1,40 +1,9 @@
 kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', 'alertService', function ($scope, $location, $http, socket, alertService) {
 
-    console.log("Current cookie: ", document.cookie);
-
     var userIDCookie = "";
     var clicksCookie = "";
     var normalCookie = "";
     var roomCookie = "";
-
-
-    var currentdate = new Date();
-    var datetime = (currentdate.getDate()) + "/"
-        + (currentdate.getMonth() + 1) + "/"
-        + currentdate.getFullYear() + "@"
-        + currentdate.getHours() + ":"
-        + (currentdate.getMinutes()-2);
-
-    var currentdatetime = (currentdate.getDate()) + "/"
-        + (currentdate.getMonth() + 1) + "/"
-        + currentdate.getFullYear() + "@"
-        + currentdate.getHours() + ":"
-        + (currentdate.getMinutes());
-
-
-    console.log(datetime);
-
-    var test = function(){
-        if (datetime > currentdatetime){
-            console.log(typeof datetime, " is larger than ",typeof currentdatetime);
-            console.log("Can be compared!!!");
-        }else if (datetime < currentdatetime){
-            console.log(typeof datetime, " is smaller than ", typeof currentdatetime);
-            console.log("Can be compared!!!");
-        }
-    };
-
-    test();
 
     $scope.go = function (path) {
         $location.path(path);
@@ -48,14 +17,13 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', 'ale
             e.preventDefault();
         }
 
-        // TODO Only english characters and numbers allowed in newroom
         if (e.keyCode == 50 && e.shiftKey || e.keyCode == 51 && e.shiftKey || e.keyCode == 52 && e.shiftKey) {
             alertService.addWarning("Special characters are not allowed in rooms.", true);
             e.preventDefault();
         }
     });
 
-    // Prevents enter from making a newline without using shift modifier
+    // JQuery: Prevents enter from making a newline without using shift modifier
     $('#textareaJoinRoom').keydown(function (e) {
         // Enter was pressed without shift key
         if (e.keyCode == 13 && !e.shiftKey) {
@@ -89,26 +57,16 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', 'ale
         roomCookie = document.cookie.slice(25);
 
 
-        console.log("Normal cookie , ", normalCookie);
-        console.log("UserID: ", userIDCookie);
-        console.log("Clicks: ", clicksCookie);
-        console.log("Room: ", roomCookie);
-
         $scope.myRooms = [];
 
-        // TODO Cookie initialize here maybe
-
         $http.get('/roomsCollection').then(function (response) {
-                console.log("I got the data I requested", response.data);
                 $scope.kolabDBScope = response.data;
 
                 for (var i = 0; i < $scope.kolabDBScope.length; i++) { // Looping through scope to check if room is ours
                     if ($scope.kolabDBScope[i].creator === userIDCookie) {
                         $scope.myRooms.push($scope.kolabDBScope[i]);
                     }
-
                 }
-
             },
             function (error) {
                 console.log("I got ERROR", error);
@@ -129,7 +87,6 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', 'ale
             for (var i = 0; i < $scope.kolabDBScope.length; i++) {
                 if ($scope.kolabDBScope[i].room === $('#textareaNewRoom').val()) {
                     availRoom = false;
-                    console.log("How often does this happen");
                 }
             }
             if (availRoom) { // If it is available, we create the room
@@ -156,13 +113,10 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', 'ale
 
 
     $scope.joinRoom = function () {//really unfinished, same with createroom, needs functioning if sentence
-        console.log("method join room called", $scope.kolabDBScope);
         if ($scope.joinRoom != null && $('#textareaJoinRoom').val().length) {
             for (var i = 0; i < $scope.kolabDBScope.length; i++) {
                 if ($scope.kolabDBScope[i].room === $('#textareaJoinRoom').val()) {
-                    console.log("Trying to join room ", $('#textareaJoinRoom').val());
                     document.cookie = document.cookie.substring(4, 25);
-                    console.log("Cookie after splicing: ", document.cookie);
                     document.cookie += $('#textareaJoinRoom').val();
 
                     $('#textareaJoinRoom').val('');
@@ -181,8 +135,6 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', 'ale
         }
         document.cookie = "key=11111" + userIDCookie; //Removing votes and room values
         document.cookie += room;
-        console.log("This is the name of the room: " + room);
-        console.log("We spliced the cookie and now it is : ", document.cookie);
         $location.path('/student');
     };
 
@@ -199,7 +151,6 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', 'ale
 
 // Socket listeners
     socket.on('new room broadcast', function (room) {
-        console.log('A new room was created: ', room);
         $scope.kolabDBScope.push(room);
         $scope.$apply();
     });
@@ -227,11 +178,8 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', 'ale
 
     //doesnt this have to be in all the controllers?
     socket.on('resetVotes', function () {
-        alertService.addInfo("Votes were reset by the lecturer!", true);
         useridcounters = "key=11111" + userIDCookie;
         document.cookie = useridcounters + roomCookie;
-        $scope.$apply();
-        refresh();
     });
 
 
@@ -242,5 +190,4 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', 'ale
         return result;
     }
 
-}])
-;
+}]);

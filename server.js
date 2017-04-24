@@ -504,7 +504,6 @@ app.get('/counters', function (req, res) {
     })
 });
 
-// TODO Remove the extra shit at the end after ;
 
 function cookieParseRoom(cookie) {//Removes everything about the cookie which is not about room
     console.log("CookieParseRoom running on: ", cookie);

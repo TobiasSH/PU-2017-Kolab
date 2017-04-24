@@ -1,10 +1,7 @@
 kolabApp.controller('menuCtrl', ['$scope', '$http', '$location', 'socket','alertService', function ($scope, $http, $location, socket, alertService) {
 
 
-    console.log("Current cookie: ", document.cookie);
-
     var userIDCookie = document.cookie.slice(9, 25);
-    var normalCookie = document.cookie.slice(4, 25);
     var roomCookie = document.cookie.slice(25);
 
     $scope.scopeRoomCookie = roomCookie;
@@ -35,9 +32,7 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', '$location', 'socket','alert
         var roomCookie = document.cookie.slice(25);
         var clicksCookie = document.cookie.slice(4, 9);
 
-
         socket.emit('cookie initialize', document.cookie);
-        console.log("Room: ", document.cookie.slice(25));
 
         if (document.cookie.length < 4) {
             return;
@@ -64,7 +59,7 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', '$location', 'socket','alert
         }
         //if user doesnt have a room, we return them to the front-page
         if (document.cookie.length <= 25) {
-            console.log("New user, returning to start");
+            alertService.addWarning("You join rooms by either entering the name in the 'Join-room' text-box, or browsing the list and clicking 'Join'");
             $location.path('/');
         } else {
             socket.emit('join room', roomCookie, normalCookie); //we join the socket we're supposed to be on, based on our room
@@ -90,18 +85,15 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', '$location', 'socket','alert
             cantKeepUp.className = button + "btn-cantkeepup";
         } else if (inc == 1) {
             cantKeepUp.className = button + " btn-cantkeepupClicked";
-            console.log("yo clicked")
 
         }
         socket.emit('cantKeepUp', inc, roomCookie, document.cookie);
-        console.log("cantKeepUp button was clicked, cookie is: ", document.cookie);
 
 
 
     };
 
     $scope.decreaseVolume = function () {
-        console.log("decreaseVolume button was clicked");
         var inc = setCountGetInc(1);
         if (inc == -1) {
             decreaseVolume.className = button + " btn-volume";
@@ -116,12 +108,10 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', '$location', 'socket','alert
         }
 
         socket.emit('decreaseVolume', inc, roomCookie, document.cookie);
-        console.log("DCU button was clicked, cookie is: ", document.cookie);
 
     };
 
     $scope.increaseVolume = function () {
-        console.log("increaseVolume button was clicked");
 
         var inc = setCountGetInc(2);
         if (inc == -1) {
@@ -141,7 +131,6 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', '$location', 'socket','alert
     };
 
     $scope.decreaseSpeed = function () {
-        console.log("decreaseSpeed button was clicked");
 
         var inc = setCountGetInc(3);
         if (inc == -1) {
@@ -162,7 +151,6 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', '$location', 'socket','alert
 
 
     $scope.increaseSpeed = function () {
-        console.log("increaseSpeed button was clicked");
 
         var inc = setCountGetInc(4);
         if (inc == -1) {
@@ -175,7 +163,6 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', '$location', 'socket','alert
             increaseSpeed.className = button + "btn-speedClicked";
             decreaseSpeed.className = button + "btn-speed";
         }
-        console.log(countString);
         socket.emit('increaseSpeed', inc, roomCookie, document.cookie);
 
     };
@@ -186,18 +173,7 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', '$location', 'socket','alert
         document.cookie = "key=11111" + userIDCookie;
         $location.path('/');
     };
-    //on connect sets cookie and counts users
 
-    // TODO Remove this
-    socket.on('connect', function () {
-        if (document.cookie == "") {// This really should not happen now
-            console.log("This should never run unless you're in incognito and refresh or something");
-        }
-        console.log("connect");
-    });
-
-
-    //doesnt this have to be in all the controllers?
     socket.on('resetVotes', function () {
         alertService.addInfo("Votes were reset by the lecturer!", true);
         useridcounters = "key=11111" + userIDCookie;
@@ -232,6 +208,7 @@ kolabApp.controller('menuCtrl', ['$scope', '$http', '$location', 'socket','alert
         }
         return inc
     }
+
 
 
 }]);
