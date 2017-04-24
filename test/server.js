@@ -23,4 +23,34 @@ describe('loading express', function () {
       .expect(404, done);
   });
 
+  it('lecturer', function testPath(done) {
+    request(server)
+      .get('/lecturer')
+      .expect(200, done);
+  });
+
+  it('student', function testPath(done) {
+    request(server)
+      .get('/student')
+      .expect(200, done);
+  });
+
+  it('questions', function testPath(done) {
+    request(server)
+      .get('/questions')
+      .expect(200, done);
+  });
+
+  it('questionsCollection', function testPath(done) {
+    request(server)
+      .get('/questionsCollection')
+      .expect(200, done);
+  });
+
+  it('counters', function testPath(done) {
+    request(server)
+      .get('/counters')
+      .expect(200, done);
+  });
+
 });
