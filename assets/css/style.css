@@ -362,6 +362,7 @@ textarea {
     width: 100%;
     font-size: 34px;
     min-width: 150px;
+    min-height: 98px;
     background: #99DDEE;
     color: #446677; /*#555555;*/
     border-radius: 0 128px 128px 0;
