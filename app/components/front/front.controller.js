@@ -17,6 +17,7 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', 'ale
             e.preventDefault();
         }
 
+        // Prevents certain keycodes from being pressed;  " , #, $
         if (e.keyCode == 50 && e.shiftKey || e.keyCode == 51 && e.shiftKey || e.keyCode == 52 && e.shiftKey) {
             alertService.addWarning("Special characters are not allowed in rooms.", true);
             e.preventDefault();

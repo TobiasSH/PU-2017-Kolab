@@ -238,8 +238,8 @@ th {
     text-align:left;
     color: #223344;
     text-shadow: 0 0 transparent;
-    margin-top: 50px;
-    margin-bottom: 0px;
+    margin-top: 20px;
+    margin-bottom: 10px;
 }
 
 .long-table{    
@@ -497,6 +497,19 @@ textarea {
     /*margin: 10px 0 10px 0;*/
 }
 
+.btn-manage {
+    height: 50%;
+    width: 50%;
+    font-size: 34px;
+    min-height: 100px;
+    min-width: 150px;
+    max-width: 150px;
+    background: #BBDDBB;
+    color: #448844;
+    border-radius: 50px;
+    /*margin: 10px 0 10px 0;*/
+}
+
 /* IMAGES */
 /********************/
 
@@ -602,6 +615,10 @@ textarea {
 
 .click-table td:last-child .progress {
     border-radius: 0 128px 128px 0;
+}
+
+.table-subtext {
+    font-size: 34px;
 }
 
 
