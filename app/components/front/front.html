@@ -1,12 +1,13 @@
 <div class="container vertical-center">
     <div class="front container horizontal-center">
         <img class="logo" src="/assets/img/kolab-logo.svg">
+        <hr id="logo-line">
         <table class="table">
             <tbody>
-            <h1 class="table-title"> Your rooms</h1>
+            <h1 class="table-title">Lecturers</h1>
 
             <tr>
-                <td><textarea title="New room" id="textareaNewRoom" maxlength="140" size="80" class="form-control"
+                <td><textarea placeholder="Name your classroom ..." title="New room" id="textareaNewRoom" maxlength="140" size="80" class="form-control"
                               ng-model="newRoom.text"
                               ng-keyup="$event.keyCode == 13 ? createRoom() : null"></textarea>
                 </td>
@@ -19,7 +20,7 @@
             </tbody>
 
             <table id="myRoomsTable" class="table long-table">
-                <h1 class="table-subtext" ng-show="myRooms.length <= 0"> You are currently not managing any rooms, create one.</h1>
+                <h1 class="table-subtext" ng-show="myRooms.length <= 0"> You are currently not managing any rooms, create one!</h1>
 
                 <tr ng-repeat="room in myRooms" class="roomRows">
                     <!--<td>{{question.number}}</td>-->
@@ -41,10 +42,10 @@
 
             </table>
             <table class="table">
-                <h1 class="table-title" ng-show="kolabDBScope.length > 0"> Available rooms</h1>
+                <h1 class="table-title" ng-show="kolabDBScope.length > 0"> Students</h1>
 
                 <tr>
-                    <td> <textarea title="Join room" id="textareaJoinRoom" maxlength="140" size="80"
+                    <td> <textarea placeholder="Search for classroom ..."  title="Join room" id="textareaJoinRoom" maxlength="140" size="80"
                                    class="form-control"
                                    ng-model="joinRoom.text"
                                    ng-keyup="$event.keyCode == 13 ? joinRoom() : null"></textarea></td>

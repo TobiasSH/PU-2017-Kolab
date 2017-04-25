@@ -113,13 +113,16 @@ kolabApp.controller('frontCtrl', ['$scope', "$location", '$http', 'socket', 'ale
     };
 
 
-    $scope.joinRoom = function () {//really unfinished, same with createroom, needs functioning if sentence
-        if ($scope.joinRoom != null && $('#textareaJoinRoom').val().length) {
+    $scope.joinRoom = function () {
+        if ($scope.joinRoom != null && $('#textareaJoinRoom').val().length) { // Checks if the user has typed anything in the field
             for (var i = 0; i < $scope.kolabDBScope.length; i++) {
                 if ($scope.kolabDBScope[i].room === $('#textareaJoinRoom').val()) {
-                    document.cookie = document.cookie.substring(4, 25);
-                    document.cookie += $('#textareaJoinRoom').val();
 
+                    if (document.cookie.length > 25) { // If the user left the room by using browsers back button
+                        socket.emit('leave room', document.cookie.substring(4, 25)); // We send a message to the server to remove the clicks from that room
+                    }
+                    document.cookie = "key=11111" + userIDCookie; //Removing votes and room values
+                    document.cookie += $('#textareaJoinRoom').val();
                     $('#textareaJoinRoom').val('');
                     $location.path('/student');
                     return false;
