@@ -1,29 +1,70 @@
-<div class="vertical-center">
-    <div class="horizontal-center">
-        <h1>TDT4140 <p> Software Engineering</h1>
-        <table class="table front-table">
+<div class="container vertical-center">
+    <div class="front container horizontal-center">
+        <img class="logo" src="/assets/img/kolab-logo.svg">
+        <table class="table">
             <tbody>
             <tr>
-                <td>
-                    <a href="/student">
-                        <button class="btn btn-lg btn-block bn-square btn-student">
-                        <img class="front-button-icon" src="../../../assets/img/icons/student.svg" onerror="this.onerror=null; this.src='../../../assets/img/icons/student.png'">
-                        <span style="display:block; height: 30px;"></span>
-                        Student View
-                        </button>
-                    </a>
+                <td><textarea title="New room" id="textareaNewRoom" maxlength="140" size="80" class="form-control"
+                              ng-model="newRoom.text"
+                              ng-keyup="$event.keyCode == 13 ? createRoom() : null"></textarea>
                 </td>
                 <td>
-                    <a href="/lecturer">
-                            <button class="btn btn-lg btn-block bn-square btn-lecturer">
-                            <img class="front-button-icon" src="../../../assets/img/icons/lecturer.svg" onerror="this.onerror=null; this.src='../../../assets/img/icons/lecturer.png'">
-                            <span style="display:block; height: 30px;"></span>
-                            Lecturer View
-                        </button>
-                    </a>
+                    <button class="btn btn-lg btn-block btn-send" ng-click="createRoom()">Create room
+                    </button>
                 </td>
+            </tr>
+            <tr>
+                <td> <textarea title="Join room" id="textareaJoinRoom" maxlength="140" size="80" class="form-control"
+                               ng-model="joinRoom.text"
+                               ng-keyup="$event.keyCode == 13 ? joinRoom() : null"></textarea></td>
+                <td>
+                    <button class="btn btn-lg btn-block btn-send" ng-click="joinRoom()">Join room
+                    </button>
+                </td>
+
+
+                <table id="myRoomsTable" class="table long-table">
+                    <h1 class="table-title" ng-show="myRooms.length > 0"> Your rooms</h1>
+                    <tr ng-repeat="room in myRooms" class="roomRows">
+                        <!--<td>{{question.number}}</td>-->
+                        <td class="td-room">{{room.room}}</td>
+                        <td>
+                            <button class="joinMyRoom btn btn-lg btn-block btn-remove"
+                                    ng-click="deleteRoom($index, room )">
+                                    <img class="lecturer-button-icon" src="../../../assets/img/icons/remove.svg"
+                                     onerror="this.onerror=null; this.src='../../../assets/img/icons/remove.png'">
+                            </button>
+                        </td>
+                        <td>
+                            <button class="joinMyRoom btn btn-lg btn-block btn-join"
+                                    ng-click="joinMyRoom( room.room )">Join
+                            </button>
+                        </td>
+                    </tr>
+
+
+                </table>
+
+
+                <table id="roomsTable" class="table long-table">
+                    <h1 class="table-title" ng-show="kolabDBScope.length <= 0"> No rooms, make one!</h1>
+                    <h1 class="table-title" ng-show="kolabDBScope.length > 0"> Available rooms</h1>
+                    <tr ng-repeat="room in kolabDBScope | filter: joinRoom.text | orderBy:'-'" class="roomRows">
+                        <!--<td>{{question.number}}</td>-->
+                        <td class="td-room">{{room.room}}</td>
+                        <td>
+                            <button class="joinRoom btn btn-lg btn-block btn-join"
+                                    ng-click="joinExistingRoom( room.room )">Join
+                            </button>
+                        </td>
+                    </tr>
+
+
+                </table>
             </tr>
             </tbody>
         </table>
+
+        <page-alerts></page-alerts>
     </div>
 </div>
