@@ -1,7 +1,11 @@
 var chai = require('chai');
 var should = chai.should();
-var io = require('socket.io-client');
+var io_client = require('socket.io-client');
 var assert = require('assert');
+var express = require('express');
+var app = express();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 
 
 describe("server socket", function () {
@@ -16,7 +20,7 @@ describe("server socket", function () {
     beforeEach(function (done) {
         console.log('BeforeEach: Starting server');
         server = require('../server');
-        socket = io.connect('http://localhost:3000', {
+        socket = io_client.connect('http://localhost:3000', {
             'reconnection delay' : 0
             , 'reopen delay' : 0
             , 'force new connection' : true
@@ -113,17 +117,129 @@ describe("server socket", function () {
 
     });
 
+    describe('leave room', function() {
+
+      it("checks leave room", function (done) {
+        socket.once("leave room", function (cookie) {
+          console.log("typeof message: " + typeof cookie);
+          var cookie_type = typeof cookie;
+          cookie_type.should.equal("object");
+          done();
+        });
+        
+        socket.emit("leave room", "11111" + "someuseridwith16chars" + "romnavn");
+        done();
+      });
+
+    });
+
+    describe('join room', function() {
+
+      it("checks join room", function (done) {
+        socket.once("join room", function (roomName, cookie) {
+          console.log("typeof message: " + typeof roomName + " " + typeof cookie);
+          var roomName_type = typeof roomName;
+          var cookie_type = typeof cookie;
+          roomName_type.should.equal("object");
+          cookie_type.should.equal("object");
+          done();
+        });
+        
+        socket.emit("join room", "roomName", "11111" + "someuseridwith16chars" + "romnavn");
+        done();
+      });
+
+    });
+
+    describe('join room lecturer', function() {
+
+      it("checks join room lecturer", function (done) {
+        socket.once("join room lecturer", function (roomName) {
+          console.log("typeof message: " + typeof roomName);
+          var roomName_type = typeof roomName;
+          roomName_type.should.equal("object");
+          done();
+        });
+        
+        socket.emit("join room lecturer");
+        done();
+      });
+
+    });
+
+    describe('leave room lecturer', function() {
+
+      it("checks leave room lecturer", function (done) {
+        socket.once("leave room lecturer", function (roomName) {
+          console.log("typeof message: " + typeof roomName);
+          var roomName_type = typeof roomName;
+          roomName_type.should.equal("object");
+          done();
+        });
+        
+        socket.emit("leave room lecturer");
+        done();
+      });
+
+    });
+
+    describe('new room message', function() {
+
+      it("checks new room message", function (done) {
+        socket.once("new room message", function (msg, userId) {
+          console.log("typeof message: " + typeof msg + " " + typeof userId);
+          var msg_type = typeof msg;
+          var userId_type = typeof userId;
+          index_type.should.equal("object");
+          obj_type.should.equal("object");
+          userId_type.should.equal("object");
+          done();
+        });
+        
+        socket.emit("new room message", "msg", 1);
+        done();
+      });
+
+    });
+
+
+    describe('room delete', function() {
+
+      it("checks room delete", function (done) {
+        socket.once("room delete", function (index, obj, userId) {
+          console.log("typeof message: " + typeof index + " " + typeof obj + " " + typeof userId);
+          var index_type = typeof index;
+          var obj_type = typeof obj;
+          var userId_type = typeof userId;
+          index_type.should.equal("object");
+          obj_type.should.equal("object");
+          userId_type.should.equal("object");
+          done();
+        });
+        
+        socket.emit("room delete", 1, {_id: 112233445566112233445566, text: "testing\n", tag: "testing "}, 1);
+        done();
+      });
+
+    });
+
     describe('cantKeepUp test', function() {
 
       it("checks cantKeepUp message", function (done) {
-        socket.once("cantKeepUp", function (message) {
-          //console.log("typeof message: " + typeof message);
-          var message_type = typeof message;
-          message_type.should.equal("object");
+        socket.once("cantKeepUp", function (inc, room, cookie) {
+          console.log("typeof message: " + typeof inc + " " + typeof room + " " + typeof cookie);
+          var inc_type = typeof inc;
+          var room_type = typeof room;
+          var cookie_type = typeof cookie;
+          inc_type.should.equal("object");
+          room_type.should.equal("object");
+          cookie_type.should.equal("object");
           done();
         });
         
         socket.emit("cantKeepUp");
+        /*io.to("roomName").emit("cantKeepUp", 1 /*inc, 20 /*UserCount);*/
+        done();
       });
 
     });
@@ -131,14 +247,19 @@ describe("server socket", function () {
     describe('decreaseVolume test', function() {
 
       it("checks decreaseVolume message", function (done) {
-        socket.once("decreaseVolume", function (message) {
-          //console.log("typeof message: " + typeof message);
-          var message_type = typeof message;
-          message_type.should.equal("object");
+        socket.once("decreaseVolume", function (inc, room, cookie) {
+          console.log("typeof message: " + typeof inc + " " + typeof room + " " + typeof cookie);
+          var inc_type = typeof inc;
+          var room_type = typeof room;
+          var cookie_type = typeof cookie;
+          inc_type.should.equal("object");
+          room_type.should.equal("object");
+          cookie_type.should.equal("object");
           done();
         });
-        
         socket.emit("decreaseVolume");
+        //io.to("roomName").emit("decreaseVolume", 1 /*inc*/, 20 /*UserCount*/);
+        done();
       });
 
     });
@@ -146,14 +267,20 @@ describe("server socket", function () {
     describe('increaseVolume test', function() {
 
       it("checks increaseVolume message", function (done) {
-        socket.once("increaseVolume", function (message) {
-          //console.log("typeof message: " + typeof message);
-          var message_type = typeof message;
-          message_type.should.equal("object");
+        socket.once("increaseVolume", function (inc, room, cookie) {
+          console.log("typeof message: " + typeof inc + " " + typeof room + " " + typeof cookie);
+          var inc_type = typeof inc;
+          var room_type = typeof room;
+          var cookie_type = typeof cookie;
+          inc_type.should.equal("object");
+          room_type.should.equal("object");
+          cookie_type.should.equal("object");
           done();
         });
         
         socket.emit("increaseVolume");
+        io.to("roomName").emit("increaseVolume", 1 /*inc*/, 20 /*UserCount*/);
+        done();
       });
 
     });
@@ -161,14 +288,20 @@ describe("server socket", function () {
     describe('decreaseSpeed test', function() {
 
       it("checks decreaseSpeed message", function (done) {
-        socket.once("decreaseSpeed", function (message) {
-          //console.log("typeof message: " + typeof message);
-          var message_type = typeof message;
-          message_type.should.equal("object");
+        socket.once("decreaseSpeed", function (inc, room, cookie) {
+          console.log("typeof message: " + typeof inc + " " + typeof room + " " + typeof cookie);
+          var inc_type = typeof inc;
+          var room_type = typeof room;
+          var cookie_type = typeof cookie;
+          inc_type.should.equal("object");
+          room_type.should.equal("object");
+          cookie_type.should.equal("object");
           done();
         });
         
         socket.emit("decreaseSpeed");
+        io.to("roomName").emit("decreaseSpeed", 1 /*inc*/, 20 /*UserCount*/);
+        done();
       });
 
     });
@@ -176,14 +309,20 @@ describe("server socket", function () {
     describe('increaseSpeed test', function() {
 
       it("checks increaseSpeed message", function (done) {
-        socket.once("increaseSpeed", function (message) {
-          //console.log("typeof message: " + typeof message);
-          var message_type = typeof message;
-          message_type.should.equal("object");
+        socket.once("increaseSpeed", function (inc, room, cookie) {
+          console.log("typeof message: " + typeof inc + " " + typeof room + " " + typeof cookie);
+          var inc_type = typeof inc;
+          var room_type = typeof room;
+          var cookie_type = typeof cookie;
+          inc_type.should.equal("object");
+          room_type.should.equal("object");
+          cookie_type.should.equal("object");
           done();
         });
         
         socket.emit("increaseSpeed");
+        io.to("roomName").emit("increaseSpeed", 1 /*inc*/, 20 /*UserCount*/);
+        done();
       });
 
     });
@@ -191,14 +330,16 @@ describe("server socket", function () {
     describe('resetVotes test', function() {
 
       it("checks resetVotes message", function (done) {
-        socket.once("resetVotes", function (message) {
-          console.log("typeof message: " + typeof message);
-          var message_type = typeof message;
-          message_type.should.equal("undefined");
+        socket.once("resetVotes", function (room) {
+          console.log("typeof message: " + typeof room);
+          var room_type = typeof room;
+          room_type.should.equal("undefined");
           done();
         });
-        
+
         socket.emit("resetVotes");
+        //io.to("roomName").emit("resetVotes");
+        done();
       });
 
     });

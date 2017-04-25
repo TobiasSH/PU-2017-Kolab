@@ -41,15 +41,9 @@ describe('loading express', function () {
       .expect(200, done);
   });
 
-  it('questionsCollection', function testPath(done) {
+  it('front', function testPath(done) {
     request(server)
-      .get('/questionsCollection')
-      .expect(200, done);
-  });
-
-  it('counters', function testPath(done) {
-    request(server)
-      .get('/counters')
+      .get('/front')
       .expect(200, done);
   });
 
