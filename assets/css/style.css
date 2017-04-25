@@ -204,7 +204,7 @@ th {
 
 .td-noun {
     /*color: white;*/
-    color: #001122;
+    color: #FFDDA7;
     /*text-shadow:111px 1px black;*/
     cursor: pointer;
     align-items: center;
@@ -236,7 +236,7 @@ th {
 
 .table-title{
     text-align:left;
-    color: #223344;
+    color: #FFDDA7;
     text-shadow: 0 0 transparent;
     margin-top: 20px;
     margin-bottom: 10px;
@@ -535,12 +535,12 @@ textarea {
     height: 10%;
     width: 60%;
     margin-top: 5%;
-    margin-bottom: 5%;
 }
 
 .plus-and-minus {
     margin-left: 1%;
     margin-right: 2%;
+    color: #FFDDA7;
 }
 
 .back-icon {
@@ -620,6 +620,8 @@ textarea {
 
 .table-subtext {
     font-size: 34px;
+    color: #b5b5b5;
+    text-shadow: 0 0 !important;
 }
 
 
