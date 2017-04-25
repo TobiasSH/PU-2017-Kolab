@@ -4,72 +4,81 @@
             <tbody>
             <tr>
                 <td width="90%">
-                    <h1>TDT4140 <p> Software Engineering</h1>
+                    <h1>{{scopeRoomCookie}}</h1>
                 </td>
                 <td width="10%">
-                    <a href="/">
-                        <button type="button" class="btn btn-lg btn-responsive btn-home">
-                        <img class="home-button-icon" src="../../../assets/img/icons/chevron-right.svg" onerror="this.onerror=null; this.src='../../../assets/img/icons/chevron-right.png'">
-                        </button>
-                    </a>
+                    <button type="button" class="btn btn-lg btn-responsive btn-home" ng-click="leaveRoom()">
+                        <span class="glyphicon glyphicon-chevron-right back-icon"></span>
+                    </button>
                 </td>
             </tr>
             </tbody>
         </table>
-        <span style="display:block; height: 50px;"></span>
         <table class="table menu-table">
             <tbody>
             <tr>
                 <td>
-                    <a href="/questions">
-                        <button class="btn btn-responsive btn-lg btn-block bn-square btn-question" ng-click="questions()">
-                        <img class="menu-button-icon" src="../../../assets/img/icons/questions.svg" onerror="this.onerror=null; this.src='../../../assets/img/icons/questions.png'">
+                    <button class="btn btn-responsive btn-lg btn-block bn-square btn-question"
+                            ng-click="questions()">
+                        <img class="menu-button-icon" src="../../../assets/img/icons/questions.svg"
+                             onerror="this.onerror=null; this.src='../../../assets/img/icons/questions.png'">
                         <span style="display:block; height: 30px;"></span>
                         Questions
-                        </button>
-                    </a>
+                    </button>
                 </td>
                 <td>
-                    <button id="cantKeepUp" class="btn btn-responsive btn-lg btn-block bn-square btn-cantkeepup" ng-click="cantKeepUp()">
-                    <img class="menu-button-icon" src="../../../assets/img/icons/cant-keep-up.svg" onerror="this.onerror=null; this.src='../../../assets/img/icons/cant-keep-up.png'">
-                    <span style="display:block; height: 30px;"></span>
-                    I can't keep up
+                    <button id="cantKeepUp" class="btn btn-responsive btn-lg btn-block bn-square btn-cantkeepup"
+                            ng-click="cantKeepUp()">
+                        <img class="menu-button-icon" src="../../../assets/img/icons/cant-keep-up.svg"
+                             onerror="this.onerror=null; this.src='../../../assets/img/icons/cant-keep-up.png'">
+                        <span style="display:block; height: 30px;"></span>
+                        I can't keep up
                     </button>
                 </td>
             </tr>
             <tr>
                 <td>
-                    <button id="decreaseVolume" class="btn btn-responsive btn-lg btn-block bn-square btn-volume" ng-click="decreaseVolume()">
-                    <img class="menu-button-icon" src="../../../assets/img/icons/decrease-volume.svg" onerror="this.onerror=null; this.src='../../../assets/img/icons/decrease-volume.png'">
-                    <span style="display:block; height: 30px;"></span>
-                    Decrease volume
+                    <button id="decreaseVolume" class="btn btn-responsive btn-lg btn-block bn-square btn-volume"
+                            ng-click="decreaseVolume()">
+                        <img class="menu-button-icon" src="../../../assets/img/icons/decrease-volume.svg"
+                             onerror="this.onerror=null; this.src='../../../assets/img/icons/decrease-volume.png'">
+                        <span style="display:block; height: 30px;"></span>
+                        Decrease Volume
                     </button>
                 </td>
                 <td>
-                    <button id="increaseVolume" class="btn btn-responsive btn-lg btn-block bn-square btn-volume" ng-click="increaseVolume()">
-                    <img class="menu-button-icon" src="../../../assets/img/icons/increase-volume.svg" onerror="this.onerror=null; this.src='../../../assets/img/icons/increase-volume.png'">
-                    <span style="display:block; height: 30px;"></span>
-                    Increase volume
+                    <button id="increaseVolume" class="btn btn-responsive btn-lg btn-block bn-square btn-volume"
+                            ng-click="increaseVolume()">
+                        <img class="menu-button-icon" src="../../../assets/img/icons/increase-volume.svg"
+                             onerror="this.onerror=null; this.src='../../../assets/img/icons/increase-volume.png'">
+                        <span style="display:block; height: 30px;"></span>
+                        Increase Volume
                     </button>
                 </td>
             </tr>
             <tr>
                 <td>
-                    <button id="decreaseSpeed" class="btn btn-responsive btn-lg btn-block bn-square btn-speed" ng-click="decreaseSpeed()">
-                    <img class="menu-button-icon" src="../../../assets/img/icons/decrease-speed.svg" onerror="this.onerror=null; this.src='../../../assets/img/icons/decrease-speed.png'">
-                    <span style="display:block; height: 30px;"></span>
-                    Decrease speed
+                    <button id="decreaseSpeed" class="btn btn-responsive btn-lg btn-block bn-square btn-speed"
+                            ng-click="decreaseSpeed()">
+                        <img class="menu-button-icon" src="../../../assets/img/icons/decrease-speed.svg"
+                             onerror="this.onerror=null; this.src='../../../assets/img/icons/decrease-speed.png'">
+                        <span style="display:block; height: 30px;"></span>
+                        Decrease Speed
                     </button>
                 </td>
                 <td>
-                    <button id="increaseSpeed" class="btn btn-responsive btn-lg btn-block bn-square btn-speed" ng-click="increaseSpeed()">
-                    <img class="menu-button-icon" src="../../../assets/img/icons/increase-speed.svg" onerror="this.onerror=null; this.src='../../../assets/img/icons/increase-speed.png'">
-                    <span style="display:block; height: 30px;"></span>
-                    Increase speed
+                    <button id="increaseSpeed" class="btn btn-responsive btn-lg btn-block bn-square btn-speed"
+                            ng-click="increaseSpeed()">
+                        <img class="menu-button-icon" src="../../../assets/img/icons/increase-speed.svg"
+                             onerror="this.onerror=null; this.src='../../../assets/img/icons/increase-speed.png'">
+                        <span style="display:block; height: 30px;"></span>
+                        Increase Speed
                     </button>
                 </td>
             </tr>
             </tbody>
         </table>
+        <page-alerts></page-alerts>
+
     </div>
 </div>

@@ -3,93 +3,149 @@
         <table class="title">
             <tbody>
             <tr>
-                <td width="90%">
-                    <h1>TDT4140 <p> Software Engineering</h1>
+                <td width="70%">
+                    <h1>{{scopeRoomCookie}}</h1>
+                </td>
+                <td width="10%" class="td-user-count">
+                    <h1>{{userCount}}</h1>
+                </td>
+                <td width="10%" class="td-user-icon">
+                    <span class="glyphicon glyphicon-user"></span>
                 </td>
                 <td width="10%">
-                    <a href="/">
-                        <button type="button" class="btn btn-lg btn-responsive btn-home">
-                            <img class="home-button-icon" src="../../../assets/img/icons/chevron-right.svg"
-                                 onerror="this.onerror=null; this.src='../../../assets/img/icons/chevron-right.png'">
-                        </button>
-                    </a>
+                    <button type="button" class="btn btn-lg btn-responsive btn-home" ng-click="leaveRoom()">
+                         <span class="glyphicon glyphicon-chevron-right back-icon"></span>
+                    </button>
                 </td>
             </tr>
             </tbody>
         </table>
-        <span style="display:block; height: 20px;"></span>
-        <div class="progress">
-            <div id="cantKeepUpBar" class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="40"
-                 aria-valuemin="0" aria-valuemax="100" style="width:0%">
-                Cant Keep up
-            </div>
-        </div>
-        <div class="progress">
-            <div id="decreaseVolumeBar" class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="50"
-                 aria-valuemin="0" aria-valuemax="100" style="width:0%">
-                Decrease Volume
-            </div>
-        </div>
-        <div class="progress">
-            <div id="increaseVolumeBar" class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="60"
-                 aria-valuemin="0" aria-valuemax="100" style="width:0%">
-                Increase Volume
-            </div>
-        </div>
-        <div class="progress">
-            <div id="decreaseSpeedBar" class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="40"
-                 aria-valuemin="0" aria-valuemax="100" style="width:0%">
-                Decrease Speed
-            </div>
-        </div>
-        <div class="progress">
-            <div id="increaseSpeedBar" class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="70"
-                 aria-valuemin="0" aria-valuemax="100" style="width:0%">
-                Increase Speed
-            </div>
+
+        <table class="click-table">
+            <tbody>
+            <tr>
+                <td class="cantKeepUpData" colspan="2">
+                    <span class="progressText cantKeepUpText">Can't keep up</span>
+                    <div class="progress">
+                        <div id="cantKeepUpBar"
+                             class="progress-bar progress-bar-striped {{cantKeepUpStyle}} {{activeAnimationCKU}}"
+                             role="progressbar"
+                             aria-valuenow="{{cantKeepUpPercent}}"
+                             aria-valuemin="0" aria-valuemax="100" ng-style="{'width':cantKeepUpPercent+'%'}">
+                            {{cantKeepUpPercent}}%
+
+                        </div>
+
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="progressGroup">
+                    <span class="progressText">Decrease Volume</span>
+                    <div class="progress">
+                        <div id="decreaseVolumeBar"
+                             class="progress-bar progress-bar-striped {{decreaseVolumeStyle}} {{activeAnimationDV}} progress-barL"
+                             role="progressbar" aria-valuenow="{{decreaseVolumePercent}}"
+                             aria-valuemin="0" aria-valuemax="100" ng-style="{'width':decreaseVolumePercent+'%'}">
+                            {{decreaseVolumePercent}}%
+                        </div>
+                    </div>
+                </td>
+
+                <td class="progressGroup">
+                    <span class="progressText">Increase Volume</span>
+                    <div class="progress">
+                        <div id="increaseVolumeBar"
+                             class="progress-bar progress-bar-striped {{increaseVolumeStyle}} {{activeAnimationIV}}"
+                             role="progressbar"
+                             aria-valuenow="{{increaseVolumePercent}}"
+                             aria-valuemin="0" aria-valuemax="100" ng-style="{'width':increaseVolumePercent+'%'}">
+                            {{increaseVolumePercent}}%
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="progressGroup">
+                    <span class="progressText">Decrease Speed</span>
+                    <div class="progress">
+                        <div id="decreaseSpeedBar"
+                             class="progress-bar progress-bar-striped {{decreaseSpeedStyle}} {{activeAnimationDS}} progress-barl"
+                             role="progressbar"
+                             aria-valuenow="{{decreaseSpeedPercent}}"
+                             aria-valuemin="0" aria-valuemax="100" ng-style="{'width':decreaseSpeedPercent+'%'}">
+                            {{decreaseSpeedPercent}}%
+                        </div>
+                    </div>
+                </td>
+                <td class="progressGroup">
+                    <span class="progressText">Increase Speed</span>
+                    <div class="progress">
+                        <div id="increaseSpeedBar"
+                             class="progress-bar progress-bar-striped {{increaseSpeedStyle}} {{activeAnimationIS}}"
+                             role="progressbar"
+                             aria-valuenow="{{increaseSpeedPercent}}"
+                             aria-valuemin="0" aria-valuemax="100" ng-style="{'width':increaseSpeedPercent+'%'}">
+                            {{increaseSpeedPercent}}%
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="btn-lecturer-div">
+            <button id="resetButton" type="button" class="btn btn-reset" ng-click="resetVotes()">
+                Reset votes
+            </button>
+            <button id="groupedButton" type="button" class="btn btn-grouped" ng-click="switchView()">
+                Grouped
+            </button>
         </div>
 
-        <button type="button" class="btn btn-primary" ng-click="resetVotes()">
-            Reset votes
-        </button>
-        <span style="display:block; height: 20px;"></span>
+
         <div ng-switch="grouped">
-            <button type="button" class="btn btn-small" ng-click="switchView()">Grouped/Ungrouped</button>
 
             <div ng-switch-when="groupedFalse">
-                <table id="questionsTable" class="table questions-table">
+                <table id="questionsTable" class="table questions-table long-table">
                     <tr ng-repeat="question in kolabDBScope" class="questionRows">
                         <!--<td>{{question.number}}</td>-->
-                        <td width="80%" class="td-question">{{question.text}}</td>
-                        <td width="20%">
+                        <td class="td-question">{{question.text}}</td>
+                        <td>
                             <button class="btn btn-lg btn-block btn-remove" ng-click="remove($index, question)">
-                                <img class="lecturer-button-icon" src="../../../assets/img/icons/remove.svg" onerror="this.onerror=null; this.src='../../../assets/img/icons/remove.png'">
+                                <img class="lecturer-button-icon" src="../../../assets/img/icons/remove.svg"
+                                     onerror="this.onerror=null; this.src='../../../assets/img/icons/remove.png'">
                             </button>
                         </td>
                     </tr>
+
                 </table>
             </div>
             <div ng-switch-when="groupedTrue">
 
-                <table id="questionsTableGrouped" class="table questions-table">
+                <table id="questionsTableGrouped" class="table questions-table long-table">
                     <tbody class="nounhead" ng-repeat="noun in newTags track by $index"
                            ng-init="$rowIndex = $index" ng-show="noun.length > 0">
 
-                    <tr class="nounRows" ng-init="toggle[$rowIndex] = true"
-                        ng-click="toggle[$index] = !toggle[$rowIndex]">
+                    <tr class="nounRows" ng-init="toggle[$rowIndex] = true" ng-click="toggle[$index] = !toggle[$rowIndex]">
+                        <td class="td-placeholder"></td>
                         <td class="td-noun">
-                            <span class="glyphicon glyphicon-plus-sign" ng-if="!toggle[$rowIndex]"></span>
-                            <span class="glyphicon glyphicon-minus-sign" ng-if="toggle[$rowIndex]"></span>
+                            <span class="glyphicon glyphicon-plus-sign plus-and-minus" ng-if="!toggle[$rowIndex]"></span>
+                            <span class="glyphicon glyphicon-minus-sign plus-and-minus" ng-if="toggle[$rowIndex]"></span>
                             {{noun[0].tag}}
                         </td>
+                        <td class="td-placeholder"></td>
                     </tr>
                     <tr ng-if="toggle[$rowIndex]" ng-repeat="question in noun track by $index" class="questionRows">
 
                         <!--<td>{{question.number}}</td>-->
-                        <td width="80%" class="td-question">{{question.text}}</td>
-                        <td width="20%">
-                            <button class="btn btn-lg btn-block btn-remove" ng-click="removeGrouped($rowIndex, $index, question)">
-                                <img class="lecturer-button-icon" src="../../../assets/img/icons/remove.svg" onerror="this.onerror=null; this.src='../../../assets/img/icons/remove.png'">
+                        <td class="td-space"></td>
+                        <td class="td-question">{{question.text}}</td>
+                        <td>
+                            <button class="btn btn-lg btn-block btn-remove"
+                                    ng-click="removeGrouped($rowIndex, $index, question)">
+                                <img class="lecturer-button-icon" src="../../../assets/img/icons/remove.svg"
+                                     onerror="this.onerror=null; this.src='../../../assets/img/icons/remove.png'">
                             </button>
                         </td>
                     </tr>
@@ -97,5 +153,8 @@
                 </table>
             </div>
         </div>
+        <page-alerts></page-alerts>
+
     </div>
+
 </div>

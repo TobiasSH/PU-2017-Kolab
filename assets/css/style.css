@@ -1,8 +1,8 @@
 /* GENERAL LAYOUT */
 /********************/
-body{
+body {
     height: 100%;
-    width:100%;
+    width: 100%;
     max-height: 100%;
     max-width: 100%;
 }
@@ -22,7 +22,6 @@ body{
 
 }
 
-
 .vertical-center {
     min-height: 100%; /* Fallback for browsers do NOT support vh unit */
     min-height: 100vh; /* These two lines are counted as one :-)       */
@@ -32,16 +31,96 @@ body{
 }
 
 .horizontal-center {
+    position: absolute;
+    top: 0;
     max-width: 100%;
-    width: 100%;
+    height: 100%;
+    /*width: 100%;*/
     text-align: center;
+    align-items: center;
+}
+
+/* MEDIA SPECIFICATIONS */
+
+@media (max-width: 1000px) {
+    /* MOBILES */
+    td.td-room.ng-binding {
+        padding-top: 4%;
+    }
+
+    .vertical-center {
+        max-height: 100%;
+        align-content: center;
+    }
+
+    .front.horizontal-center {
+        width: 73.5%;
+        left: 13.251%;
+    }
+
+    .horizontal-center {
+        width: 100%;
+        left: 0;
+    }
+
+    .h1, h1 {
+        font-size: 64px;
+    }
+
+    .bn-square {
+        font-size: 45px !important;
+    }
+}
+
+@media (min-width: 1300px) {
+    /* LARGE DESKTOPS */
+    .vertical-center {
+        max-height: 75%;
+        align-content: center;
+    }
+
+    .horizontal-center {
+        width: 30%;
+        left: 33%;
+    }
+
+}
+
+@media (min-width: 1000px) {
+    /* MEDIUM DESKTOPS */
+    .vertical-center {
+        max-height: 100%;
+        height: 100%;
+        align-content: center;
+    }
+
+    .horizontal-center {
+        width: 50%;
+        left: 25%;
+        height: inherit;
+    }
+}
+
+td.td-room.ng-binding {
+    /*padding-top: 5%;*/
+    padding-left: 5%;
+}
+
+td.td-question.ng-binding {
+    padding-top: 1%;
+    padding-bottom: 1%;
+    padding-left: 3%;
+    vertical-align: middle;
+}
+
+td.td-noun.ng-binding {
+    border: 0;
 }
 
 h1 {
     color: #EEEEEE;
     text-shadow: -2px 2px black;
 }
-
 
 /* TABLE CSS */
 /********************/
@@ -52,65 +131,64 @@ h1 {
     /*border: 1px solid green;*/
 }
 
-.menu-table {
-    /*table-layout: fixed;*/
-    width: 98%;
-    margin: 10px 0px -60px 10px;
-    /*border: 1px solid green;*/
-}
-
 .front-table {
     width: 92%;
-    margin: 40px 0px 0px 40px;
+    margin: 4% 0 0 4%;
 }
 
 .lecturer-table {
     width: 92%;
-    margin: 40px 0px 0px 40px;
+    margin: 4% 0 0 4%;
 }
 
 .questions-table, .questions-table-grouped {
     width: 92%;
-    margin: 40px 0px 0px 40px;
+    margin: 4% 4% 4% 4%;
 }
 
 .table th {
     font-size: 48px;
 }
 
-tbody{
+tbody {
     width: 100%;
-    display:inherit;
+    /*display: inherit;
     /*border: 1px solid yellow;*/
 }
-
 
 .table tr {
     min-width: inherit;
     color: white;
     padding: 0;
     line-height: 25px;
-    min-height: 200px;
+    min-height: 20px;
 
 }
 
-.questionRows{
-    border-bottom: 1px solid black;
+.questionRows td{
+    /*border-bottom: 1px solid black;*/
     /*word-break: break-all;*/
+    vertical-align: middle !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    padding-right: 0 !important;
 }
 
+.nounhead {
+    border-top: 0 !important;
+}
 
-.nounRows {
-    background-color: darkgray;
-    border-bottom: 1px solid black;
-    border-left: 1px solid black;
-    border-right: 1px solid black;
-    border-top: 1px solid black;
-    opacity: 0.4;
+th {
+    border: 0 !important;
+    font-size: 38px;
+    min-height: inherit;
+    height: 100%;
+    width: 25%;
+
 }
 
 .table td {
-    border: 0px !important;
+    border: 0 !important;
     /*border: 1px solid black;*/
     font-size: 38px;
     min-height: inherit;
@@ -121,25 +199,29 @@ tbody{
 .td-question {
     font-size: 30px;
     width: 100%;
+    height: 100px !important;
 }
 
-.td-noun{
-    color: white;
-    opacity: 1;
-    text-shadow: -2px 2px black;
+.td-noun {
+    /*color: white;*/
+    color: #FFDDA7;
+    /*text-shadow:111px 1px black;*/
     cursor: pointer;
+    align-items: center;
+    display: flex;
 }
 
-
-.title{
+.title {
     /*text-align: left;
     table-layout: fixed;*/
+    height: 6%;
     width: 92%;
-    margin: 40px 40px 0px 40px;
-    background: rgba(204,204,204,0.05);
+    margin: 4% 4% 0 4%;
+    background: rgba(204, 204, 204, 0.05);
     /*border: 1px solid black;*/
-    border-radius: 0px 128px 128px 0px;
+    border-radius: 0 128px 128px 0;
 }
+
 .title h1 {
     margin-left: 20px;
 }
@@ -148,6 +230,99 @@ tbody{
     border: 1px solid black;
 }*/
 
+#kolabLogo {
+    font-size: 90px;
+}
+
+.table-title{
+    text-align:left;
+    color: #FFDDA7;
+    text-shadow: 0 0 transparent;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.long-table{    
+    border-collapse: separate;
+    border-spacing: 0px 14px;
+}
+
+.long-table td {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    padding-right: 0 !important;
+    vertical-align: middle !important;
+}
+
+.long-table td, th{
+    background: rgba(204, 204, 204, 0.15);
+    /*border-radius: 0 128px 128px 0;*/
+}
+
+.long-table td:last-child, th:last-child{
+    border-radius: 0 128px 128px 0;
+    /*width:300px;*/
+}
+
+.nounRows td {
+    background-color: rgba(34, 51, 68, 0.3);
+    opacity: 1;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+.td-space {
+    min-width: 0px !important;
+    width: 3% !important;
+    background-color: transparent !important; 
+}
+
+.td-placeholder {
+    width: 3% !important;
+}
+
+.td-user-icon{
+    padding-left: 2% !important;
+    padding-right: 2% !important;
+}
+
+.td-user-icon span{
+    font-size: 2.5em;
+    color: #112233;
+}
+
+.td-user-count h1{
+    font-size: 3.2em;
+    color: #112233;
+    text-shadow: 0px 0px transparent;
+    margin: 0;
+    float: right;
+}
+
+.menu-table {
+    /*table-layout: fixed;*/
+    /*vertical-align: middle !important;*/
+    /*align-items: center;*/
+
+    height: 82%;
+    width: 92%;
+    margin-left: 4%;
+    margin-right: 4%;
+    margin-top: 4%;
+    margin-bottom: 4%;
+    /*margin: 10px 0 -50px 0;*/
+    /*margin: 40px 0 0 40px;*/
+
+    border-collapse: separate;
+    border-spacing: 10px 10px;
+
+    /*border: 1px solid green;*/
+}
+
+.menu-table td {
+    height: 33.33%;
+    width: 50%;
+}
 
 /* TEXTAREA AND FORM */
 /********************/
@@ -155,53 +330,67 @@ tbody{
     width: 100%;
     height: 100%;
     font-size: 30px;
-    min-height: 150px;
+    min-height: 20px;
 }
 
-textarea{
+textarea {
     resize: none;
     width: 100%;
 }
 
-
-/* BUTTON */
+/* BUTTONS */
 /********************/
 
-.btn {
-    border-radius: 0px;
+.joinRoom {
+    /*position: relative;
+    left: 50%;*/
+    float: right;
 }
 
+.joinMyRoom {
+    /*position: relative;*/
+    /*left: 50%;*/
+    float: right;
+}
+
+.btn {
+    border-radius: 0;
+}
 
 .btn-send {
     height: 100%;
-    width:100%;
+    width: 100%;
     font-size: 34px;
     min-width: 150px;
+    min-height: 98px;
     background: #99DDEE;
-    color: #555555;
-    border-radius: 0px 128px 128px 0px;
+    color: #446677; /*#555555;*/
+    border-radius: 0 128px 128px 0;
 }
 
-.btn-remove{
+.btn-remove {
     height: 50%;
     width: 50%;
     font-size: 34px;
     min-height: 100px;
     min-width: 100px;
+    max-width: 100px;
     background: #FFCCCC;
     border-radius: 50px;
-    margin: 10px 0px 10px 0px; 
+    /*margin: 10px 0 10px 0;*/
+    float: right;
+    vertical-align: middle;
 }
 
-
 .bn-square {
-    width:100%;
-    height:450px;
+    width: 100%;
+    height: 100%;
+    /*height: 380px;*/
     font-size: 28px;
-    min-height: 100%;
-    min-width: 100%;
-    max-width: 450px;
-    max-height: 450px;
+    min-height: 20px;
+    min-width: 20px;
+    max-width: 100%;/*450px;*/
+    max-height: 100%; /*450px;*/
     /*border: 1px solid red;*/
     border-radius: 30px;
 }
@@ -228,6 +417,7 @@ textarea{
     color: #555555;
     opacity: 1.0;
 }
+
 .btn-cantkeepupClicked {
     background: #99EAEE;
     color: #555555;
@@ -251,35 +441,85 @@ textarea{
     color: #555555;
 }
 
-.btn-lecturer {
-    background: #99DDEE;
-    color: #555555;
+.btn-lecturer-div {
+    /*background: #99DDEE;
+    color: #555555;*/
+    padding-top: 50px;
+    padding-bottom: 30px;
 }
 
 .btn-home {
     float: right;
-    /*width:100%;*/
-    height:150px;
+    width:150px;
+    height: 150px;
     min-height: 100%;
     min-width: 100%;
     max-width: 150px;
     max-height: 150px;
     /*background: #CCFFCC;*/
-    background: rgba(204,255,204,0.05);
+    background: rgba(204, 255, 204, 0.10);
     color: #888888;
     border-radius: 128px;
 }
 
+.btn-reset{
+    height: 5%;
+    width: 30%;
+    font-size: 34px;
+    min-height: 100px;
+    min-width: 100px;
+    background: #EEAA88;
+    color: #885533;
+    border-radius: 50px;
+    margin: 10px 150px 10px 0;
+}
+
+.btn-grouped{
+    height: 5%;
+    width: 30%;
+    font-size: 34px;
+    min-height: 100px;
+    min-width: 100px;
+    background: #CCCCCC;
+    border-radius: 50px;
+    margin: 10px 0 10px 0;
+}
+
+.btn-join {
+    height: 50%;
+    width: 50%;
+    font-size: 34px;
+    min-height: 100px;
+    min-width: 100px;
+    max-width: 100px;
+    background: #BBDDBB;
+    color: #448844;
+    border-radius: 50px;
+    /*margin: 10px 0 10px 0;*/
+}
+
+.btn-manage {
+    height: 50%;
+    width: 50%;
+    font-size: 34px;
+    min-height: 100px;
+    min-width: 150px;
+    max-width: 150px;
+    background: #BBDDBB;
+    color: #448844;
+    border-radius: 50px;
+    /*margin: 10px 0 10px 0;*/
+}
 
 /* IMAGES */
 /********************/
 
 .front-button-icon {
-  height: 128px;
+    height: 128px;
 }
 
 .menu-button-icon {
-  height: 100px;
+    height: 100px;
 }
 
 .lecturer-button-icon {
@@ -287,20 +527,124 @@ textarea{
 }
 
 .home-button-icon {
-  height: 100%;
-  width: 128px;
+    height: 100%;
+    width: 128px;
 }
 
-/* PROGRESSBAR */
+.logo {
+    height: 10%;
+    width: 60%;
+    margin-top: 5%;
+}
+
+.plus-and-minus {
+    margin-left: 1%;
+    margin-right: 2%;
+    color: #FFDDA7;
+}
+
+.back-icon {
+    font-size: 2.5em;
+    color: #112233;
+}
+
+/* PROGRESSBARS */
 /********************/
 
-.progress {
+.cantKeepUpText {
+    padding-left: 41%;
+    font-size: 30px;
+    color: white;
+    /*text-shadow: 2px 2px black;*/
+}
+
+.cantKeepUpData {
+    /*border: 1px solid black !important*/
+}
+
+.click-table {
     width: 92%;
-    height: 40px;
-    margin: 10px 40px 0px 40px;
+    display: inline-table;
+    margin-top: 20px;
+    border-collapse: separate;
+    border-spacing: 4px 0px;
+}
+
+.click-table td {
+    padding-bottom: 30px;
+}
+
+.progressGroup {
+    /*border: 1px solid black !important;*/
+    width: 50%;
+}
+
+.progressText {
+    font-size: 30px;
+    padding-left: 0;
+    color: white;
+    line-height: 50px;
+    /*text-shadow: 2px 2px black;*/
+}
+
+.progress {
+    color: white;
+    height: 50px;
+    /*text-shadow: 2px 2px black;*/
+    margin-bottom: 0;
+    border-radius: 0;
+    /*background: rgb(122, 122, 119); /* Background color for the bars */
+    background: #334455;
 }
 
 .progress-bar {
+    color: #334455; /*white;*/
+    font-weight: bold;
     font-size: 28px;
-    line-height: 32px;
-} 
+    line-height: 50px;
+    /*text-shadow: 2px 2px black;*/
+}
+
+.progress-barL {
+    display: block;
+    float: right;
+}
+
+.click-table td:first-child .progress {
+    border-radius: 128px 0 0 128px;
+}
+
+.click-table td:last-child .progress {
+    border-radius: 0 128px 128px 0;
+}
+
+.table-subtext {
+    font-size: 34px;
+    color: #b5b5b5;
+    text-shadow: 0 0 !important;
+}
+
+
+/* ALERTS AND TOOLTIPS */
+
+.alert{
+    position: sticky;
+    bottom: 0;
+
+}
+
+.alert.ng-enter,
+.alert.ng-leave {
+    -webkit-transition: 0.5s linear all;
+    transition: 0.5s linear all;
+}
+
+.alert.ng-enter,
+.alert.ng-leave.ng-leave-active {
+    opacity: 0;
+}
+
+.alert.ng-leave,
+.alert.ng-enter.ng-enter-active {
+    opacity: 1;
+}
