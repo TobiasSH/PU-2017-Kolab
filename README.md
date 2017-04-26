@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/TobiasSH/PU-2017-Kolab.svg?token=XPoxJGAcCUwTmyc9W9ea&branch=master)](https://travis-ci.com/TobiasSH/PU-2017-Kolab) [![Coverage Status](https://coveralls.io/repos/github/TobiasSH/PU-2017-Kolab/badge.svg?branch=master)](https://coveralls.io/github/TobiasSH/PU-2017-Kolab?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/TobiasSH/PU-2017-Kolab/badge.svg?branch=master)](https://coveralls.io/github/TobiasSH/PU-2017-Kolab?branch=master)
 
 # Kolab
 Kolab is a student project in the subject TDT4145 - Software development at NTNU.
